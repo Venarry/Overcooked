@@ -4,7 +4,7 @@ public class IngredientDistributorCounter : MonoBehaviour, IInteractable
 {
     [SerializeField] private Ingredient _template;
 
-    public void Interact(InteractSystem interactSystem)
+    public void Interact(PlayerInteracter interactSystem)
     {
         if (interactSystem.HasPickable)
             return;

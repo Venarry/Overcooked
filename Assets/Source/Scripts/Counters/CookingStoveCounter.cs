@@ -12,7 +12,7 @@ public class CookingStoveCounter : MonoBehaviour, IInteractable
         Cook();
     }
 
-    public void Interact(InteractSystem interactSystem)
+    public void Interact(PlayerInteracter interactSystem)
     {
         if (TryGetCookable(interactSystem))
             return;
@@ -20,7 +20,7 @@ public class CookingStoveCounter : MonoBehaviour, IInteractable
         TryInteractWithCookable(interactSystem);
     }
 
-    private bool TryGetCookable(InteractSystem interactSystem)
+    private bool TryGetCookable(PlayerInteracter interactSystem)
     {
         if (_cookable == null && interactSystem.HasPickable)
         {
@@ -40,7 +40,7 @@ public class CookingStoveCounter : MonoBehaviour, IInteractable
         return false;
     }
 
-    private bool TryInteractWithCookable(InteractSystem interactSystem)
+    private bool TryInteractWithCookable(PlayerInteracter interactSystem)
     {
         if (_cookable == null)
             return false;

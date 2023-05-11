@@ -20,7 +20,7 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
         _cookingProcess = GetComponent<CookingProcessModel>();
     }
 
-    public void Interact(InteractSystem interactSystem)
+    public void Interact(PlayerInteracter interactSystem)
     {
         if (interactSystem.HasPickable)
             return;

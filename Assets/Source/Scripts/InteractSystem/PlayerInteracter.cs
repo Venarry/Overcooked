@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class InteractSystem : MonoBehaviour
+public class PlayerInteracter : MonoBehaviour
 {
     [SerializeField] private KeyCode _interactKey = KeyCode.E;
     [SerializeField] private KeyCode _alternateInteractKey = KeyCode.R;
@@ -11,7 +11,7 @@ public class InteractSystem : MonoBehaviour
     [SerializeField] private Transform _grabTransform;
 
     private IPickable _pickable;
-    Collider[] _result = new Collider[16];
+    Collider[] _result = new Collider[24];
 
     public float InteractRange => _interactRange;
     public bool HasPickable => _pickable != null;
@@ -82,10 +82,14 @@ public class InteractSystem : MonoBehaviour
         return false;
     }
 
+    public void RemovePickableRoot()
+    {
+        _pickable = null;
+    }
+
     private IInteractable FindInteractive()
     {
         Physics.OverlapSphereNonAlloc(_grabTransform.position, _interactRange, _result);
-        //Collider[] colliders = Physics.OverlapSphere(_grabTransform.position, _interactRange);
 
         float minDistance = _interactRange;
         IInteractable targetObject = null;

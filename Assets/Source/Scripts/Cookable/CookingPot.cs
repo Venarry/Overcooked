@@ -14,7 +14,6 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     private ObjectInteractive _interactive;
     private CookingProcessModel _cookingProcess;
 
-    public int MaxCookables => _maxCookables;
     public int CookablesCount => _cookables.Count;
     public bool CanInteract => _interactive.HasParent == false;
     public KitchenObjectType Type => _cookingProcess.Type;
@@ -26,14 +25,15 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         _cookingProcess = GetComponent<CookingProcessModel>();
     }
 
-    public void Interact(InteractSystem interactSystem)
+    public void Interact(PlayerInteracter interactSystem)
     {
         if (interactSystem.HasPickable)
         {
-            if (TryInteractWithHolder(interactSystem))
+            // если нет типа то нельзя взаимодействовать
+            if (TryInteractWithInteracterHolder(interactSystem))
                 return;
 
-            if (TryGetCookableIntoInteract(interactSystem))
+            if (TryGetCookableFromInteracter(interactSystem))
                 return;
         }
         else
@@ -62,62 +62,53 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 
     public bool TryAddCookable(ICookable cookable)
     {
-        if (_cookables.Count >= _maxCookables)
+        if (cookable.CanPlace(Type) == false)
             return false;
 
-        _cookables.Add(cookable);
+        if (_cookables.Count >= _maxCookables)
+            return false;
 
         if (cookable is IPickable pickable)
         {
             pickable.SetParent(_holdPoint);
         }
 
+        _cookables.Add(cookable);
+
         return true;
     }
 
-    public bool TryAddCookables(ICookable[] cookables)
+    public void GiveCookablesInOutHolder(ICookableHolder cookableHolder)
     {
-        foreach (ICookable cookable in cookables)
+        int startCounter = _cookables.Count - 1;
+
+        for (int i = startCounter; i >= 0; i--)
         {
-            if (TryAddCookable(cookable) == false)
+            if (cookableHolder.TryAddCookable(_cookables[i]))
             {
-                return false;
+                _cookables.Remove(_cookables[i]);
             }
         }
-
-        return true;
     }
 
-    public ICookable[] TakeCookables()
+    private bool TryGetCookableFromInteracter(PlayerInteracter interactSystem)
     {
-        if (_cookables.Count == 0)
-            return new ICookable[0];
-
-        ICookable[] cookables = _cookables.ToArray();
-        _cookables.Clear();
-        _cookingProcess.ResetStages();
-
-        return cookables;
-    }
-
-    private bool TryGetCookableIntoInteract(InteractSystem interactSystem)
-    {
-        if (interactSystem.CanPlacePickable(Type) == false)
+        if (interactSystem.TryGetPickableType(out ICookable cookable) == false)
             return false;
 
-        if (interactSystem.TryGetPickableType(out ICookable cookable) == false)
+        if (interactSystem.CanPlacePickable(Type) == false)
             return false;
 
         if (_cookables.Count < _maxCookables == false)
             return false;
 
-        interactSystem.TryTakePickable(out IPickable pickable);
+        interactSystem.RemovePickableRoot();
         TryAddCookable(cookable);
 
         return true;
     }
 
-    private bool TryInteractWithHolder(InteractSystem interactSystem)
+    private bool TryInteractWithInteracterHolder(PlayerInteracter interactSystem)
     {
         if (interactSystem.TryGetPickableType(out ICookableHolder cookableHolder) == false)
             return false;
@@ -128,30 +119,9 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         }
         else
         {
-            if (_maxCookables >= cookableHolder.CookablesCount + CookablesCount)
-                TryAddCookables(cookableHolder.TakeCookables());
+            cookableHolder.GiveCookablesInOutHolder(this);
         }
 
         return true;
-    }
-
-    private void GiveCookablesInOutHolder(ICookableHolder cookableHolder)
-    {
-        for (int i = _cookables.Count - 1; i >= 0; i--)
-        {
-            if (cookableHolder.TryAddCookable(_cookables[i]))
-            {
-                _cookables.Remove(_cookables[i]);
-            }
-        }
-
-        /*if (cookableHolder.MaxCookables >= cookableHolder.CookablesCount + _cookables.Count)
-                    {
-                        if (cookableHolder.TryAddCookables(_cookables.ToArray()))
-                        {
-                            _cookables.Clear();
-                            return;
-                        }
-                    }*/
     }
 }

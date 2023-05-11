@@ -7,7 +7,7 @@ public class ClearKitchenCounter : MonoBehaviour, IInteractable
     [SerializeField] private Transform _holdPoint;
     private IPickable _pickable;
 
-    public void Interact(InteractSystem interactSystem)
+    public void Interact(PlayerInteracter interactSystem)
     {
         if (TryGetPickable(interactSystem))
             return;
@@ -15,7 +15,7 @@ public class ClearKitchenCounter : MonoBehaviour, IInteractable
         TryInteractWithPickable(interactSystem);
     }
 
-    private bool TryGetPickable(InteractSystem interactSystem)
+    private bool TryGetPickable(PlayerInteracter interactSystem)
     {
         if (_pickable == null && interactSystem.HasPickable)
         {
@@ -32,7 +32,7 @@ public class ClearKitchenCounter : MonoBehaviour, IInteractable
         return false;
     }
 
-    private bool TryInteractWithPickable(InteractSystem interactSystem)
+    private bool TryInteractWithPickable(PlayerInteracter interactSystem)
     {
         if (_pickable == null)
             return false;

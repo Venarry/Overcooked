@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public interface IPickable : IInteractable
+public interface IPickable : IInteractable, IPlaceable
 {
-    public bool CanPlace(KitchenObjectType type);
     public void SetParent(Transform point);
     public void RemoveParent();
 }

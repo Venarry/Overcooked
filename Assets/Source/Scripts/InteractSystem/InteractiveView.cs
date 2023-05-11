@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(InteractSystem))]
+[RequireComponent(typeof(PlayerInteracter))]
 public class InteractiveView : MonoBehaviour
 {
     [SerializeField] private Transform _interactPoint;
