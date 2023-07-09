@@ -4,11 +4,11 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(ObjectInteractive))]
-[RequireComponent(typeof(CookingProcessModel))]
+[RequireComponent(typeof(CookingProcess))]
 public class Ingredient : MonoBehaviour, IPickable, ICookable
 {
     private ObjectInteractive _interactive;
-    private CookingProcessModel _cookingProcess;
+    private CookingProcess _cookingProcess;
 
     private KitchenObjectType[] AvaiablePlaceTypes => _cookingProcess.AvailablePlaceTypes;
 
@@ -17,7 +17,7 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
     private void Awake()
     {
         _interactive = GetComponent<ObjectInteractive>();
-        _cookingProcess = GetComponent<CookingProcessModel>();
+        _cookingProcess = GetComponent<CookingProcess>();
     }
 
     public void Interact(PlayerInteracter interactSystem)

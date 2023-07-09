@@ -775,6 +775,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6769756335494588219, guid: a098ca466f9c308409f24a19779eb41c, type: 3}
+      propertyPath: _stages.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6769756335494588219, guid: a098ca466f9c308409f24a19779eb41c, type: 3}
+      propertyPath: _stages.Array.data[1]._type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6769756335494588219, guid: a098ca466f9c308409f24a19779eb41c, type: 3}
+      propertyPath: _stages.Array.data[1]._cookingTime
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6769756335494588219, guid: a098ca466f9c308409f24a19779eb41c, type: 3}
+      propertyPath: _stages.Array.data[1]._availablePlaceObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6769756335494588219, guid: a098ca466f9c308409f24a19779eb41c, type: 3}
+      propertyPath: _stages.Array.data[1]._availablePlaceObjects.Array.data[0]
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 7124175070815271936, guid: a098ca466f9c308409f24a19779eb41c, type: 3}
       propertyPath: m_Name
       value: Steak
@@ -1304,8 +1324,8 @@ GameObject:
   - component: {fileID: 1467930211}
   - component: {fileID: 1467930210}
   - component: {fileID: 1467930209}
-  - component: {fileID: 1467930207}
   - component: {fileID: 1467930212}
+  - component: {fileID: 1467930213}
   m_Layer: 0
   m_Name: Dish
   m_TagString: Untagged
@@ -1313,18 +1333,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1467930207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467930206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34ddf16b56635ca4d80f48559067dcfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &1467930209
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1380,7 +1388,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1467930206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40fa60f40465b9b42af02adf1633bbd2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f637ccf5d795be4ba17caf3693aa146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1467930213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467930206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64d9f08b777aa4f4391b65562e0007ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1506318095

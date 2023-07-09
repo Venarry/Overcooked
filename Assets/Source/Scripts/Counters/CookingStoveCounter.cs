@@ -7,6 +7,8 @@ public class CookingStoveCounter : MonoBehaviour, IInteractable
     [SerializeField] private Transform _holdPoint;
     private ICookable _cookable;
 
+    public bool CanInteract => true;
+
     private void FixedUpdate()
     {
         Cook();

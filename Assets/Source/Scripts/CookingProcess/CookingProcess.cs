@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CookingProcessModel : MonoBehaviour
+public class CookingProcess : MonoBehaviour
 {
     [SerializeField] private List<CookStage> _stages = new List<CookStage>();
 

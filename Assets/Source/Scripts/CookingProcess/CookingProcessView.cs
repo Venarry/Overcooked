@@ -1,18 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CookingProcessModel))]
+[RequireComponent(typeof(CookingProcess))]
 public class CookingProcessView : MonoBehaviour
 {
     [SerializeField] private Image _cookingProgressBackground;
     [SerializeField] private Image _cookingProgress;
     [SerializeField] private MeshFilter _model;
 
-    private CookingProcessModel _cookingProcess;
+    private CookingProcess _cookingProcess;
 
     private void Awake()
     {
-        _cookingProcess = GetComponent<CookingProcessModel>();
+        _cookingProcess = GetComponent<CookingProcess>();
     }
 
     private void Start()

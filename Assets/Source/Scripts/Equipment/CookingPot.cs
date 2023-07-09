@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Linq;
 
 [RequireComponent(typeof(ObjectInteractive))]
-[RequireComponent(typeof(CookingProcessModel))]
+[RequireComponent(typeof(CookingProcess))]
 public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 {
     [SerializeField] private Transform _holdPoint;
@@ -12,7 +12,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     private List<ICookable> _cookables = new List<ICookable>();
 
     private ObjectInteractive _interactive;
-    private CookingProcessModel _cookingProcess;
+    private CookingProcess _cookingProcess;
 
     public int CookablesCount => _cookables.Count;
     public bool CanInteract => _interactive.HasParent == false;
@@ -22,7 +22,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     private void Awake()
     {
         _interactive = GetComponent<ObjectInteractive>();
-        _cookingProcess = GetComponent<CookingProcessModel>();
+        _cookingProcess = GetComponent<CookingProcess>();
     }
 
     public void Interact(PlayerInteracter interactSystem)

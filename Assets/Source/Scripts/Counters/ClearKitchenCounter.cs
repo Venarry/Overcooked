@@ -7,6 +7,8 @@ public class ClearKitchenCounter : MonoBehaviour, IInteractable
     [SerializeField] private Transform _holdPoint;
     private IPickable _pickable;
 
+    public bool CanInteract => true;
+
     public void Interact(PlayerInteracter interactSystem)
     {
         if (TryGetPickable(interactSystem))
