@@ -17,7 +17,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     public int CookablesCount => _cookables.Count;
     public bool CanInteract => _interactive.HasParent == false;
     public KitchenObjectType Type => _cookingProcess.Type;
-    public KitchenObjectType[] AvaiablePlaceTypes => _cookingProcess.AvailablePlaceTypes;
+    public KitchenObjectType[] AvailablePlaceTypes => _cookingProcess.AvailablePlaceTypes;
 
     private void Awake()
     {
@@ -42,7 +42,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         }
     }
 
-    public bool CanPlace(KitchenObjectType type) => AvaiablePlaceTypes.Contains(type);
+    public bool CanPlace(KitchenObjectType type) => AvailablePlaceTypes.Contains(type);
 
     public void SetParent(Transform point)
     {

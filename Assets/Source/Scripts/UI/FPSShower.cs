@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -8,7 +7,7 @@ public class FPSShower : MonoBehaviour
     private const float ShowDelay = 0.2f;
     
     [SerializeField] private TextMeshProUGUI _label;
-    private readonly WaitForSeconds _waitForSeconds = new WaitForSeconds(ShowDelay);
+    private readonly WaitForSeconds _waitForSeconds = new(ShowDelay);
 
     private void Start()
     {

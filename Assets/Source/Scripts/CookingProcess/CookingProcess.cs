@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class CookingProcess : MonoBehaviour
 {
-    [SerializeField] private List<CookStage> _stages = new List<CookStage>();
+    [SerializeField] private List<CookStage> _stages;
 
     private int _maxCookedStage;
     private int _currentCookedStage;
     private float _cookedTime;
     private float _currentCookedTime;
 
-    public int CurrentStage => _currentCookedStage;
     public KitchenObjectType Type => _stages[_currentCookedStage].Type;
     public KitchenObjectType[] AvailablePlaceTypes => _stages[_currentCookedStage].AvailablePlaceTypes;
     private float _cookedProgress => _currentCookedTime / _cookedTime;
