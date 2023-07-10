@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -35,6 +33,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void Move()
     {
-        _characterController.Move(_moveDirection * _speed);
+        _characterController.Move(_moveDirection * (_speed));
     }
 }

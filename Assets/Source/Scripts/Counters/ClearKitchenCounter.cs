@@ -9,22 +9,22 @@ public class ClearKitchenCounter : MonoBehaviour, IInteractable
 
     public bool CanInteract => true;
 
-    public void Interact(PlayerInteracter interactSystem)
+    public void Interact(PlayerObjectInteract objectInteractSystem)
     {
-        if (TryGetPickable(interactSystem))
+        if (TryGetPickable(objectInteractSystem))
             return;
 
-        TryInteractWithPickable(interactSystem);
+        TryInteractWithPickable(objectInteractSystem);
     }
 
-    private bool TryGetPickable(PlayerInteracter interactSystem)
+    private bool TryGetPickable(PlayerObjectInteract objectInteractSystem)
     {
-        if (_pickable == null && interactSystem.HasPickable)
+        if (_pickable == null && objectInteractSystem.HasPickable)
         {
-            if (interactSystem.CanPlacePickable(_type) == false)
+            if (objectInteractSystem.CanPlacePickable(_type) == false)
                 return false;
 
-            interactSystem.TryTakePickable(out IPickable pickable);
+            objectInteractSystem.TryTakePickable(out IPickable pickable);
 
             _pickable = pickable;
             _pickable.SetParent(_holdPoint);
@@ -34,18 +34,18 @@ public class ClearKitchenCounter : MonoBehaviour, IInteractable
         return false;
     }
 
-    private bool TryInteractWithPickable(PlayerInteracter interactSystem)
+    private bool TryInteractWithPickable(PlayerObjectInteract objectInteractSystem)
     {
         if (_pickable == null)
             return false;
         
-        if (interactSystem.HasPickable)
+        if (objectInteractSystem.HasPickable)
         {
-            _pickable.Interact(interactSystem);
+            _pickable.Interact(objectInteractSystem);
         }
         else
         {
-            if (interactSystem.TryGivePickable(_pickable))
+            if (objectInteractSystem.TryGivePickable(_pickable))
             {
                 _pickable = null;
             }

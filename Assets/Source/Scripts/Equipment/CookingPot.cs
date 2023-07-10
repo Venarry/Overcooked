@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-[RequireComponent(typeof(ObjectInteractive))]
+[RequireComponent(typeof(InteractiveObject))]
 [RequireComponent(typeof(CookingProcess))]
 public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 {
@@ -11,7 +11,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 
     private List<ICookable> _cookables = new List<ICookable>();
 
-    private ObjectInteractive _interactive;
+    private InteractiveObject _interactive;
     private CookingProcess _cookingProcess;
 
     public int CookablesCount => _cookables.Count;
@@ -21,24 +21,24 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 
     private void Awake()
     {
-        _interactive = GetComponent<ObjectInteractive>();
+        _interactive = GetComponent<InteractiveObject>();
         _cookingProcess = GetComponent<CookingProcess>();
     }
 
-    public void Interact(PlayerInteracter interactSystem)
+    public void Interact(PlayerObjectInteract objectInteractSystem)
     {
-        if (interactSystem.HasPickable)
+        if (objectInteractSystem.HasPickable)
         {
-            // если нет типа то нельзя взаимодействовать
-            if (TryInteractWithInteracterHolder(interactSystem))
+            // РµСЃР»Рё РЅРµС‚ С‚РёРїР° С‚Рѕ РЅРµР»СЊР·СЏ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРѕРІР°С‚СЊ
+            if (TryInteractWithInteracterHolder(objectInteractSystem))
                 return;
 
-            if (TryGetCookableFromInteracter(interactSystem))
+            if (TryGetCookableFromInteracter(objectInteractSystem))
                 return;
         }
         else
         {
-            interactSystem.TryGivePickable(this);
+            objectInteractSystem.TryGivePickable(this);
         }
     }
 
@@ -91,26 +91,26 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         }
     }
 
-    private bool TryGetCookableFromInteracter(PlayerInteracter interactSystem)
+    private bool TryGetCookableFromInteracter(PlayerObjectInteract objectInteractSystem)
     {
-        if (interactSystem.TryGetPickableType(out ICookable cookable) == false)
+        if (objectInteractSystem.TryGetPickableType(out ICookable cookable) == false)
             return false;
 
-        if (interactSystem.CanPlacePickable(Type) == false)
+        if (objectInteractSystem.CanPlacePickable(Type) == false)
             return false;
 
         if (_cookables.Count < _maxCookables == false)
             return false;
 
-        interactSystem.RemovePickableRoot();
+        objectInteractSystem.RemovePickableRoot();
         TryAddCookable(cookable);
 
         return true;
     }
 
-    private bool TryInteractWithInteracterHolder(PlayerInteracter interactSystem)
+    private bool TryInteractWithInteracterHolder(PlayerObjectInteract objectInteractSystem)
     {
-        if (interactSystem.TryGetPickableType(out ICookableHolder cookableHolder) == false)
+        if (objectInteractSystem.TryGetPickableType(out ICookableHolder cookableHolder) == false)
             return false;
 
         if (cookableHolder.CookablesCount == 0)

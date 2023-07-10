@@ -14,25 +14,25 @@ public class CookingStoveCounter : MonoBehaviour, IInteractable
         Cook();
     }
 
-    public void Interact(PlayerInteracter interactSystem)
+    public void Interact(PlayerObjectInteract objectInteractSystem)
     {
-        if (TryGetCookable(interactSystem))
+        if (TryGetCookable(objectInteractSystem))
             return;
 
-        TryInteractWithCookable(interactSystem);
+        TryInteractWithCookable(objectInteractSystem);
     }
 
-    private bool TryGetCookable(PlayerInteracter interactSystem)
+    private bool TryGetCookable(PlayerObjectInteract objectInteractSystem)
     {
-        if (_cookable == null && interactSystem.HasPickable)
+        if (_cookable == null && objectInteractSystem.HasPickable)
         {
-            if (interactSystem.TryGetPickableType(out ICookable cookable) == false)
+            if (objectInteractSystem.TryGetPickableType(out ICookable cookable) == false)
                 return false;
 
-            if (interactSystem.CanPlacePickable(_type) == false)
+            if (objectInteractSystem.CanPlacePickable(_type) == false)
                 return false;
 
-            interactSystem.TryTakePickable(out IPickable pickable);
+            objectInteractSystem.TryTakePickable(out IPickable pickable);
 
             _cookable = cookable;
             pickable.SetParent(_holdPoint);
@@ -42,16 +42,16 @@ public class CookingStoveCounter : MonoBehaviour, IInteractable
         return false;
     }
 
-    private bool TryInteractWithCookable(PlayerInteracter interactSystem)
+    private bool TryInteractWithCookable(PlayerObjectInteract objectInteractSystem)
     {
         if (_cookable == null)
             return false;
         
-        if (interactSystem.HasPickable)
+        if (objectInteractSystem.HasPickable)
         {
             if(_cookable is IInteractable interactable)
             {
-                interactable.Interact(interactSystem);
+                interactable.Interact(objectInteractSystem);
                 return true;
             }
         }
@@ -59,7 +59,7 @@ public class CookingStoveCounter : MonoBehaviour, IInteractable
         {
             if(_cookable is IPickable pickable)
             {
-                if (interactSystem.TryGivePickable(pickable))
+                if (objectInteractSystem.TryGivePickable(pickable))
                 {
                     _cookable = null;
                     return true;

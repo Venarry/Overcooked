@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(ObjectInteractive))]
+[RequireComponent(typeof(InteractiveObject))]
 [RequireComponent(typeof(CookingProcess))]
 public class Ingredient : MonoBehaviour, IPickable, ICookable
 {
-    private ObjectInteractive _interactive;
+    private InteractiveObject _interactive;
     private CookingProcess _cookingProcess;
 
     private KitchenObjectType[] AvaiablePlaceTypes => _cookingProcess.AvailablePlaceTypes;
@@ -16,16 +16,16 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
 
     private void Awake()
     {
-        _interactive = GetComponent<ObjectInteractive>();
+        _interactive = GetComponent<InteractiveObject>();
         _cookingProcess = GetComponent<CookingProcess>();
     }
 
-    public void Interact(PlayerInteracter interactSystem)
+    public void Interact(PlayerObjectInteract objectInteractSystem)
     {
-        if (interactSystem.HasPickable)
+        if (objectInteractSystem.HasPickable)
             return;
 
-        interactSystem.TryGivePickable(this);
+        objectInteractSystem.TryGivePickable(this);
     }
 
     public bool CanPlace(KitchenObjectType type) => AvaiablePlaceTypes.Contains(type);

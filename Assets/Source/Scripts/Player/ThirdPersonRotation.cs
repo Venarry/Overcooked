@@ -16,12 +16,12 @@ public class ThirdPersonRotation : MonoBehaviour
 
         _moveDirection = _moveDirection.normalized;
 
-        if(_moveDirection.magnitude > 0) 
-        { 
-            Quaternion rotateDirection = Quaternion.LookRotation(_moveDirection);
-            Quaternion targetRotation = Quaternion.Lerp(transform.rotation, rotateDirection, _speed);
+        if (!(_moveDirection.magnitude > 0)) 
+            return;
+        
+        Quaternion rotateDirection = Quaternion.LookRotation(_moveDirection);
+        Quaternion targetRotation = Quaternion.Lerp(transform.rotation, rotateDirection, _speed);
 
-            transform.rotation = targetRotation;
-        }
+        transform.rotation = targetRotation;
     }
 }

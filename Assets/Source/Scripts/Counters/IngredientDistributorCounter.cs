@@ -6,11 +6,11 @@ public class IngredientDistributorCounter : MonoBehaviour, IInteractable
 
     public bool CanInteract => true;
 
-    public void Interact(PlayerInteracter interactSystem)
+    public void Interact(PlayerObjectInteract objectInteractSystem)
     {
-        if (interactSystem.HasPickable)
+        if (objectInteractSystem.HasPickable)
             return;
 
-        interactSystem.TryGivePickable(Instantiate(_template));
+        objectInteractSystem.TryGivePickable(Instantiate(_template));
     }
 }
