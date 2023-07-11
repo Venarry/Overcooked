@@ -23,12 +23,21 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         _cookingProcessPresenter = GetComponent<CookigProcessPresenter>();
     }
 
+    private void OnEnable()
+    {
+        _cookingProcessPresenter.CookStageChanged += OnCookStageChanged;
+    }
+
+    private void OnDisable()
+    {
+        _cookingProcessPresenter.CookStageChanged -= OnCookStageChanged;
+    }
+
     public void Interact(PlayerObjectInteract objectInteractSystem)
     {
         if (objectInteractSystem.HasPickable)
         {
-            // если нет типа то нельзя взаимодействовать
-            if (TryInteractWithInteracterHolder(objectInteractSystem))
+            if (TryInteractWithHolder(objectInteractSystem))
                 return;
 
             if (TryGetCookableFromInteracter(objectInteractSystem))
@@ -106,7 +115,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         return true;
     }
 
-    private bool TryInteractWithInteracterHolder(PlayerObjectInteract objectInteractSystem)
+    private bool TryInteractWithHolder(PlayerObjectInteract objectInteractSystem)
     {
         if (objectInteractSystem.TryGetPickableType(out ICookableHolder cookableHolder) == false)
             return false;
@@ -121,5 +130,18 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         }
 
         return true;
+    }
+
+    private void OnCookStageChanged()
+    {
+        foreach (ICookable cookable in _cookables)
+        {
+            cookable.AddCookStage();
+        }
+    }
+
+    public void AddCookStage()
+    {
+        throw new System.NotImplementedException();
     }
 }

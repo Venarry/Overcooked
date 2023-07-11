@@ -1,37 +1,47 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CookingProcess
 {
     private CookStagesSO _stages;
-    private int _currentCookedStage;
 
     public CookingProcess(CookStagesSO stages)
     {
         _stages = stages;
-        RefreshData();
+        CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
     }
 
+    public int CurrentCookedStage { get; private set; }
     public float CookedTime { get; private set; }
     public float PastCookedTime { get; private set; }
 
-    public KitchenObjectType Type => _stages.GetTypeByIndex(_currentCookedStage);
-    public KitchenObjectType[] AvailablePlaceTypes => _stages.GetAvailablePlaceTypesTimeByIndex(_currentCookedStage);
+    public KitchenObjectType Type => _stages.GetTypeByIndex(CurrentCookedStage);
+    public KitchenObjectType[] AvailablePlaceTypes => _stages.GetAvailablePlaceTypesTimeByIndex(CurrentCookedStage);
 
-    public event Action<Mesh> NextCookingStage;
+    public event Action CookStepChanged;
+    public event Action CookStageChanged;
 
-    public void CookNextStage()
+    public void AddCookStage()
     {
-        if (_currentCookedStage >= _stages.MaxCookIndexStage)
+        if (CurrentCookedStage >= _stages.MaxCookIndexStage)
             return;
 
-        AddCookingStage();
+        CurrentCookedStage++;
+        OnCookStageChanged();
+    }
+
+    public void SubtractCookStage()
+    {
+        if (CurrentCookedStage == 0)
+            return;
+
+        CurrentCookedStage--;
+        OnCookStageChanged();
     }
 
     public void CookNextStep(float step = 0)
     {
-        if (_currentCookedStage >= _stages.MaxCookIndexStage)
+        if (CurrentCookedStage >= _stages.MaxCookIndexStage)
             return;
 
         if(step == 0)
@@ -43,30 +53,25 @@ public class CookingProcess
             PastCookedTime += step;
         }
 
+        CookStepChanged?.Invoke();
+
         if (PastCookedTime >= CookedTime)
         {
-            AddCookingStage();
+            AddCookStage();
         }
     }
 
     public void ResetStages()
     {
-        _currentCookedStage = 0;
-        RefreshData();
-    }
-
-    private void AddCookingStage()
-    {
-        _currentCookedStage++;
+        CurrentCookedStage = 0;
         PastCookedTime = 0;
-
-        RefreshData();
-
-        NextCookingStage?.Invoke(_stages.GetMeshByIndex(_currentCookedStage));
+        CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
     }
 
-    private void RefreshData()
+    private void OnCookStageChanged()
     {
-        CookedTime = _stages.GetCookingTimeByIndex(_currentCookedStage);
+        PastCookedTime = 0;
+        CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
+        CookStageChanged?.Invoke();
     }
 }

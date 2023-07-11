@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cookStages: {fileID: 11400000, guid: 4a3b0867577ecb84a899d0f32001dbe9, type: 2}
+  _model: {fileID: 8421944586215995902}
 --- !u!1 &7758325893214792788
 GameObject:
   m_ObjectHideFlags: 0

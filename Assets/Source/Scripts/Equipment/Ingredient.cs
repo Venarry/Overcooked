@@ -43,4 +43,9 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
     {
         _cookingProcessPresenter.Cook(step);
     }
+
+    public void AddCookStage()
+    {
+        _cookingProcessPresenter.AddCookStage();
+    }
 }
