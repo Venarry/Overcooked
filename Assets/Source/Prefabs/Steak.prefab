@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7124175070815271949}
   - component: {fileID: 7124175070815271948}
   - component: {fileID: 1954315470987319441}
-  - component: {fileID: 6769756335494588219}
   - component: {fileID: 260978257386514957}
   - component: {fileID: -4383810021739063925}
+  - component: {fileID: 6691501430120700698}
   m_Layer: 0
   m_Name: Steak
   m_TagString: Untagged
@@ -80,23 +80,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d9f08b777aa4f4391b65562e0007ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6769756335494588219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7124175070815271936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeeb6295b46e53243bed57c9d86315a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _stages:
-  - _mesh: {fileID: 0}
-    _cookingTime: 4
-    _type: 0
-    _availablePlaceObjects: 06000000
 --- !u!114 &260978257386514957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,7 +94,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cookingProgressBackground: {fileID: 7563867634954238537}
   _cookingProgress: {fileID: 6040472297287022575}
-  _model: {fileID: 8421944586215995902}
 --- !u!114 &-4383810021739063925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,6 +106,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa7a9e927795d24494b374580e5b04a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6691501430120700698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7124175070815271936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a4e9d5cb7275840b064d539060be9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cookStages: {fileID: 11400000, guid: 4a3b0867577ecb84a899d0f32001dbe9, type: 2}
 --- !u!1 &7758325893214792788
 GameObject:
   m_ObjectHideFlags: 0

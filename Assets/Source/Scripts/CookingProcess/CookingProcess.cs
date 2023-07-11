@@ -2,31 +2,28 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CookingProcess : MonoBehaviour
+public class CookingProcess
 {
-    [SerializeField] private List<CookStage> _stages;
-
-    private int _maxCookedStage;
+    private CookStagesSO _stages;
     private int _currentCookedStage;
-    private float _cookedTime;
-    private float _currentCookedTime;
 
-    public KitchenObjectType Type => _stages[_currentCookedStage].Type;
-    public KitchenObjectType[] AvailablePlaceTypes => _stages[_currentCookedStage].AvailablePlaceTypes;
-    private float _cookedProgress => _currentCookedTime / _cookedTime;
-
-    public event Action<Mesh> NextCookingStage;
-    public event Action<float> NextCookingStep;
-
-    private void Start()
+    public CookingProcess(CookStagesSO stages)
     {
-        _maxCookedStage = _stages.Count - 1;
+        _stages = stages;
         RefreshData();
     }
 
+    public float CookedTime { get; private set; }
+    public float PastCookedTime { get; private set; }
+
+    public KitchenObjectType Type => _stages.GetTypeByIndex(_currentCookedStage);
+    public KitchenObjectType[] AvailablePlaceTypes => _stages.GetAvailablePlaceTypesTimeByIndex(_currentCookedStage);
+
+    public event Action<Mesh> NextCookingStage;
+
     public void CookNextStage()
     {
-        if (_currentCookedStage >= _maxCookedStage)
+        if (_currentCookedStage >= _stages.MaxCookIndexStage)
             return;
 
         AddCookingStage();
@@ -34,21 +31,19 @@ public class CookingProcess : MonoBehaviour
 
     public void CookNextStep(float step = 0)
     {
-        if (_currentCookedStage >= _maxCookedStage)
+        if (_currentCookedStage >= _stages.MaxCookIndexStage)
             return;
 
         if(step == 0)
         {
-            _currentCookedTime += Time.deltaTime;
+            PastCookedTime += Time.deltaTime;
         }
         else
         {
-            _currentCookedTime += step;
+            PastCookedTime += step;
         }
 
-        NextCookingStep?.Invoke(_cookedProgress);
-
-        if (_currentCookedTime >= _cookedTime)
+        if (PastCookedTime >= CookedTime)
         {
             AddCookingStage();
         }
@@ -63,30 +58,15 @@ public class CookingProcess : MonoBehaviour
     private void AddCookingStage()
     {
         _currentCookedStage++;
-        _currentCookedTime = 0;
+        PastCookedTime = 0;
 
         RefreshData();
 
-        NextCookingStage?.Invoke(_stages[_currentCookedStage].Mesh);
+        NextCookingStage?.Invoke(_stages.GetMeshByIndex(_currentCookedStage));
     }
 
     private void RefreshData()
     {
-        //_model.mesh = _stages[_currentCookedStage].Mesh;
-        _cookedTime = _stages[_currentCookedStage].CookingTime;
+        CookedTime = _stages.GetCookingTimeByIndex(_currentCookedStage);
     }
-}
-
-[Serializable]
-public class CookStage
-{
-    [SerializeField] private MeshFilter _mesh;
-    [SerializeField] private float _cookingTime;
-    [SerializeField] private KitchenObjectType _type;
-    [SerializeField] private List<KitchenObjectType> _availablePlaceObjects;
-
-    public Mesh Mesh => _mesh.sharedMesh;
-    public float CookingTime => _cookingTime;
-    public KitchenObjectType Type => _type;
-    public KitchenObjectType[] AvailablePlaceTypes => _availablePlaceObjects.ToArray();
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7529123397168317465}
   - component: {fileID: 3057321842643681116}
   - component: {fileID: 2521379013193355267}
-  - component: {fileID: 6016752209394020853}
+  - component: {fileID: 4493934980672237642}
   m_Layer: 0
   m_Name: CookingPot
   m_TagString: Untagged
@@ -109,8 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cookingProgressBackground: {fileID: 3705544387513178153}
   _cookingProgress: {fileID: 594735708557432207}
-  _model: {fileID: 6211670538487663838}
---- !u!114 &6016752209394020853
+--- !u!114 &4493934980672237642
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,18 +118,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7354707605009436508}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeeb6295b46e53243bed57c9d86315a5, type: 3}
+  m_Script: {fileID: 11500000, guid: e0a4e9d5cb7275840b064d539060be9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stages:
-  - _mesh: {fileID: -5754084199372789682, guid: a7157b20565c1e94daf4b9080bfc096d, type: 3}
-    _cookingTime: 2
-    _type: 6
-    _availablePlaceObjects: 0a0000000b000000
-  - _mesh: {fileID: -5754084199372789682, guid: a7157b20565c1e94daf4b9080bfc096d, type: 3}
-    _cookingTime: 2
-    _type: 7
-    _availablePlaceObjects: 0a0000000b0000000d000000
+  _cookStages: {fileID: 11400000, guid: d09ce0466997b134e82ae9e6f629d9dd, type: 2}
 --- !u!1 &7354707605017687902
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,11 +210,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7157b20565c1e94daf4b9080bfc096d, type: 3}
---- !u!33 &6211670538487663838 stripped
-MeshFilter:
-  m_CorrespondingSourceObject: {fileID: -5754084199372789682, guid: a7157b20565c1e94daf4b9080bfc096d, type: 3}
-  m_PrefabInstance: {fileID: 7354707605234869392}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7033376754817172347 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a7157b20565c1e94daf4b9080bfc096d, type: 3}

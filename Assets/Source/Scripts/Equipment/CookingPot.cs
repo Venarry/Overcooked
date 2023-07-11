@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Linq;
 
 [RequireComponent(typeof(InteractiveObject))]
-[RequireComponent(typeof(CookingProcess))]
+[RequireComponent(typeof(CookigProcessPresenter))]
 public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 {
     [SerializeField] private Transform _holdPoint;
@@ -12,17 +12,15 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     private List<ICookable> _cookables = new List<ICookable>();
 
     private InteractiveObject _interactive;
-    private CookingProcess _cookingProcess;
+    private CookigProcessPresenter _cookingProcessPresenter;
 
     public int CookablesCount => _cookables.Count;
     public bool CanInteract => _interactive.HasParent == false;
-    public KitchenObjectType Type => _cookingProcess.Type;
-    public KitchenObjectType[] AvailablePlaceTypes => _cookingProcess.AvailablePlaceTypes;
 
     private void Awake()
     {
         _interactive = GetComponent<InteractiveObject>();
-        _cookingProcess = GetComponent<CookingProcess>();
+        _cookingProcessPresenter = GetComponent<CookigProcessPresenter>();
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
@@ -42,7 +40,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         }
     }
 
-    public bool CanPlace(KitchenObjectType type) => AvailablePlaceTypes.Contains(type);
+    public bool CanPlace(KitchenObjectType type) => _cookingProcessPresenter.AvailablePlaceTypes.Contains(type);
 
     public void SetParent(Transform point)
     {
@@ -57,12 +55,12 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     public void Cook(float step = 0)
     {
         if(_cookables.Count > 0)
-            _cookingProcess.CookNextStep();
+            _cookingProcessPresenter.Cook(step);
     }
 
     public bool TryAddCookable(ICookable cookable)
     {
-        if (cookable.CanPlace(Type) == false)
+        if (cookable.CanPlace(_cookingProcessPresenter.Type) == false)
             return false;
 
         if (_cookables.Count >= _maxCookables)
@@ -96,7 +94,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         if (objectInteractSystem.TryGetPickableType(out ICookable cookable) == false)
             return false;
 
-        if (objectInteractSystem.CanPlacePickable(Type) == false)
+        if (objectInteractSystem.CanPlacePickable(_cookingProcessPresenter.Type) == false)
             return false;
 
         if (_cookables.Count < _maxCookables == false)
