@@ -96,6 +96,14 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
                 _cookables.Remove(_cookables[i]);
             }
         }
+
+        if (_cookables.Count == 0)
+            _cookingProcessPresenter.ResetStageProgress();
+    }
+
+    public void AddCookStage()
+    {
+        _cookingProcessPresenter.AddCookStage();
     }
 
     private bool TryGetCookableFromInteracter(PlayerObjectInteract objectInteractSystem)
@@ -138,10 +146,5 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         {
             cookable.AddCookStage();
         }
-    }
-
-    public void AddCookStage()
-    {
-        throw new System.NotImplementedException();
     }
 }

@@ -46,6 +46,16 @@ public class CookigProcessPresenter : MonoBehaviour
         _cookingProcess.AddCookStage();
     }
 
+    public void ResetStages()
+    {
+        _cookingProcess.ResetStages();
+    }
+
+    public void ResetStageProgress()
+    {
+        _cookingProcess.ResetStageProgress();
+    }
+
     private void OnCookStepChanged()
     {
         float cookedTime = _cookingProcess.CookedTime;

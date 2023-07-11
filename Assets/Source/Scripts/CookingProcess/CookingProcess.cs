@@ -27,7 +27,7 @@ public class CookingProcess
             return;
 
         CurrentCookedStage++;
-        OnCookStageChanged();
+        RefreshNewStageData();
     }
 
     public void SubtractCookStage()
@@ -36,7 +36,7 @@ public class CookingProcess
             return;
 
         CurrentCookedStage--;
-        OnCookStageChanged();
+        RefreshNewStageData();
     }
 
     public void CookNextStep(float step = 0)
@@ -66,9 +66,16 @@ public class CookingProcess
         CurrentCookedStage = 0;
         PastCookedTime = 0;
         CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
+        CookStepChanged?.Invoke();
     }
 
-    private void OnCookStageChanged()
+    public void ResetStageProgress()
+    {
+        PastCookedTime = 0;
+        CookStepChanged?.Invoke();
+    }
+
+    private void RefreshNewStageData()
     {
         PastCookedTime = 0;
         CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
