@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerObjectInteract : MonoBehaviour
 {
     [SerializeField] private KeyCode _interactKey = KeyCode.E;
-    [SerializeField] private KeyCode _alternateInteractKey = KeyCode.R;
+    //[SerializeField] private KeyCode _alternateInteractKey = KeyCode.R;
     [SerializeField] private KeyCode _dropKey = KeyCode.G;
     [SerializeField] private float _interactRange = 2f;
     [SerializeField] private Transform _grabTransform;
