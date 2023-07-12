@@ -9,44 +9,35 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     [SerializeField] private Transform _holdPoint;
     [SerializeField] private int _maxCookables = 1;
 
-    private List<ICookable> _cookables = new List<ICookable>();
-
     private InteractiveObject _interactive;
     private CookingProcessPresenter _cookingProcessPresenter;
+    private CookableHolder _cookableHolder;
 
-    public int CookablesCount => _cookables.Count;
+    public int CookablesCount => _cookableHolder.CookableCount;
     public bool CanInteract => _interactive.HasParent == false;
 
     private void Awake()
     {
         _interactive = GetComponent<InteractiveObject>();
         _cookingProcessPresenter = GetComponent<CookingProcessPresenter>();
+        _cookableHolder = new CookableHolder(_holdPoint, _maxCookables, this);
     }
 
     private void OnEnable()
     {
-        _cookingProcessPresenter.CookStageChanged += OnCookStageChanged;
+        _cookingProcessPresenter.CookStageChanged += _cookableHolder.OnCookStageChanged;
+        _cookableHolder.HolderCleared += _cookingProcessPresenter.ResetStages;
     }
 
     private void OnDisable()
     {
-        _cookingProcessPresenter.CookStageChanged -= OnCookStageChanged;
+        _cookingProcessPresenter.CookStageChanged -= _cookableHolder.OnCookStageChanged;
+        _cookableHolder.HolderCleared -= _cookingProcessPresenter.ResetStages;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
     {
-        if (objectInteractSystem.HasPickable)
-        {
-            if (TryInteractWithHolder(objectInteractSystem))
-                return;
-
-            if (TryGetCookable(objectInteractSystem))
-                return;
-        }
-        else
-        {
-            objectInteractSystem.TryGivePickable(this);
-        }
+        _cookableHolder.Interact(objectInteractSystem, _cookingProcessPresenter.Type);
     }
 
     public bool CanPlace(KitchenObjectType type) => _cookingProcessPresenter.AvailablePlaceTypes.Contains(type);
@@ -63,88 +54,20 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 
     public void Cook(float step = 0)
     {
-        if(_cookables.Count > 0)
+        if(_cookableHolder.CookableCount > 0)
             _cookingProcessPresenter.Cook(step);
     }
 
-    public bool TryAddCookable(ICookable cookable)
-    {
-        if (cookable.CanPlace(_cookingProcessPresenter.Type) == false)
-            return false;
-
-        if (_cookables.Count >= _maxCookables)
-            return false;
-
-        if (cookable is IPickable pickable)
-        {
-            pickable.SetParent(_holdPoint);
-        }
-
-        _cookables.Add(cookable);
-
-        return true;
-    }
+    public bool TryAddCookable(ICookable cookable) =>
+        _cookableHolder.TryAddCookable(cookable, _cookingProcessPresenter.Type);
 
     public void GiveCookablesInOutHolder(ICookableHolder cookableHolder)
     {
-        int startCounter = _cookables.Count - 1;
-
-        for (int i = startCounter; i >= 0; i--)
-        {
-            if (cookableHolder.TryAddCookable(_cookables[i]))
-            {
-                _cookables.Remove(_cookables[i]);
-            }
-        }
-
-        if (_cookables.Count == 0)
-            _cookingProcessPresenter.ResetStages();
+        _cookableHolder.GiveCookablesInOutHolder(cookableHolder);
     }
 
     public void AddCookStage()
     {
         _cookingProcessPresenter.AddCookStage();
-    }
-
-    private bool TryGetCookable(PlayerObjectInteract objectInteractSystem)
-    {
-        if (objectInteractSystem.TryGetPickableType(out ICookable cookable) == false)
-            return false;
-
-        if (objectInteractSystem.CanPlacePickable(_cookingProcessPresenter.Type) == false)
-            return false;
-
-        if (_cookables.Count >= _maxCookables)
-            return false;
-
-        objectInteractSystem.RemovePickableRoot();
-        TryAddCookable(cookable);
-
-        return true;
-    }
-
-    private bool TryInteractWithHolder(PlayerObjectInteract objectInteractSystem)
-    {
-        if (objectInteractSystem.TryGetPickableType(out ICookableHolder cookableHolder) == false)
-            return false;
-
-        if (cookableHolder.CookablesCount == 0)
-        {
-            GiveCookablesInOutHolder(cookableHolder);
-        }
-        else
-        {
-            cookableHolder.GiveCookablesInOutHolder(this);
-        }
-
-        return true;
-    }
-
-    private void OnCookStageChanged()
-    {
-        foreach (ICookable cookable in _cookables)
-        {
-            cookable.AddCookStage();
-        }
     }
 }

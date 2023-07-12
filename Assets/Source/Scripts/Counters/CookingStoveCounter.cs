@@ -24,22 +24,22 @@ public class CookingStoveCounter : MonoBehaviour, IInteractable
 
     private bool TryGetCookable(PlayerObjectInteract objectInteractSystem)
     {
-        if (_cookable == null && objectInteractSystem.HasPickable)
+        if (_cookable != null || objectInteractSystem.HasPickable == false)
         {
-            if (objectInteractSystem.TryGetPickableType(out ICookable cookable) == false)
-                return false;
-
-            if (objectInteractSystem.CanPlacePickable(_type) == false)
-                return false;
-
-            objectInteractSystem.TryTakePickable(out IPickable pickable);
-
-            _cookable = cookable;
-            pickable.SetParent(_holdPoint);
-            return true;
+            return false;
         }
 
-        return false;
+        if (objectInteractSystem.TryGetPickableType(out ICookable cookable) == false)
+            return false;
+
+        if (objectInteractSystem.CanPlacePickable(_type) == false)
+            return false;
+
+        if(objectInteractSystem.TryTakePickable(out IPickable pickable))
+            pickable.SetParent(_holdPoint);
+
+        _cookable = cookable;
+        return true;
     }
 
     private bool TryInteractWithCookable(PlayerObjectInteract objectInteractSystem)
@@ -47,23 +47,18 @@ public class CookingStoveCounter : MonoBehaviour, IInteractable
         if (_cookable == null)
             return false;
         
-        if (objectInteractSystem.HasPickable)
+        if (objectInteractSystem.HasPickable && _cookable is IInteractable interactable)
         {
-            if(_cookable is IInteractable interactable)
-            {
-                interactable.Interact(objectInteractSystem);
-                return true;
-            }
+            interactable.Interact(objectInteractSystem);
+            return true;
         }
-        else
+
+        if(_cookable is IPickable pickable)
         {
-            if(_cookable is IPickable pickable)
+            if (objectInteractSystem.TryGivePickable(pickable))
             {
-                if (objectInteractSystem.TryGivePickable(pickable))
-                {
-                    _cookable = null;
-                    return true;
-                }
+                _cookable = null;
+                return true;
             }
         }
 

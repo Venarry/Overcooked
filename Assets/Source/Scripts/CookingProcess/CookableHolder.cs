@@ -63,7 +63,23 @@ public class CookableHolder
         return true;
     }
 
-    public bool TryGetCookable(PlayerObjectInteract objectInteractSystem, KitchenObjectType holderType)
+    public void GiveCookablesInOutHolder(ICookableHolder cookableHolder)
+    {
+        int startCounter = _cookables.Count - 1;
+
+        for (int i = startCounter; i >= 0; i--)
+        {
+            if (cookableHolder.TryAddCookable(_cookables[i]))
+            {
+                _cookables.Remove(_cookables[i]);
+            }
+        }
+
+        if (_cookables.Count == 0)
+            HolderCleared?.Invoke();
+    }
+
+    private bool TryGetCookable(PlayerObjectInteract objectInteractSystem, KitchenObjectType holderType)
     {
         if (objectInteractSystem.TryGetPickableType(out ICookable cookable) == false)
             return false;
@@ -80,7 +96,7 @@ public class CookableHolder
         return true;
     }
 
-    public bool TryInteractWithHolder(PlayerObjectInteract objectInteractSystem)
+    private bool TryInteractWithHolder(PlayerObjectInteract objectInteractSystem)
     {
         if (objectInteractSystem.TryGetPickableType(out ICookableHolder cookableHolder) == false)
             return false;
@@ -95,21 +111,5 @@ public class CookableHolder
         }
 
         return true;
-    }
-
-    public void GiveCookablesInOutHolder(ICookableHolder cookableHolder)
-    {
-        int startCounter = _cookables.Count - 1;
-
-        for (int i = startCounter; i >= 0; i--)
-        {
-            if (cookableHolder.TryAddCookable(_cookables[i]))
-            {
-                _cookables.Remove(_cookables[i]);
-            }
-        }
-
-        if (_cookables.Count == 0)
-            HolderCleared?.Invoke();
     }
 }
