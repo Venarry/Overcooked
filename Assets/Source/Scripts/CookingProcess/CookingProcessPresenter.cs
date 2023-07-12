@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(ProgressBar))]
-public class CookigProcessPresenter : MonoBehaviour
+public class CookingProcessPresenter : MonoBehaviour
 {
     [SerializeField] private CookStagesSO _cookStages;
     [SerializeField] private MeshFilter _model;
@@ -26,14 +26,14 @@ public class CookigProcessPresenter : MonoBehaviour
 
     private void OnEnable()
     {
-        _cookingProcess.CookStageChanged += OnCookStageChanged;
         _cookingProcess.CookStepChanged += OnCookStepChanged;
+        _cookingProcess.CookStageChanged += OnCookStageChanged;
     }
 
     private void OnDisable()
     {
-        _cookingProcess.CookStageChanged -= OnCookStageChanged;
         _cookingProcess.CookStepChanged -= OnCookStepChanged;
+        _cookingProcess.CookStageChanged -= OnCookStageChanged;
     }
 
     public void Cook(float step = 0)

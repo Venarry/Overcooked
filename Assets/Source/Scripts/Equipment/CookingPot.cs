@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Linq;
 
 [RequireComponent(typeof(InteractiveObject))]
-[RequireComponent(typeof(CookigProcessPresenter))]
+[RequireComponent(typeof(CookingProcessPresenter))]
 public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 {
     [SerializeField] private Transform _holdPoint;
@@ -12,7 +12,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     private List<ICookable> _cookables = new List<ICookable>();
 
     private InteractiveObject _interactive;
-    private CookigProcessPresenter _cookingProcessPresenter;
+    private CookingProcessPresenter _cookingProcessPresenter;
 
     public int CookablesCount => _cookables.Count;
     public bool CanInteract => _interactive.HasParent == false;
@@ -20,7 +20,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     private void Awake()
     {
         _interactive = GetComponent<InteractiveObject>();
-        _cookingProcessPresenter = GetComponent<CookigProcessPresenter>();
+        _cookingProcessPresenter = GetComponent<CookingProcessPresenter>();
     }
 
     private void OnEnable()
@@ -40,7 +40,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
             if (TryInteractWithHolder(objectInteractSystem))
                 return;
 
-            if (TryGetCookableFromInteracter(objectInteractSystem))
+            if (TryGetCookable(objectInteractSystem))
                 return;
         }
         else
@@ -98,7 +98,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         }
 
         if (_cookables.Count == 0)
-            _cookingProcessPresenter.ResetStageProgress();
+            _cookingProcessPresenter.ResetStages();
     }
 
     public void AddCookStage()
@@ -106,7 +106,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         _cookingProcessPresenter.AddCookStage();
     }
 
-    private bool TryGetCookableFromInteracter(PlayerObjectInteract objectInteractSystem)
+    private bool TryGetCookable(PlayerObjectInteract objectInteractSystem)
     {
         if (objectInteractSystem.TryGetPickableType(out ICookable cookable) == false)
             return false;
@@ -114,7 +114,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
         if (objectInteractSystem.CanPlacePickable(_cookingProcessPresenter.Type) == false)
             return false;
 
-        if (_cookables.Count < _maxCookables == false)
+        if (_cookables.Count >= _maxCookables)
             return false;
 
         objectInteractSystem.RemovePickableRoot();

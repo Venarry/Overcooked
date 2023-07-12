@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1954315470987319441}
   - component: {fileID: 260978257386514957}
   - component: {fileID: -4383810021739063925}
-  - component: {fileID: 6691501430120700698}
+  - component: {fileID: 6748609498912069902}
   m_Layer: 0
   m_Name: Steak
   m_TagString: Untagged
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa7a9e927795d24494b374580e5b04a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6691501430120700698
+--- !u!114 &6748609498912069902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7124175070815271936}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0a4e9d5cb7275840b064d539060be9e, type: 3}
+  m_Script: {fileID: 11500000, guid: 74878e5008e69c5488f995ae0ce601b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _cookStages: {fileID: 11400000, guid: 4a3b0867577ecb84a899d0f32001dbe9, type: 2}

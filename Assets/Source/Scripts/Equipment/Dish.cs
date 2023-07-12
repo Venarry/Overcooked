@@ -1,41 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractiveObject))]
 public class Dish : MonoBehaviour, ICookableHolder, IPickable
 {
-    private List<ICookable> _cookables = new List<ICookable>();
+    [SerializeField] private Transform _holdPoint;
+    [SerializeField] private int _maxCookables = 1;
+    [SerializeField] private KitchenObjectType _type;
+    [SerializeField] private KitchenObjectType[] _availablePlaceTypes;
+
     private InteractiveObject _interactive;
+    private CookableHolder _cookableHolder;
 
     public bool CanInteract => _interactive.HasParent == false;
-    public int CookablesCount => _cookables.Count;
+    public int CookablesCount => _cookableHolder.CookableCount;
 
     private void Awake()
     {
         _interactive = GetComponent<InteractiveObject>();
+        _cookableHolder = new CookableHolder(_holdPoint, _maxCookables, this);
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
     {
-        if(objectInteractSystem.HasPickable == false)
-            objectInteractSystem.TryGivePickable(this);
-
-        if (objectInteractSystem.TryGetPickableType(out ICookable coockable))
-            _cookables.Add(coockable);
-
-        if (objectInteractSystem.TryGetPickableType(out ICookableHolder coockableHolder))
-            coockableHolder.GiveCookablesInOutHolder(this);
+        _cookableHolder.Interact(objectInteractSystem, _type);
     }
 
-    public bool CanPlace(KitchenObjectType type)
-    {
-        return true;
-    }
+    public bool CanPlace(KitchenObjectType type) =>
+        _availablePlaceTypes.Contains(type);
+
 
     public void GiveCookablesInOutHolder(ICookableHolder cookableHolder)
     {
-        return;
+        _cookableHolder.GiveCookablesInOutHolder(cookableHolder);
     }
 
     public void RemoveParent()
@@ -48,15 +47,6 @@ public class Dish : MonoBehaviour, ICookableHolder, IPickable
         _interactive.SetParent(point);
     }
 
-    public bool TryAddCookable(ICookable cookable)
-    {
-        _cookables.Add(cookable);
-
-        if (cookable is IPickable pickable)
-        {
-            pickable.SetParent(transform);
-        }
-
-        return true;
-    }
+    public bool TryAddCookable(ICookable cookable) =>
+        _cookableHolder.TryAddCookable(cookable, _type);
 }

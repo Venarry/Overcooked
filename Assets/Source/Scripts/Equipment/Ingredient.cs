@@ -9,14 +9,14 @@ using UnityEngine.UIElements;
 public class Ingredient : MonoBehaviour, IPickable, ICookable
 {
     private InteractiveObject _interactive;
-    private CookigProcessPresenter _cookingProcessPresenter;
+    private CookingProcessPresenter _cookingProcessPresenter;
 
     public bool CanInteract => _interactive.HasParent == false;
 
     private void Awake()
     {
         _interactive = GetComponent<InteractiveObject>();
-        _cookingProcessPresenter = GetComponent<CookigProcessPresenter>();
+        _cookingProcessPresenter = GetComponent<CookingProcessPresenter>();
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
