@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CookableHolder
@@ -8,16 +9,20 @@ public class CookableHolder
     private int _maxCookables = 1;
     private ICookableHolder _holder;
     private List<ICookable> _cookables = new List<ICookable>();
+    private CombineIngredientShower _combineIngredientShower;
 
     public int CookableCount => _cookables.Count;
+    private KitchenObjectType[] CookablesType => _cookables.Select(currentCookable => currentCookable.Type).ToList().ToArray();
 
     public event Action HolderCleared;
 
-    public CookableHolder(Transform holdPoint, int maxCookables, ICookableHolder holder)
+    public CookableHolder(Transform holdPoint, int maxCookables, ICookableHolder holder, Dictionary<KitchenObjectType[], Mesh> combines)
     {
         _holdPoint = holdPoint;
         _maxCookables = maxCookables;
         _holder = holder;
+
+        _combineIngredientShower = new CombineIngredientShower(holdPoint, combines);
     }
 
     public void OnCookStageChanged()
@@ -55,10 +60,12 @@ public class CookableHolder
 
         if (cookable is IPickable pickable)
         {
-            pickable.SetParent(_holdPoint);
+            pickable.SetParent(_holdPoint, false);
         }
 
         _cookables.Add(cookable);
+
+        _combineIngredientShower.RefreshModel(CookablesType);
 
         return true;
     }
@@ -77,6 +84,8 @@ public class CookableHolder
 
         if (_cookables.Count == 0)
             HolderCleared?.Invoke();
+
+        _combineIngredientShower.RefreshModel(CookablesType);
     }
 
     private bool TryGetCookable(PlayerObjectInteract objectInteractSystem, KitchenObjectType holderType)

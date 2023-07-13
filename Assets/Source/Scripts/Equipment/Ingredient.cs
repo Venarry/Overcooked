@@ -8,15 +8,22 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(ProgressBar))]
 public class Ingredient : MonoBehaviour, IPickable, ICookable
 {
+    [SerializeField] private CookStagesSO _cookStagesSO;
+    [SerializeField] private MeshFilter _meshFilter;
+
+    private ProgressBar _progressBar;
     private InteractiveObject _interactive;
     private CookingProcessPresenter _cookingProcessPresenter;
 
     public bool CanInteract => _interactive.HasParent == false;
+    public KitchenObjectType Type => _cookingProcessPresenter.Type;
 
     private void Awake()
     {
         _interactive = GetComponent<InteractiveObject>();
-        _cookingProcessPresenter = GetComponent<CookingProcessPresenter>();
+        _progressBar = GetComponent<ProgressBar>();
+        //_cookingProcessPresenter = GetComponent<CookingProcessPresenter>();
+        _cookingProcessPresenter = new CookingProcessPresenter(_cookStagesSO, _meshFilter, _progressBar);
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
@@ -29,9 +36,9 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
 
     public bool CanPlace(KitchenObjectType type) => _cookingProcessPresenter.AvailablePlaceTypes.Contains(type);
 
-    public void SetParent(Transform point)
+    public void SetParent(Transform point, bool isVisiable)
     {
-        _interactive.SetParent(point);
+        _interactive.SetParent(point, isVisiable);
     }
 
     public void RemoveParent()

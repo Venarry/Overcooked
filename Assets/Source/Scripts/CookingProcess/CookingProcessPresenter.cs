@@ -1,12 +1,9 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(ProgressBar))]
-public class CookingProcessPresenter : MonoBehaviour
+public class CookingProcessPresenter
 {
-    [SerializeField] private CookStagesSO _cookStages;
-    [SerializeField] private MeshFilter _model;
-
+    private CookStagesSO _cookStages;
     private CookingProcess _cookingProcess;
     private ProgressBar _progressBar;
     private CookStageMeshShower _meshShower;
@@ -16,21 +13,28 @@ public class CookingProcessPresenter : MonoBehaviour
     public KitchenObjectType Type => _cookingProcess.Type;
     public KitchenObjectType[] AvailablePlaceTypes => _cookingProcess.AvailablePlaceTypes;
 
-    private void Awake()
+    /*private void Awake()
     {
         _cookingProcess = new CookingProcess(_cookStages);
         _meshShower = new CookStageMeshShower(_model);
         _progressBar = GetComponent<ProgressBar>();
         _meshShower.ShowMesh(_cookStages.GetMeshByIndex(_cookingProcess.CurrentCookedStage));
-    }
+    }*/
 
-    private void OnEnable()
+    public CookingProcessPresenter(CookStagesSO cookStages, MeshFilter model, ProgressBar progressBar)
     {
+        _cookStages = cookStages;
+        _cookingProcess = new CookingProcess(_cookStages);
+        _meshShower = new CookStageMeshShower(model);
+        _progressBar = progressBar;
+
+        _meshShower.ShowMesh(_cookStages.GetMeshByIndex(_cookingProcess.CurrentCookedStage));
+
         _cookingProcess.CookStepChanged += OnCookStepChanged;
         _cookingProcess.CookStageChanged += OnCookStageChanged;
     }
 
-    private void OnDisable()
+    ~CookingProcessPresenter()
     {
         _cookingProcess.CookStepChanged -= OnCookStepChanged;
         _cookingProcess.CookStageChanged -= OnCookStageChanged;

@@ -10,6 +10,7 @@ public class Dish : MonoBehaviour, ICookableHolder, IPickable
     [SerializeField] private int _maxCookables = 1;
     [SerializeField] private KitchenObjectType _type;
     [SerializeField] private KitchenObjectType[] _availablePlaceTypes;
+    [SerializeField] private IngredientsCombineSO _ingredientsCombineSO;
 
     private InteractiveObject _interactive;
     private CookableHolder _cookableHolder;
@@ -20,7 +21,7 @@ public class Dish : MonoBehaviour, ICookableHolder, IPickable
     private void Awake()
     {
         _interactive = GetComponent<InteractiveObject>();
-        _cookableHolder = new CookableHolder(_holdPoint, _maxCookables, this);
+        _cookableHolder = new CookableHolder(_holdPoint, _maxCookables, this, _ingredientsCombineSO.GetCombines());
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
@@ -42,9 +43,9 @@ public class Dish : MonoBehaviour, ICookableHolder, IPickable
         _interactive.RemoveParent();
     }
 
-    public void SetParent(Transform point)
+    public void SetParent(Transform point, bool isVisiable)
     {
-        _interactive.SetParent(point);
+        _interactive.SetParent(point, isVisiable);
     }
 
     public bool TryAddCookable(ICookable cookable) =>

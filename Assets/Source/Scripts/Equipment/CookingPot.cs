@@ -1,26 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(InteractiveObject))]
-[RequireComponent(typeof(CookingProcessPresenter))]
+[RequireComponent(typeof(ProgressBar))]
 public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 {
     [SerializeField] private Transform _holdPoint;
     [SerializeField] private int _maxCookables = 1;
+    [SerializeField] private CookStagesSO _cookStages;
+    [SerializeField] private MeshFilter _meshFilter;
+    [SerializeField] private IngredientsCombineSO _ingredientsCombineSO;
 
+    private ProgressBar _progressBar;
     private InteractiveObject _interactive;
     private CookingProcessPresenter _cookingProcessPresenter;
     private CookableHolder _cookableHolder;
 
+    public KitchenObjectType Type => _cookingProcessPresenter.Type;
     public int CookablesCount => _cookableHolder.CookableCount;
     public bool CanInteract => _interactive.HasParent == false;
 
     private void Awake()
     {
         _interactive = GetComponent<InteractiveObject>();
-        _cookingProcessPresenter = GetComponent<CookingProcessPresenter>();
-        _cookableHolder = new CookableHolder(_holdPoint, _maxCookables, this);
+        _progressBar = GetComponent<ProgressBar>();
+        _cookingProcessPresenter = new CookingProcessPresenter(_cookStages, _meshFilter, _progressBar);
+        _cookableHolder = new CookableHolder(_holdPoint, _maxCookables, this, _ingredientsCombineSO.GetCombines());
     }
 
     private void OnEnable()
@@ -42,9 +49,9 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 
     public bool CanPlace(KitchenObjectType type) => _cookingProcessPresenter.AvailablePlaceTypes.Contains(type);
 
-    public void SetParent(Transform point)
+    public void SetParent(Transform point, bool isVisiable)
     {
-        _interactive.SetParent(point);
+        _interactive.SetParent(point, isVisiable);
     }
 
     public void RemoveParent()

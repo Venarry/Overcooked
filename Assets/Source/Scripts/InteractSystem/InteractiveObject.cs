@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -29,20 +30,26 @@ public class InteractiveObject : MonoBehaviour
         transform.rotation = _parent.rotation;
     }
 
-    public void SetParent(Transform parent)
+    public void SetParent(Transform parent, bool isVisiable = true)
     {
         _parent = parent;
-        _rigidbody.isKinematic = true;
-        _collider.isTrigger = true;
         transform.rotation = Quaternion.identity;
+        SetInteractiveState(true);
+        gameObject.SetActive(isVisiable);
         ParentSet?.Invoke();
     }
 
     public void RemoveParent()
     {
         _parent = null;
-        _rigidbody.isKinematic = false;
-        _collider.isTrigger = false;
+        SetInteractiveState(false);
+        gameObject.SetActive(true);
         ParentRemove?.Invoke();
+    }
+
+    private void SetInteractiveState(bool state)
+    {
+        _rigidbody.isKinematic = state;
+        _collider.isTrigger = state;
     }
 }
