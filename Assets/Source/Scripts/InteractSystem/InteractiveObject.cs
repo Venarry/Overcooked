@@ -21,7 +21,7 @@ public class InteractiveObject : MonoBehaviour
         _collider = GetComponent<Collider>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (_parent == null)
             return;

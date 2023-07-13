@@ -13,7 +13,7 @@ public class CameraMovement : MonoBehaviour
         transform.position = _targetPosition;
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         MoveLerp();
     }

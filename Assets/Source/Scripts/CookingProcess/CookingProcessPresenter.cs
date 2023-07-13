@@ -13,14 +13,6 @@ public class CookingProcessPresenter
     public KitchenObjectType Type => _cookingProcess.Type;
     public KitchenObjectType[] AvailablePlaceTypes => _cookingProcess.AvailablePlaceTypes;
 
-    /*private void Awake()
-    {
-        _cookingProcess = new CookingProcess(_cookStages);
-        _meshShower = new CookStageMeshShower(_model);
-        _progressBar = GetComponent<ProgressBar>();
-        _meshShower.ShowMesh(_cookStages.GetMeshByIndex(_cookingProcess.CurrentCookedStage));
-    }*/
-
     public CookingProcessPresenter(CookStagesSO cookStages, MeshFilter model, ProgressBar progressBar)
     {
         _cookStages = cookStages;

@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(InteractiveObject))]
 [RequireComponent(typeof(ProgressBar))]
@@ -22,7 +19,6 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
     {
         _interactive = GetComponent<InteractiveObject>();
         _progressBar = GetComponent<ProgressBar>();
-        //_cookingProcessPresenter = GetComponent<CookingProcessPresenter>();
         _cookingProcessPresenter = new CookingProcessPresenter(_cookStagesSO, _meshFilter, _progressBar);
     }
 

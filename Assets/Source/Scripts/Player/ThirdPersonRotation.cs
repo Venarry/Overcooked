@@ -8,7 +8,7 @@ public class ThirdPersonRotation : MonoBehaviour
     [SerializeField] private float _speed = 0.2f;
     private Vector3 _moveDirection;
 
-    private void FixedUpdate()
+    private void Update()
     {
         _moveDirection.x = Input.GetAxisRaw(VectorHorizontal);
         _moveDirection.z = Input.GetAxisRaw(VectorVertical);
@@ -20,7 +20,7 @@ public class ThirdPersonRotation : MonoBehaviour
             return;
         
         Quaternion rotateDirection = Quaternion.LookRotation(_moveDirection);
-        Quaternion targetRotation = Quaternion.Lerp(transform.rotation, rotateDirection, _speed);
+        Quaternion targetRotation = Quaternion.Lerp(transform.rotation, rotateDirection, _speed * Time.deltaTime);
 
         transform.rotation = targetRotation;
     }
