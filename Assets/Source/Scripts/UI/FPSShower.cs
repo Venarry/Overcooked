@@ -7,7 +7,13 @@ public class FPSShower : MonoBehaviour
     private const float ShowDelay = 0.2f;
     
     [SerializeField] private TextMeshProUGUI _label;
+    [SerializeField] private int _targetFPS;
     private readonly WaitForSeconds _waitForSeconds = new(ShowDelay);
+
+    private void OnValidate()
+    {
+        Application.targetFrameRate = _targetFPS;
+    }
 
     private void Start()
     {

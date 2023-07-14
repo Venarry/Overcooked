@@ -16,7 +16,7 @@ public class ThirdPersonMovement : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         SetMoveDirection();
         Move();
@@ -33,6 +33,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void Move()
     {
-        _characterController.Move(_moveDirection * _speed * Time.deltaTime);
+        _characterController.Move(_moveDirection * _speed);
     }
 }
