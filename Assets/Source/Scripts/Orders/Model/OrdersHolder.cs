@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class OrdersHolder
 {
-    private List<OrderSO> _orders = new List<OrderSO>();
+    private readonly List<OrderSO> _orders = new();
 
     public event Action<OrderSO> OrderAdded;
 
@@ -23,7 +24,7 @@ public class OrdersHolder
                 return true;
             }
         }
-
+        Debug.Log("asd");
         return false;
     }
 }
