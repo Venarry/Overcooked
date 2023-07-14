@@ -38,8 +38,6 @@ public class CombineIngredientShower
             return;
         }
 
-        Debug.Log("searching");
-
         foreach (KeyValuePair<KitchenObjectType[], Mesh> modelTemplate in _modelsTemplate)
         {
             if(modelTemplate.Key.Length != inputTypes.Length)

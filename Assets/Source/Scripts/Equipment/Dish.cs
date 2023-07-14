@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractiveObject))]
-public class Dish : MonoBehaviour, ICookableHolder, IPickable
+public class Dish : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder
 {
     [SerializeField] private Transform _holdPoint;
     [SerializeField] private int _maxCookables = 1;
@@ -17,6 +17,7 @@ public class Dish : MonoBehaviour, ICookableHolder, IPickable
 
     public bool CanInteract => _interactive.HasParent == false;
     public int CookablesCount => _cookableHolder.CookableCount;
+    public KitchenObjectType[] IngredientsType => _cookableHolder.CookablesType;
 
     private void Awake()
     {
@@ -27,6 +28,11 @@ public class Dish : MonoBehaviour, ICookableHolder, IPickable
     public void Interact(PlayerObjectInteract objectInteractSystem)
     {
         _cookableHolder.Interact(objectInteractSystem, _type);
+    }
+
+    public void RemoveObject()
+    {
+        Destroy(gameObject);
     }
 
     public bool CanPlace(KitchenObjectType type) =>

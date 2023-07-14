@@ -6,7 +6,7 @@ public enum KitchenObjectType
     Steak,
     FriedSteak,
     Cucumber,
-    CuttingCucember,
+    CuttingCucumber,
     Tomato,
     CuttingTomato,
     CookingPot,

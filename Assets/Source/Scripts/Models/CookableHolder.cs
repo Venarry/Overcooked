@@ -12,7 +12,7 @@ public class CookableHolder
     private CombineIngredientShower _combineIngredientShower;
 
     public int CookableCount => _cookables.Count;
-    private KitchenObjectType[] CookablesType => _cookables.Select(currentCookable => currentCookable.Type).ToList().ToArray();
+    public KitchenObjectType[] CookablesType => _cookables.Select(currentCookable => currentCookable.Type).ToArray();
 
     public event Action HolderCleared;
 
