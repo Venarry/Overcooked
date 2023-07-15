@@ -10,5 +10,7 @@ public class Bootstrap : MonoBehaviour
     private void Awake()
     {
         _orderPresenter.Init();
+
+        // player spawn and etc
     }
 }
