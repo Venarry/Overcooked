@@ -6,8 +6,14 @@ public class CookingStoveCounter : MonoBehaviour, IInteractable
     [SerializeField] private KitchenObjectType _type;
     [SerializeField] private Transform _holdPoint;
     private ICookable _cookable;
+    private CounterModel<ICookable> _counterModel;
 
     public bool CanInteract => true;
+
+    private void Start()
+    {
+        _counterModel = new CounterModel<ICookable>(_holdPoint, _type);
+    }
 
     private void FixedUpdate()
     {
