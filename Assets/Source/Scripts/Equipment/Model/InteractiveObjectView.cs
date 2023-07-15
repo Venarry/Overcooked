@@ -1,10 +1,9 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
-public class InteractiveObject : MonoBehaviour
+public class InteractiveObjectView : MonoBehaviour
 {
     private Rigidbody _rigidbody;
     private Collider _collider;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -16,12 +17,16 @@ public class OrderSO : ScriptableObject
         if (inputIngredients.Length != _orderTypes.Length)
             return false;
 
+        List<KitchenObjectType> bufferTypes = new(_orderTypes);
+
         foreach (KitchenObjectType type in inputIngredients)
         {
-            if(_orderTypes.Contains(type) == false)
+            if(bufferTypes.Contains(type) == false) // починить
             {
                 return false;
             }
+
+            bufferTypes.Remove(type);
         }
 
         return true;

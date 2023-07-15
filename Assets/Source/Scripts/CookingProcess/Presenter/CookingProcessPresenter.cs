@@ -21,12 +21,15 @@ public class CookingProcessPresenter
         _progressBar = progressBar;
 
         _meshShower.ShowMesh(_cookStages.GetMeshByIndex(_cookingProcess.CurrentCookedStage));
+    }
 
+    public void Enable()
+    {
         _cookingProcess.CookStepChanged += OnCookStepChanged;
         _cookingProcess.CookStageChanged += OnCookStageChanged;
     }
 
-    ~CookingProcessPresenter()
+    public void Disable()
     {
         _cookingProcess.CookStepChanged -= OnCookStepChanged;
         _cookingProcess.CookStageChanged -= OnCookStageChanged;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(InteractiveObject))]
+[RequireComponent(typeof(InteractiveObjectView))]
 public class Dish : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder
 {
     [SerializeField] private Transform _holdPoint;
@@ -12,7 +12,7 @@ public class Dish : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder
     [SerializeField] private KitchenObjectType[] _availablePlaceTypes;
     [SerializeField] private IngredientsCombineSO _ingredientsCombineSO;
 
-    private InteractiveObject _interactive;
+    private InteractiveObjectView _interactive;
     private CookableHolder _cookableHolder;
 
     public bool CanInteract => _interactive.HasParent == false;
@@ -21,7 +21,7 @@ public class Dish : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder
 
     private void Awake()
     {
-        _interactive = GetComponent<InteractiveObject>();
+        _interactive = GetComponent<InteractiveObjectView>();
         _cookableHolder = new CookableHolder(_holdPoint, _maxCookables, this, _ingredientsCombineSO.GetCombines());
     }
 

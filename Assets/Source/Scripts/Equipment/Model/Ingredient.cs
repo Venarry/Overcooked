@@ -1,15 +1,14 @@
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(InteractiveObject))]
+[RequireComponent(typeof(InteractiveObjectView))]
 [RequireComponent(typeof(ProgressBar))]
 public class Ingredient : MonoBehaviour, IPickable, ICookable
 {
     [SerializeField] private CookStagesSO _cookStagesSO;
     [SerializeField] private MeshFilter _meshFilter;
 
-    private ProgressBar _progressBar;
-    private InteractiveObject _interactive;
+    private InteractiveObjectView _interactive;
     private CookingProcessPresenter _cookingProcessPresenter;
 
     public bool CanInteract => _interactive.HasParent == false;
@@ -17,9 +16,19 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
 
     private void Awake()
     {
-        _interactive = GetComponent<InteractiveObject>();
-        _progressBar = GetComponent<ProgressBar>();
-        _cookingProcessPresenter = new CookingProcessPresenter(_cookStagesSO, _meshFilter, _progressBar);
+        _interactive = GetComponent<InteractiveObjectView>();
+        ProgressBar progressBar = GetComponent<ProgressBar>();
+        _cookingProcessPresenter = new CookingProcessPresenter(_cookStagesSO, _meshFilter, progressBar);
+    }
+
+    private void OnEnable()
+    {
+        _cookingProcessPresenter.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _cookingProcessPresenter.Disable();
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)

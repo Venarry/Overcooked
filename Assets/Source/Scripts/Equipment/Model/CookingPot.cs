@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UIElements;
 
-[RequireComponent(typeof(InteractiveObject))]
+[RequireComponent(typeof(InteractiveObjectView))]
 [RequireComponent(typeof(ProgressBar))]
 public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 {
@@ -13,8 +13,7 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     [SerializeField] private MeshFilter _meshFilter;
     [SerializeField] private IngredientsCombineSO _ingredientsCombineSO;
 
-    private ProgressBar _progressBar;
-    private InteractiveObject _interactive;
+    private InteractiveObjectView _interactive;
     private CookingProcessPresenter _cookingProcessPresenter;
     private CookableHolder _cookableHolder;
 
@@ -24,9 +23,9 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
 
     private void Awake()
     {
-        _interactive = GetComponent<InteractiveObject>();
-        _progressBar = GetComponent<ProgressBar>();
-        _cookingProcessPresenter = new CookingProcessPresenter(_cookStages, _meshFilter, _progressBar);
+        _interactive = GetComponent<InteractiveObjectView>();
+        ProgressBar progressBar = GetComponent<ProgressBar>();
+        _cookingProcessPresenter = new CookingProcessPresenter(_cookStages, _meshFilter, progressBar);
         _cookableHolder = new CookableHolder(_holdPoint, _maxCookables, this, _ingredientsCombineSO.GetCombines());
     }
 
@@ -34,12 +33,14 @@ public class CookingPot : MonoBehaviour, ICookableHolder, ICookable, IPickable
     {
         _cookingProcessPresenter.CookStageChanged += _cookableHolder.OnCookStageChanged;
         _cookableHolder.HolderCleared += _cookingProcessPresenter.ResetStages;
+        _cookingProcessPresenter.Enable();
     }
 
     private void OnDisable()
     {
         _cookingProcessPresenter.CookStageChanged -= _cookableHolder.OnCookStageChanged;
         _cookableHolder.HolderCleared -= _cookingProcessPresenter.ResetStages;
+        _cookingProcessPresenter.Disable();
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
