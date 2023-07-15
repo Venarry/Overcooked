@@ -11,6 +11,6 @@ public class Bootstrap : MonoBehaviour
     {
         _orderPresenter.Init();
 
-        // player spawn and etc
+        // player spawn, inputs and etc
     }
 }
