@@ -1,30 +1,34 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class OrdersHolder
 {
-    private readonly List<OrderSO> _orders = new();
+    private readonly Dictionary<int, OrderSO> _orders = new();
+    private int _ordersCounter;
 
-    public event Action<OrderSO> OrderAdded;
+    public event Action<KeyValuePair<int, OrderSO>> OrderAdded;
+    public event Action<int> OrderRemoved;
 
     public void AddOrder(OrderSO order)
     {
-        _orders.Add(order);
-        OrderAdded?.Invoke(order);
+        _orders.Add(_ordersCounter, order);
+        OrderAdded?.Invoke(new KeyValuePair<int, OrderSO>(_ordersCounter, order));
+        _ordersCounter++;
     }
 
     public bool TryApplyOrder(KitchenObjectType[] inputIngredients)
     {
-        foreach (OrderSO order in _orders)
+        foreach (KeyValuePair<int, OrderSO> order in _orders)
         {
-            if(order.CorrectOrder(inputIngredients))
+            if(order.Value.CorrectOrder(inputIngredients))
             {
-                _orders.Remove(order);
+                _orders.Remove(order.Key);
+                OrderRemoved?.Invoke(order.Key);
+
                 return true;
             }
         }
-        Debug.Log("asd");
+
         return false;
     }
 }

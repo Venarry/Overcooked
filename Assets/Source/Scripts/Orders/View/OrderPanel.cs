@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OrderPanel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Image _orderImage;
+    [SerializeField] private Image[] _ingredientsImages;
+
+    public void SetOrderImage(Sprite sprite)
     {
-        
+        _orderImage.sprite = sprite;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetIngredientsImages(Sprite[] sprite)
     {
-        
+        for (int i = 0; i < sprite.Length; i++)
+        {
+            _ingredientsImages[i].sprite = sprite[i];
+        }
     }
 }
