@@ -14,6 +14,11 @@ public class CuttingBoardCounter : MonoBehaviour, IInteractable
         _counterModel = new CounterModel<ICookable>(_holdPoint, _type);
     }
 
+    private void Update()
+    {
+        // обработка нажатия и приготовление
+    }
+
     public void Interact(PlayerObjectInteract objectInteractSystem)
     {
         _counterModel.Interact(objectInteractSystem);
