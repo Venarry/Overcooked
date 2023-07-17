@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New stages", menuName = "Cook stage/Create new stages")]
-public class CookStagesSO : ScriptableObject
+[CreateAssetMenu(fileName = "New ingredient", menuName = "Ingredient/Create new ingredient")]
+public class CookableIngredientSO : ScriptableObject
 {
     [SerializeField] private List<CookStage> _cookStages;
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Collider))]
-public class InteractiveObjectView : MonoBehaviour
+public class InteractedObjectView : MonoBehaviour
 {
     private Rigidbody _rigidbody;
     private Collider _collider;
@@ -12,7 +12,7 @@ public class InteractiveObjectView : MonoBehaviour
     public event Action ParentSet;
     public event Action ParentRemove;
 
-    public bool HasParent => _parent != null;
+    public bool CanInteract => _parent == null;
 
     private void Awake()
     {

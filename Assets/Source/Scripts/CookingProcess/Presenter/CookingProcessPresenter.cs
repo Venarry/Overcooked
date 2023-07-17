@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class CookingProcessPresenter
+public class CookingProcessPresenter : ITypeProvider
 {
-    private CookStagesSO _cookStages;
+    private CookableIngredientSO _cookStages;
     private CookingProcess _cookingProcess;
     private ProgressBar _progressBar;
     private CookStageMeshShower _meshShower;
@@ -13,11 +13,11 @@ public class CookingProcessPresenter
     public KitchenObjectType Type => _cookingProcess.Type;
     public KitchenObjectType[] AvailablePlaceTypes => _cookingProcess.AvailablePlaceTypes;
 
-    public CookingProcessPresenter(CookStagesSO cookStages, MeshFilter model, ProgressBar progressBar)
+    public CookingProcessPresenter(CookableIngredientSO cookStages, MeshFilter meshFilter, ProgressBar progressBar)
     {
         _cookStages = cookStages;
         _cookingProcess = new CookingProcess(_cookStages);
-        _meshShower = new CookStageMeshShower(model);
+        _meshShower = new CookStageMeshShower(meshFilter);
         _progressBar = progressBar;
 
         _meshShower.ShowMesh(_cookStages.GetMeshByIndex(_cookingProcess.CurrentCookedStage));

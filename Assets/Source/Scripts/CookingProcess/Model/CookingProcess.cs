@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class CookingProcess
 {
-    private CookStagesSO _stages;
+    private CookableIngredientSO _stages;
 
-    public CookingProcess(CookStagesSO stages)
+    public CookingProcess(CookableIngredientSO stages)
     {
         _stages = stages;
         CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);

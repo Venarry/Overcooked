@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7354707605009436506}
   - component: {fileID: 7354707605009436509}
   - component: {fileID: 7354707605009436505}
-  - component: {fileID: 7529123397168317465}
   - component: {fileID: 3057321842643681116}
   - component: {fileID: 2521379013193355267}
+  - component: {fileID: 6550990860779240778}
   m_Layer: 0
   m_Name: CookingPot
   m_TagString: Untagged
@@ -68,18 +68,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &7529123397168317465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7354707605009436508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64d9f08b777aa4f4391b65562e0007ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3057321842643681116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,6 +99,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cookingProgressBackground: {fileID: 3705544387513178153}
   _cookingProgress: {fileID: 594735708557432207}
+--- !u!114 &6550990860779240778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7354707605009436508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878667454100fe845a1861db1ae1aef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7354707605017687902
 GameObject:
   m_ObjectHideFlags: 0

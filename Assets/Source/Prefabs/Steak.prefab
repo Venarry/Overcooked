@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7124175070815271937}
   - component: {fileID: 7124175070815271949}
   - component: {fileID: 7124175070815271948}
-  - component: {fileID: 1954315470987319441}
   - component: {fileID: 260978257386514957}
   - component: {fileID: -4383810021739063925}
+  - component: {fileID: 368146224809711772}
   m_Layer: 0
   m_Name: Steak
   m_TagString: Untagged
@@ -67,18 +67,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1954315470987319441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7124175070815271936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64d9f08b777aa4f4391b65562e0007ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &260978257386514957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +95,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cookStagesSO: {fileID: 11400000, guid: 4a3b0867577ecb84a899d0f32001dbe9, type: 2}
   _meshFilter: {fileID: 8421944586215995902}
+--- !u!114 &368146224809711772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7124175070815271936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878667454100fe845a1861db1ae1aef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7758325893214792788
 GameObject:
   m_ObjectHideFlags: 0

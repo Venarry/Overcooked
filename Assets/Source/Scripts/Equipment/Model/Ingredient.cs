@@ -1,22 +1,22 @@
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(InteractiveObjectView))]
+[RequireComponent(typeof(InteractedObjectView))]
 [RequireComponent(typeof(ProgressBar))]
 public class Ingredient : MonoBehaviour, IPickable, ICookable
 {
-    [SerializeField] private CookStagesSO _cookStagesSO;
+    [SerializeField] private CookableIngredientSO _cookStagesSO;
     [SerializeField] private MeshFilter _meshFilter;
 
-    private InteractiveObjectView _interactive;
+    private InteractedObjectView _interactive;
     private CookingProcessPresenter _cookingProcessPresenter;
 
-    public bool CanInteract => _interactive.HasParent == false;
+    public bool CanInteract => _interactive.CanInteract;
     public KitchenObjectType Type => _cookingProcessPresenter.Type;
 
     private void Awake()
     {
-        _interactive = GetComponent<InteractiveObjectView>();
+        _interactive = GetComponent<InteractedObjectView>();
         ProgressBar progressBar = GetComponent<ProgressBar>();
         _cookingProcessPresenter = new CookingProcessPresenter(_cookStagesSO, _meshFilter, progressBar);
     }
@@ -39,7 +39,7 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
         objectInteractSystem.TryGivePickable(this);
     }
 
-    public bool CanPlace(KitchenObjectType type) => _cookingProcessPresenter.AvailablePlaceTypes.Contains(type);
+    public bool CanPlaceOn(KitchenObjectType type) => _cookingProcessPresenter.AvailablePlaceTypes.Contains(type);
 
     public void SetParent(Transform point, bool isVisiable)
     {

@@ -3,26 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CookableHolder
+public class CookableHolderInteractModel
 {
-    private Transform _holdPoint;
-    private int _maxCookables = 1;
-    private ICookableHolder _holder;
-    private List<ICookable> _cookables = new List<ICookable>();
-    private CombineIngredientShower _combineIngredientShower;
+    private readonly Transform _holdPoint;
+    private readonly ICookableHolder _thisHolder;
+    private readonly ITypeProvider _typeProvider;
+    private readonly List<ICookable> _cookables = new();
+    private readonly int _maxCookables = 1;
 
     public int CookableCount => _cookables.Count;
     public KitchenObjectType[] CookablesType => _cookables.Select(currentCookable => currentCookable.Type).ToArray();
 
     public event Action HolderCleared;
+    public event Action<KitchenObjectType[]> CookablesChanged;
 
-    public CookableHolder(Transform holdPoint, int maxCookables, ICookableHolder holder, Dictionary<KitchenObjectType[], Mesh> combines)
+    public CookableHolderInteractModel(ICookableHolder holder, ITypeProvider typeProvider, Transform holdPoint, int maxCookables)
     {
         _holdPoint = holdPoint;
         _maxCookables = maxCookables;
-        _holder = holder;
+        _thisHolder = holder;
+        _typeProvider = typeProvider;
+    }
 
-        _combineIngredientShower = new CombineIngredientShower(holdPoint, combines);
+    public void Interact(PlayerObjectInteract objectInteractSystem)
+    {
+        if (objectInteractSystem.HasPickable)
+        {
+            if (TryInteractWithHolder(objectInteractSystem))
+                return;
+
+            if (TryGetCookable(objectInteractSystem))
+                return;
+        }
+        else
+        {
+            if (_thisHolder is IPickable pickable)
+                objectInteractSystem.TryGivePickable(pickable);
+        }
     }
 
     public void OnCookStageChanged()
@@ -33,26 +50,12 @@ public class CookableHolder
         }
     }
 
-    public void Interact(PlayerObjectInteract objectInteractSystem, KitchenObjectType holderType)
-    {
-        if (objectInteractSystem.HasPickable)
-        {
-            if (TryInteractWithHolder(objectInteractSystem))
-                return;
-
-            if (TryGetCookable(objectInteractSystem, holderType))
-                return;
-        }
-        else
-        {
-            if(_holder is IPickable pickable)
-                objectInteractSystem.TryGivePickable(pickable);
-        }
-    }
+    public bool CanPlaceOn(KitchenObjectType type) =>
+        _typeProvider.AvailablePlaceTypes.Contains(type);
 
     public bool TryAddCookable(ICookable cookable, KitchenObjectType holderType)
     {
-        if (cookable.CanPlace(holderType) == false)
+        if (cookable.CanPlaceOn(holderType) == false)
             return false;
 
         if (_cookables.Count >= _maxCookables)
@@ -64,8 +67,7 @@ public class CookableHolder
         }
 
         _cookables.Add(cookable);
-
-        _combineIngredientShower.RefreshModel(CookablesType);
+        CookablesChanged?.Invoke(CookablesType);
 
         return true;
     }
@@ -85,22 +87,22 @@ public class CookableHolder
         if (_cookables.Count == 0)
             HolderCleared?.Invoke();
 
-        _combineIngredientShower.RefreshModel(CookablesType);
+        CookablesChanged?.Invoke(CookablesType);
     }
 
-    private bool TryGetCookable(PlayerObjectInteract objectInteractSystem, KitchenObjectType holderType)
+    private bool TryGetCookable(PlayerObjectInteract objectInteractSystem)
     {
         if (objectInteractSystem.TryGetPickableType(out ICookable cookable) == false)
             return false;
 
-        if (objectInteractSystem.CanPlacePickable(holderType) == false)
+        if (objectInteractSystem.CanPlacePickable(_typeProvider.Type) == false)
             return false;
 
         if (_cookables.Count >= _maxCookables)
             return false;
 
         objectInteractSystem.RemovePickableRoot();
-        TryAddCookable(cookable, holderType);
+        TryAddCookable(cookable, _typeProvider.Type);
 
         return true;
     }
@@ -116,7 +118,7 @@ public class CookableHolder
         }
         else
         {
-            cookableHolder.GiveCookablesInOutHolder(_holder);
+            cookableHolder.GiveCookablesInOutHolder(_thisHolder);
         }
 
         return true;

@@ -1687,6 +1687,7 @@ GameObject:
   - component: {fileID: 1410351220}
   - component: {fileID: 1410351219}
   - component: {fileID: 1410351218}
+  - component: {fileID: 1410351223}
   m_Layer: 0
   m_Name: Dish (1)
   m_TagString: Untagged
@@ -1706,6 +1707,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d9f08b777aa4f4391b65562e0007ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 0}
+  _collider: {fileID: 0}
+  _parent: {fileID: 0}
 --- !u!114 &1410351219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1769,6 +1773,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1410351223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410351217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878667454100fe845a1861db1ae1aef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1455553536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1850,7 +1866,7 @@ GameObject:
   - component: {fileID: 1467930210}
   - component: {fileID: 1467930209}
   - component: {fileID: 1467930212}
-  - component: {fileID: 1467930213}
+  - component: {fileID: 1467930214}
   m_Layer: 0
   m_Name: Dish
   m_TagString: Untagged
@@ -1921,7 +1937,7 @@ MonoBehaviour:
   _type: 13
   _availablePlaceTypes: 0a000000
   _ingredientsCombineSO: {fileID: 11400000, guid: d4d1d226a6aa2d043a5df7b5a00bb6ba, type: 2}
---- !u!114 &1467930213
+--- !u!114 &1467930214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1930,7 +1946,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1467930206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64d9f08b777aa4f4391b65562e0007ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 878667454100fe845a1861db1ae1aef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1506318095

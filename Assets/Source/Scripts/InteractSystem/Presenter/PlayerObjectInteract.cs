@@ -52,7 +52,7 @@ public class PlayerObjectInteract : MonoBehaviour
     }
 
     public bool CanPlacePickable(KitchenObjectType holderType) => 
-        _pickable?.CanPlace(holderType) ?? true;
+        _pickable?.CanPlaceOn(holderType) ?? true;
 
     public void TryRemoveIPickable()
     {
