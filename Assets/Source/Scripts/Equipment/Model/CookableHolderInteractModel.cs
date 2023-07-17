@@ -53,9 +53,9 @@ public class CookableHolderInteractModel
     public bool CanPlaceOn(KitchenObjectType type) =>
         _typeProvider.AvailablePlaceTypes.Contains(type);
 
-    public bool TryAddCookable(ICookable cookable, KitchenObjectType holderType)
+    public bool TryAddCookable(ICookable cookable)
     {
-        if (cookable.CanPlaceOn(holderType) == false)
+        if (cookable.CanPlaceOn(_typeProvider.Type) == false)
             return false;
 
         if (_cookables.Count >= _maxCookables)
@@ -102,7 +102,7 @@ public class CookableHolderInteractModel
             return false;
 
         objectInteractSystem.RemovePickableRoot();
-        TryAddCookable(cookable, _typeProvider.Type);
+        TryAddCookable(cookable);
 
         return true;
     }
@@ -111,6 +111,12 @@ public class CookableHolderInteractModel
     {
         if (objectInteractSystem.TryGetPickableType(out ICookableHolder cookableHolder) == false)
             return false;
+
+        if (cookableHolder is IServiceHolder)
+        {
+            GiveCookablesInOutHolder(cookableHolder);
+            return true;
+        }
 
         if (cookableHolder.CookablesCount == 0)
         {

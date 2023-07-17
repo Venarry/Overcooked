@@ -76,7 +76,7 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     }
 
     public bool TryAddCookable(ICookable cookable) =>
-        _cookableHolderInteractPresnter.TryAddCookable(cookable, _cookingProcessPresenter.Type);
+        _cookableHolderInteractPresnter.TryAddCookable(cookable);
 
     public void GiveCookablesInOutHolder(ICookableHolder cookableHolder)
     {

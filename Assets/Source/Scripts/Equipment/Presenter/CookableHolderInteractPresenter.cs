@@ -42,8 +42,8 @@ public class CookableHolderInteractPresenter
     public bool CanPlaceOn(KitchenObjectType type) =>
         _cookableHolderInteractModel.CanPlaceOn(type);
 
-    public bool TryAddCookable(ICookable cookable, KitchenObjectType type) =>
-        _cookableHolderInteractModel.TryAddCookable(cookable, type);
+    public bool TryAddCookable(ICookable cookable) =>
+        _cookableHolderInteractModel.TryAddCookable(cookable);
 
     public void GiveCookablesInOutHolder(ICookableHolder cookableHolder) =>
         _cookableHolderInteractModel.GiveCookablesInOutHolder(cookableHolder);

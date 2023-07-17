@@ -68,5 +68,5 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     }
 
     public bool TryAddCookable(ICookable cookable) =>
-        _cookableHolderInteractPresenter.TryAddCookable(cookable, _type);
+        _cookableHolderInteractPresenter.TryAddCookable(cookable);
 }
