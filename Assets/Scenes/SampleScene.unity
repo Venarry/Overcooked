@@ -1707,9 +1707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d9f08b777aa4f4391b65562e0007ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 0}
-  _collider: {fileID: 0}
-  _parent: {fileID: 0}
 --- !u!114 &1410351219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2237,7 +2234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81945989cc862d04c804a9c1fa379425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _orderPresenter: {fileID: 2000569637}
+  _orderFactory: {fileID: 2000569639}
 --- !u!4 &1640617861
 Transform:
   m_ObjectHideFlags: 0
@@ -2522,35 +2519,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2000569638}
-  - component: {fileID: 2000569637}
+  - component: {fileID: 2000569639}
   m_Layer: 0
-  m_Name: OrderPresentrer
+  m_Name: OrdersFactory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2000569637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2000569636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 934bec77007c39f449876ff76d4d60a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _orders:
-  - {fileID: 11400000, guid: 29fa415e35ee48d428e2f2b984d90c49, type: 2}
-  - {fileID: 11400000, guid: 46f5dc9b901b99842b026409110e67d4, type: 2}
-  - {fileID: 11400000, guid: 46f5dc9b901b99842b026409110e67d4, type: 2}
-  _orderSpawner: {fileID: 1801268502}
-  _kitchenOrderCounters:
-  - {fileID: 223297200}
-  _orderSpawninterval: 1
-  _point: {fileID: 1179811834}
 --- !u!4 &2000569638
 Transform:
   m_ObjectHideFlags: 0
@@ -2566,6 +2542,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2000569639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000569636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af8be3429b6c0d54f8fa1e158c7903dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _orders:
+  - {fileID: 11400000, guid: 46f5dc9b901b99842b026409110e67d4, type: 2}
+  - {fileID: 11400000, guid: 29fa415e35ee48d428e2f2b984d90c49, type: 2}
+  - {fileID: 11400000, guid: 46f5dc9b901b99842b026409110e67d4, type: 2}
+  _orderSpawner: {fileID: 1801268502}
+  _kitchenOrderCounters:
+  - {fileID: 223297200}
+  _orderSpawninterval: 1
+  _point: {fileID: 1179811834}
 --- !u!1 &2013369096
 GameObject:
   m_ObjectHideFlags: 0

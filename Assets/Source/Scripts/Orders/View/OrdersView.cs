@@ -13,17 +13,13 @@ public class OrdersView
         _spawnPoint = spawnPoint;
     }
 
-    public void Add(KeyValuePair<int, OrderSO> order)
+    public void Show(KeyValuePair<int, OrderSO> order)
     {
-        OrderPanel orderPanel = Object.Instantiate(_orderPanel);
-        orderPanel.gameObject.name = $"Order {order.Key}";
-        orderPanel.transform.SetParent(_spawnPoint.transform);
-        orderPanel.transform.localScale = new(1, 1, 1);
+        OrderPanel newOrderPanel = CreateNewOrderPanel(order.Key.ToString());
+        _activePanels.Add(order.Key, newOrderPanel);
 
-        _activePanels.Add(order.Key, orderPanel);
-
-        orderPanel.SetOrderImage(order.Value.OrderImage);
-        orderPanel.SetIngredientsImages(order.Value.IngredientTextures);
+        newOrderPanel.SetOrderImage(order.Value.OrderImage);
+        newOrderPanel.SetIngredientsImages(order.Value.IngredientTextures);
     }
 
     public void Remove(int orderNumber)
@@ -33,5 +29,15 @@ public class OrdersView
 
         Object.Destroy(_activePanels[orderNumber].gameObject);
         _activePanels.Remove(orderNumber);
+    }
+
+    private OrderPanel CreateNewOrderPanel(string objectName)
+    {
+        OrderPanel orderPanel = Object.Instantiate(_orderPanel);
+        orderPanel.gameObject.name = $"Order {objectName}";
+        orderPanel.transform.SetParent(_spawnPoint.transform);
+        orderPanel.transform.localScale = new(1, 1, 1);
+
+        return orderPanel;
     }
 }

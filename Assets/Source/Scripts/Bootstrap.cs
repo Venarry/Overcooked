@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
 {
-    [SerializeField] private OrdersPresenter _orderPresenter;
+    [SerializeField] private OrdersFactory _orderFactory;
 
     private void Awake()
     {
-        _orderPresenter.Init();
+        _orderFactory.Create();
+        _orderFactory.Enable();
 
         // player spawn, inputs and etc
     }
