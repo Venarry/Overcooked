@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CookingStoveCounterView : MonoBehaviour, IInteractable
@@ -15,6 +14,7 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable
     {
         CounterInteractModel<ICookable> counterInteractModel = new(_holdPoint, _type);
         _counterInteractPresenter = new(counterInteractModel);
+
         CounterCookModel counterCookModel = new();
         _counterCookPresenter = new(counterCookModel);
         Enable();
@@ -34,15 +34,15 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable
     public void Enable()
     {
         _counterInteractPresenter.Enable();
-        _counterInteractPresenter.CookableSet += OnCoockableSet;
-        _counterInteractPresenter.CookableRemoved += OnCoockableRemove;
+        _counterInteractPresenter.CookableSet += SetCookable;
+        _counterInteractPresenter.CookableRemoved += RemoveCookable;
     }
 
     public void Disable()
     {
         _counterInteractPresenter.Disable();
-        _counterInteractPresenter.CookableSet -= OnCoockableSet;
-        _counterInteractPresenter.CookableRemoved -= OnCoockableRemove;
+        _counterInteractPresenter.CookableSet -= SetCookable;
+        _counterInteractPresenter.CookableRemoved -= RemoveCookable;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
@@ -50,12 +50,12 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable
         _counterInteractPresenter.Interact(objectInteractSystem);
     }
 
-    private void OnCoockableSet(ICookable cookable)
+    public void SetCookable(ICookable cookable)
     {
         _counterCookPresenter.SetCookable(cookable);
     }
 
-    private void OnCoockableRemove()
+    public void RemoveCookable()
     {
         _counterCookPresenter.RemoveCookable();
     }
