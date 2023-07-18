@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf8d8700893a8ef44a6b73320a9f3252, type: 3}
-  m_Name: CookingPot
+  m_Name: CookingPotCombines
   m_EditorClassIdentifier: 
   _combines:
   - _mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}

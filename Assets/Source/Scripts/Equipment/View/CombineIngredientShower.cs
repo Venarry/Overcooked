@@ -15,7 +15,7 @@ public class CombineIngredientShower
 
         GameObject modelObject = new GameObject("Model");
 
-        Material material = Resources.Load("Palette") as Material;
+        Material material = Resources.Load<Material>(AssetsPath.PaletteMaterial);
         modelObject.AddComponent<MeshRenderer>().material = material;
 
         modelObject.transform.position = point.position;

@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(InteractedObjectView))]
 [RequireComponent(typeof(ProgressBar))]
@@ -20,20 +17,22 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     public KitchenObjectType Type => _cookingProcessPresenter.Type;
     public int CookablesCount => _cookableHolderInteractPresnter.CookableCount;
     public bool CanInteract => _interactive.CanInteract;
+    public Transform HoldTransform => _holdPoint;
+    public MeshFilter MeshFilter => _meshFilter;
 
     private void Awake()
     {
         _interactive = GetComponent<InteractedObjectView>();
-        ProgressBar progressBar = GetComponent<ProgressBar>();
+        /*ProgressBar progressBar = GetComponent<ProgressBar>();
         _cookingProcessPresenter = new CookingProcessPresenter(_cookStages, _meshFilter, progressBar);
 
         CookableHolderInteractModel cookableHolderInteractModel = new(this, _cookingProcessPresenter, _holdPoint, _maxCookables);
         CombineIngredientShower combineIngredientShower = new(_holdPoint, _ingredientsCombineSO.GetCombines());
 
-        _cookableHolderInteractPresnter = new CookableHolderInteractPresenter(cookableHolderInteractModel, combineIngredientShower);
+        _cookableHolderInteractPresnter = new CookableHolderInteractPresenter(cookableHolderInteractModel, combineIngredientShower);*/
     }
 
-    private void OnEnable()
+    public void Enable()
     {
         _cookingProcessPresenter.CookStageChanged += _cookableHolderInteractPresnter.OnCookStageChanged;
         _cookableHolderInteractPresnter.HolderCleared += _cookingProcessPresenter.ResetStages;
@@ -42,13 +41,20 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
         _cookableHolderInteractPresnter.Enable();
     }
 
-    private void OnDisable()
+    public void Disable()
     {
         _cookingProcessPresenter.CookStageChanged -= _cookableHolderInteractPresnter.OnCookStageChanged;
         _cookableHolderInteractPresnter.HolderCleared -= _cookingProcessPresenter.ResetStages;
 
         _cookingProcessPresenter.Disable();
         _cookableHolderInteractPresnter.Disable();
+    }
+
+    public void Init(CookingProcessPresenter cookingProcessPresenter,
+        CookableHolderInteractPresenter cookableHolderInteractPresenter)
+    {
+        _cookingProcessPresenter = cookingProcessPresenter;
+        _cookableHolderInteractPresnter = cookableHolderInteractPresenter;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
