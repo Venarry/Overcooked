@@ -1,12 +1,16 @@
+using System;
 using UnityEngine;
 
-public class CounterModel<T> : IInteractable
+public class CounterInteractModel<T> : IInteractable
 {
-    private Transform _holdPoint;
-    private KitchenObjectType _type;
+    private readonly Transform _holdPoint;
+    private readonly KitchenObjectType _type;
     private T _pickedItem;
 
-    public CounterModel(Transform holdPoint, KitchenObjectType type)
+    public event Action<ICookable> CookableSet;
+    public event Action CookableRemoved;
+
+    public CounterInteractModel(Transform holdPoint, KitchenObjectType type)
     {
         _holdPoint = holdPoint;
         _type = type;
@@ -35,8 +39,13 @@ public class CounterModel<T> : IInteractable
         if (objectInteractSystem.TryGetPickableType(out T type) == false)
             return false;
 
-        objectInteractSystem.TryTakePickable(out IPickable pickable);
+        if (objectInteractSystem.TryGetPickableType(out ICookable cookable))
+        {
+            CookableSet?.Invoke(cookable);
+        }
 
+        objectInteractSystem.TryTakePickable(out IPickable pickable);
+        
         _pickedItem = type;
         pickable.SetParent(_holdPoint);
 
@@ -55,10 +64,10 @@ public class CounterModel<T> : IInteractable
                 pickable.Interact(objectInteractSystem);
                 return true;
             }
-
-            if (objectInteractSystem.TryGivePickable(pickable))
+            else if (objectInteractSystem.TryGivePickable(pickable))
             {
                 _pickedItem = default;
+                CookableRemoved?.Invoke();
                 return true;
             }
         }

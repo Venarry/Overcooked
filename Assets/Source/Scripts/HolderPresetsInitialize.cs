@@ -29,7 +29,7 @@ public class HolderPresetsInitialize : MonoBehaviour
         foreach (PresetHolderData<DishView> holderData in _dishes)
         {
             _dishBuilder.Build(holderData.Holder, holderData.MaxValue);
-            //holderData.Holder.Enable();
+            holderData.Holder.Enable();
         }
     }
 }

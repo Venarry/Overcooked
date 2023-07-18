@@ -24,12 +24,12 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
         _interactive = GetComponent<InteractedObjectView>();
     }
 
-    private void OnEnable()
+    public void Enable()
     {
         _cookableHolderInteractPresenter.Enable();
     }
 
-    private void OnDisable()
+    public void Disable()
     {
         _cookableHolderInteractPresenter.Disable();
     }
