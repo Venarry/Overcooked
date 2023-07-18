@@ -9,7 +9,7 @@ public class OrdersView
 
     public OrdersView(Transform spawnPoint)
     {
-        _orderPanel = Resources.Load<OrderPanel>("OrderPanel");
+        _orderPanel = Resources.Load<OrderPanel>(AssetsPath.OrderPanel);
         _spawnPoint = spawnPoint;
     }
 

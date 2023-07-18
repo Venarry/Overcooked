@@ -5,10 +5,7 @@ using UnityEngine;
 public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickable
 {
     [SerializeField] private Transform _holdPoint;
-    [SerializeField] private int _maxCookables = 1;
-    [SerializeField] private CookableIngredientSO _cookStages;
     [SerializeField] private MeshFilter _meshFilter;
-    [SerializeField] private IngredientsCombineSO _ingredientsCombineSO;
 
     private InteractedObjectView _interactive;
     private CookingProcessPresenter _cookingProcessPresenter;
@@ -23,13 +20,6 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     private void Awake()
     {
         _interactive = GetComponent<InteractedObjectView>();
-        /*ProgressBar progressBar = GetComponent<ProgressBar>();
-        _cookingProcessPresenter = new CookingProcessPresenter(_cookStages, _meshFilter, progressBar);
-
-        CookableHolderInteractModel cookableHolderInteractModel = new(this, _cookingProcessPresenter, _holdPoint, _maxCookables);
-        CombineIngredientShower combineIngredientShower = new(_holdPoint, _ingredientsCombineSO.GetCombines());
-
-        _cookableHolderInteractPresnter = new CookableHolderInteractPresenter(cookableHolderInteractModel, combineIngredientShower);*/
     }
 
     public void Enable()

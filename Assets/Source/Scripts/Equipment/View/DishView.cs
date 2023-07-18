@@ -5,10 +5,8 @@ using UnityEngine;
 public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder, ITypeProvider
 {
     [SerializeField] private Transform _holdPoint;
-    [SerializeField] private int _maxCookables = 1;
     [SerializeField] private KitchenObjectType _type;
     [SerializeField] private KitchenObjectType[] _availablePlaceTypes;
-    [SerializeField] private IngredientsCombineSO _ingredientsCombineSO;
 
     private InteractedObjectView _interactive;
     private CookableHolderInteractPresenter _cookableHolderInteractPresenter;
@@ -18,15 +16,12 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     public KitchenObjectType[] IngredientsType => _cookableHolderInteractPresenter.CookablesType;
     public KitchenObjectType Type => _type;
     public KitchenObjectType[] AvailablePlaceTypes => _availablePlaceTypes.ToArray();
+    public Transform HoldTransform => _holdPoint;
+
 
     private void Awake()
     {
         _interactive = GetComponent<InteractedObjectView>();
-
-        CookableHolderInteractModel cookableHolderInteractModel = new(this, this, _holdPoint, _maxCookables);
-        CombineIngredientShower combineIngredientShower = new(_holdPoint, _ingredientsCombineSO.GetCombines());
-
-        _cookableHolderInteractPresenter = new CookableHolderInteractPresenter(cookableHolderInteractModel, combineIngredientShower);
     }
 
     private void OnEnable()
@@ -37,6 +32,11 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     private void OnDisable()
     {
         _cookableHolderInteractPresenter.Disable();
+    }
+
+    public void Init(CookableHolderInteractPresenter cookableHolderInteractPresenter)
+    {
+        _cookableHolderInteractPresenter = cookableHolderInteractPresenter;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)

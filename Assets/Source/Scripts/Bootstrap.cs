@@ -12,8 +12,9 @@ public class Bootstrap : MonoBehaviour
         _orderFactory.Create();
         _orderFactory.Enable();
 
-        CookingPotFactory cookingPotFactory = Resources.Load<CookingPotFactory>("Factorys/CookingPotFactory");
-        cookingPotFactory.Create();
+        CookingPotFactory cookingPotFactory = new CookingPotFactory();
+        CookingPotView cookingPot = cookingPotFactory.Create(15);
+        cookingPot.Enable();
 
         // player spawn, inputs and etc
     }
