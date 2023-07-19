@@ -1696,6 +1696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _holdPoint: {fileID: 202682837}
   _type: 12
+  _cookingStepPerTick: 0.5
 --- !u!1 &1410351217
 GameObject:
   m_ObjectHideFlags: 0
@@ -2294,6 +2295,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orderFactory: {fileID: 2000569639}
+  _presetsInitialize: {fileID: 1505031726}
+  _testDish: {fileID: 1467930212}
+  _cookingStoveCounterView: {fileID: 767755068}
 --- !u!4 &1640617861
 Transform:
   m_ObjectHideFlags: 0

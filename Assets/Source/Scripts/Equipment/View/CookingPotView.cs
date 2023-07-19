@@ -24,7 +24,8 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
 
     public void Enable()
     {
-        _cookingProcessPresenter.CookStageChanged += _cookableHolderInteractPresnter.OnCookStageChanged;
+        _cookingProcessPresenter.CookStageAdded += _cookableHolderInteractPresnter.AddCookStage;
+        _cookingProcessPresenter.CookStageSubtracted += _cookableHolderInteractPresnter.SubtractCookStage;
         _cookableHolderInteractPresnter.HolderCleared += _cookingProcessPresenter.ResetStages;
 
         _cookingProcessPresenter.Enable();
@@ -33,7 +34,8 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
 
     public void Disable()
     {
-        _cookingProcessPresenter.CookStageChanged -= _cookableHolderInteractPresnter.OnCookStageChanged;
+        _cookingProcessPresenter.CookStageAdded -= _cookableHolderInteractPresnter.AddCookStage;
+        _cookingProcessPresenter.CookStageSubtracted -= _cookableHolderInteractPresnter.SubtractCookStage;
         _cookableHolderInteractPresnter.HolderCleared -= _cookingProcessPresenter.ResetStages;
 
         _cookingProcessPresenter.Disable();
@@ -82,5 +84,10 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     public void AddCookStage()
     {
         _cookingProcessPresenter.AddCookStage();
+    }
+
+    public void SubtractCookStage()
+    {
+        _cookingProcessPresenter.SubtractCookStage();
     }
 }

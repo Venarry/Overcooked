@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class CookingProcessPresenter : ITypeProvider
 {
-    private CookableIngredientSO _cookStages;
-    private CookingProcess _cookingProcess;
-    private ProgressBar _progressBar;
-    private CookStageMeshShower _meshShower;
+    private readonly CookableIngredientSO _cookStages;
+    private readonly CookingProcess _cookingProcess;
+    private readonly ProgressBar _progressBar;
+    private readonly CookStageMeshShower _meshShower;
 
-    public event Action CookStageChanged;
+    public event Action CookStageAdded;
+    public event Action CookStageSubtracted;
 
     public KitchenObjectType Type => _cookingProcess.Type;
     public KitchenObjectType[] AvailablePlaceTypes => _cookingProcess.AvailablePlaceTypes;
@@ -26,13 +27,17 @@ public class CookingProcessPresenter : ITypeProvider
     public void Enable()
     {
         _cookingProcess.CookStepChanged += OnCookStepChanged;
-        _cookingProcess.CookStageChanged += OnCookStageChanged;
+
+        _cookingProcess.CookStageAdded += OnCookStageAdded;
+        _cookingProcess.CookStageSubtracted += OnCookStageSubtracted;
     }
 
     public void Disable()
     {
         _cookingProcess.CookStepChanged -= OnCookStepChanged;
-        _cookingProcess.CookStageChanged -= OnCookStageChanged;
+
+        _cookingProcess.CookStageAdded -= OnCookStageAdded;
+        _cookingProcess.CookStageSubtracted -= OnCookStageSubtracted;
     }
 
     public void Cook(float step = 0)
@@ -43,6 +48,11 @@ public class CookingProcessPresenter : ITypeProvider
     public void AddCookStage()
     {
         _cookingProcess.AddCookStage();
+    }
+
+    public void SubtractCookStage()
+    {
+        _cookingProcess.SubtractCookStage();
     }
 
     public void ResetStages()
@@ -65,9 +75,15 @@ public class CookingProcessPresenter : ITypeProvider
             _progressBar.SetValue(cookedTime);
     }
 
-    private void OnCookStageChanged()
+    private void OnCookStageAdded()
     {
         _meshShower.ShowMesh(_cookStages.GetMeshByIndex(_cookingProcess.CurrentCookedStage));
-        CookStageChanged?.Invoke();
+        CookStageAdded?.Invoke();
+    }
+
+    private void OnCookStageSubtracted()
+    {
+        _meshShower.ShowMesh(_cookStages.GetMeshByIndex(_cookingProcess.CurrentCookedStage));
+        CookStageSubtracted?.Invoke();
     }
 }

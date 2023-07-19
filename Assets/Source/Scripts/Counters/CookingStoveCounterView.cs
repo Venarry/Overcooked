@@ -5,14 +5,15 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable
     [SerializeField] private KitchenObjectType _type;
     [SerializeField] private Transform _holdPoint;
 
-    private CounterInteractPresenter<ICookable> _counterInteractPresenter;
+    private CounterInteractPresenter _counterInteractPresenter;
     private CounterCookPresenter _counterCookPresenter;
 
     public bool CanInteract => _counterInteractPresenter.CanInteract;
+    public Transform HoldTransform => _holdPoint;
 
     private void Awake()
     {
-        CounterInteractModel<ICookable> counterInteractModel = new(_holdPoint, _type);
+        CounterInteractModel counterInteractModel = new(_holdPoint, _type);
         _counterInteractPresenter = new(counterInteractModel);
 
         CounterCookModel counterCookModel = new();
@@ -25,7 +26,7 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable
         _counterCookPresenter.Cook();
     }
 
-    public void Init(CounterInteractPresenter<ICookable> counterInteractPresenter, CounterCookPresenter counterCookPresenter)
+    public void Init(CounterInteractPresenter counterInteractPresenter, CounterCookPresenter counterCookPresenter)
     {
         _counterInteractPresenter = counterInteractPresenter;
         _counterCookPresenter = counterCookPresenter;
@@ -50,12 +51,17 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable
         _counterInteractPresenter.Interact(objectInteractSystem);
     }
 
-    public void SetCookable(ICookable cookable)
+    public void AddCookable(IPickable cookable)
+    {
+        _counterInteractPresenter.TryPlaceItem(cookable);
+    }
+
+    private void SetCookable(ICookable cookable)
     {
         _counterCookPresenter.SetCookable(cookable);
     }
 
-    public void RemoveCookable()
+    private void RemoveCookable()
     {
         _counterCookPresenter.RemoveCookable();
     }

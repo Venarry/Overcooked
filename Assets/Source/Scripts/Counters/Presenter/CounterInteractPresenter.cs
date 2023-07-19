@@ -1,15 +1,15 @@
 using System;
 
-public class CounterInteractPresenter<T>
+public class CounterInteractPresenter
 {
-    private readonly CounterInteractModel<T> _counterModel;
+    private readonly CounterInteractModel _counterModel;
 
     public event Action<ICookable> CookableSet;
     public event Action CookableRemoved;
 
     public bool CanInteract => _counterModel.CanInteract;
 
-    public CounterInteractPresenter(CounterInteractModel<T> counterModel)
+    public CounterInteractPresenter(CounterInteractModel counterModel)
     {
         _counterModel = counterModel;
     }
@@ -30,6 +30,9 @@ public class CounterInteractPresenter<T>
     {
         _counterModel.Interact(playerObjectInteract);
     }
+
+    public void TryPlaceItem(IPickable item) =>
+        _counterModel.TryPlaceItem(item);
 
     private void OnCookableSet(ICookable cookable)
     {

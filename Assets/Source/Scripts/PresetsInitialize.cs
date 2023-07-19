@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HolderPresetsInitialize : MonoBehaviour
+public class PresetsInitialize : MonoBehaviour
 {
     [SerializeField] private List<PresetHolderData<CookingPotView>> _cookingPots;
     [SerializeField] private List<PresetHolderData<DishView>> _dishes;
@@ -10,15 +10,15 @@ public class HolderPresetsInitialize : MonoBehaviour
     private CookingPotBuilder _cookingPotbuilder;
     private DishBuilder _dishBuilder;
 
-    private void Awake()
+    public void MakeInit()
     {
         _cookingPotbuilder = new();
         _dishBuilder = new();
 
-        InitCookingPots();
+        InitHolders();
     }
 
-    private void InitCookingPots()
+    private void InitHolders()
     {
         foreach (PresetHolderData<CookingPotView> holderData in _cookingPots)
         {

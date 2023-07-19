@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrdersFactory : MonoBehaviour
+public class OrdersSetup : MonoBehaviour
 {
     [SerializeField] private List<OrderSO> _orders;
     [SerializeField] private OrderSpawner _orderSpawner;

@@ -19,7 +19,8 @@ public class CookingProcess
     public KitchenObjectType[] AvailablePlaceTypes => _stages.GetAvailablePlaceTypesTimeByIndex(CurrentCookedStage);
 
     public event Action CookStepChanged;
-    public event Action CookStageChanged;
+    public event Action CookStageAdded;
+    public event Action CookStageSubtracted;
 
     public void AddCookStage()
     {
@@ -28,6 +29,7 @@ public class CookingProcess
 
         CurrentCookedStage++;
         RefreshNewStageData();
+        CookStageAdded?.Invoke();
     }
 
     public void SubtractCookStage()
@@ -37,6 +39,7 @@ public class CookingProcess
 
         CurrentCookedStage--;
         RefreshNewStageData();
+        CookStageSubtracted?.Invoke();
     }
 
     public void CookNextStep(float step = 0)
@@ -79,6 +82,5 @@ public class CookingProcess
     {
         PastCookedTime = 0;
         CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
-        CookStageChanged?.Invoke();
     }
 }

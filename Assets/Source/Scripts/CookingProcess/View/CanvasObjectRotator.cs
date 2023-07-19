@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ProgressBarRotator : MonoBehaviour
+public class CanvasObjectRotator : MonoBehaviour
 {
     private Camera _camera;
 

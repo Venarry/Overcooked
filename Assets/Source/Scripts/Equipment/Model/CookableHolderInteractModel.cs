@@ -42,11 +42,19 @@ public class CookableHolderInteractModel
         }
     }
 
-    public void OnCookStageChanged()
+    public void AddCookableCookStages()
     {
         foreach (ICookable cookable in _cookables)
         {
             cookable.AddCookStage();
+        }
+    }
+
+    public void SubtractCookableCookStages()
+    {
+        foreach (ICookable cookable in _cookables)
+        {
+            cookable.SubtractCookStage();
         }
     }
 

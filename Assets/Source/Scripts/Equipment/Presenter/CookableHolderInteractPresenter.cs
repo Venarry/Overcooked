@@ -29,9 +29,14 @@ public class CookableHolderInteractPresenter
         _cookableHolderInteractModel.HolderCleared -= OnHolderClear;
     }
 
-    public void OnCookStageChanged()
+    public void AddCookStage()
     {
-        _cookableHolderInteractModel.OnCookStageChanged();
+        _cookableHolderInteractModel.AddCookableCookStages();
+    }
+
+    public void SubtractCookStage()
+    {
+        _cookableHolderInteractModel.AddCookableCookStages();
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)

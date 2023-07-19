@@ -13,9 +13,8 @@ public enum KitchenObjectType
     ReadyCookingPot,
     CookingPan,
     ReadyCookingPan,
-
     ClearKitchenCounter,
-    CookinStove,
+    CookingStove,
     CuttingBoard,
     Dish,
 }
