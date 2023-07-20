@@ -1716,7 +1716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1410351219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1730,6 +1730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _holdPoint: {fileID: 1710725365}
+  _ingredientsIconPoint: {fileID: 0}
   _type: 13
   _availablePlaceTypes: 0a000000
 --- !u!54 &1410351220
@@ -1878,7 +1879,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1467930209
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1938,6 +1939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _holdPoint: {fileID: 1007509219}
+  _ingredientsIconPoint: {fileID: 0}
   _type: 13
   _availablePlaceTypes: 0a000000
 --- !u!114 &1467930214

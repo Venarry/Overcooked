@@ -15,6 +15,8 @@ public class CookableHolderInteractModel
     public KitchenObjectType[] CookablesType => _cookables.Select(currentCookable => currentCookable.Type).ToArray();
 
     public event Action HolderCleared;
+    public event Action<ICookable> CookableAdded;
+    public event Action<ICookable> CookableRemoved;
     public event Action<KitchenObjectType[]> CookablesChanged;
 
     public CookableHolderInteractModel(ICookableHolder holder, ITypeProvider typeProvider, Transform holdPoint, int maxCookables)
@@ -75,6 +77,7 @@ public class CookableHolderInteractModel
         }
 
         _cookables.Add(cookable);
+        CookableAdded?.Invoke(cookable);
         CookablesChanged?.Invoke(CookablesType);
 
         return true;
@@ -88,6 +91,7 @@ public class CookableHolderInteractModel
         {
             if (cookableHolder.TryAddCookable(_cookables[i]))
             {
+                CookableRemoved?.Invoke(_cookables[i]);
                 _cookables.Remove(_cookables[i]);
             }
         }

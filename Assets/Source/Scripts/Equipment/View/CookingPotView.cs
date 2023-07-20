@@ -6,6 +6,7 @@ using UnityEngine;
 public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickable
 {
     [SerializeField] private Transform _holdPoint;
+    [SerializeField] private Transform _ingredientsIconPoint; // можно поставить вторую стадию CookingPot а не Ready и тогда можно будет класть туда еду и возвращать процесс приготовления
     [SerializeField] private MeshFilter _meshFilter;
 
     private InteractedObjectView _interactive;
@@ -16,6 +17,7 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     public int CookablesCount => _cookableHolderInteractPresnter.CookableCount;
     public bool CanInteract => _interactive.CanInteract;
     public Transform HoldTransform => _holdPoint;
+    public Transform IngredientsIconPoint => _ingredientsIconPoint;
     public MeshFilter MeshFilter => _meshFilter;
 
     public event Action CookStageAdded;
@@ -28,7 +30,7 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     public void Enable()
     {
         _cookingProcessPresenter.CookStageAdded += OnCookStageAdded;
-        _cookingProcessPresenter.CookStageSubtracted += _cookableHolderInteractPresnter.SubtractCookStage;
+        _cookingProcessPresenter.CookStageSubtracted += _cookableHolderInteractPresnter.SubtractCookableCookStage;
         _cookableHolderInteractPresnter.HolderCleared += _cookingProcessPresenter.ResetStages;
 
         _cookingProcessPresenter.Enable();
@@ -38,7 +40,7 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     public void Disable()
     {
         _cookingProcessPresenter.CookStageAdded -= OnCookStageAdded;
-        _cookingProcessPresenter.CookStageSubtracted -= _cookableHolderInteractPresnter.SubtractCookStage;
+        _cookingProcessPresenter.CookStageSubtracted -= _cookableHolderInteractPresnter.SubtractCookableCookStage;
         _cookableHolderInteractPresnter.HolderCleared -= _cookingProcessPresenter.ResetStages;
 
         _cookingProcessPresenter.Disable();
@@ -96,7 +98,8 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
 
     private void OnCookStageAdded()
     {
-        _cookableHolderInteractPresnter.AddCookStage();
+        _cookableHolderInteractPresnter.AddCookableCookStage();
+        _cookableHolderInteractPresnter.RefreshIngredientsIcon();
         CookStageAdded?.Invoke();
     }
 }

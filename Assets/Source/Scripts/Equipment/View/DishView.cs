@@ -5,6 +5,7 @@ using UnityEngine;
 public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder, ITypeProvider
 {
     [SerializeField] private Transform _holdPoint;
+    [SerializeField] private Transform _ingredientsIconPoint;
     [SerializeField] private KitchenObjectType _type;
     [SerializeField] private KitchenObjectType[] _availablePlaceTypes;
 
@@ -16,7 +17,8 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     public KitchenObjectType[] IngredientsType => _cookableHolderInteractPresenter.CookablesType;
     public KitchenObjectType Type => _type;
     public KitchenObjectType[] AvailablePlaceTypes => _availablePlaceTypes.ToArray();
-    public Transform HoldTransform => _holdPoint;
+    public Transform HoldPoint => _holdPoint;
+    public Transform IngredientsIconPoint => _ingredientsIconPoint;
 
 
     private void Awake()

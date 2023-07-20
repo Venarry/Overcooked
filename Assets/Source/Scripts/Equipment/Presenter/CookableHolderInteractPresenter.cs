@@ -3,6 +3,7 @@ using System;
 public class CookableHolderInteractPresenter
 {
     private CombineIngredientShower _combineIngredientShower;
+    private HolderIngredientsIconShower _holderIngredientsIconShower;
     private CookableHolderInteractModel _cookableHolderInteractModel;
 
     public int CookableCount => _cookableHolderInteractModel.CookableCount;
@@ -10,31 +11,37 @@ public class CookableHolderInteractPresenter
 
     public event Action HolderCleared;
 
-    public CookableHolderInteractPresenter(CookableHolderInteractModel cookableHolderInteractModel, 
-        CombineIngredientShower combineIngredientShower)
+    public CookableHolderInteractPresenter(CookableHolderInteractModel cookableHolderInteractModel,
+        CombineIngredientShower combineIngredientShower,
+        HolderIngredientsIconShower holderIngredientsIconShower)
     {
         _combineIngredientShower = combineIngredientShower;
         _cookableHolderInteractModel = cookableHolderInteractModel;
+        _holderIngredientsIconShower = holderIngredientsIconShower;
     }
 
     public void Enable()
     {
         _cookableHolderInteractModel.CookablesChanged += OnCookablesChanged;
+        _cookableHolderInteractModel.CookableAdded += OnCookableAdded;
+        _cookableHolderInteractModel.CookableRemoved += OnCookableRemoved;
         _cookableHolderInteractModel.HolderCleared += OnHolderClear;
     }
 
     public void Disable()
     {
         _cookableHolderInteractModel.CookablesChanged -= OnCookablesChanged;
+        _cookableHolderInteractModel.CookableAdded -= OnCookableAdded;
+        _cookableHolderInteractModel.CookableRemoved -= OnCookableRemoved;
         _cookableHolderInteractModel.HolderCleared -= OnHolderClear;
     }
 
-    public void AddCookStage()
+    public void AddCookableCookStage()
     {
         _cookableHolderInteractModel.AddCookableCookStages();
     }
 
-    public void SubtractCookStage()
+    public void SubtractCookableCookStage()
     {
         _cookableHolderInteractModel.AddCookableCookStages();
     }
@@ -42,6 +49,11 @@ public class CookableHolderInteractPresenter
     public void Interact(PlayerObjectInteract objectInteractSystem)
     {
         _cookableHolderInteractModel.Interact(objectInteractSystem);
+    }
+
+    public void RefreshIngredientsIcon()
+    {
+        _holderIngredientsIconShower.RefreshIngredientsIcon();
     }
 
     public bool CanPlaceOn(KitchenObjectType type) =>
@@ -56,6 +68,16 @@ public class CookableHolderInteractPresenter
     public void OnCookablesChanged(KitchenObjectType[] types)
     {
         _combineIngredientShower.RefreshModel(types);
+    }
+
+    public void OnCookableAdded(ICookable cookable)
+    {
+        _holderIngredientsIconShower.AddIngredient(cookable);
+    }
+
+    public void OnCookableRemoved(ICookable cookable)
+    {
+        _holderIngredientsIconShower.RemoveIngredient(cookable);
     }
 
     private void OnHolderClear()

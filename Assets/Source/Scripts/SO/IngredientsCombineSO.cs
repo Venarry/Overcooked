@@ -5,15 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New combine", menuName = "Ingredients combine/Create new combine")]
 public class IngredientsCombineSO : ScriptableObject
 {
-    [SerializeField] private List<Combine> _combines;
+    [SerializeField] private List<IngredientsCombine> _combines;
 
     public Dictionary<KitchenObjectType[], Mesh> GetCombines()
     {
-        Dictionary<KitchenObjectType[], Mesh> combines = new Dictionary<KitchenObjectType[], Mesh>();
+        Dictionary<KitchenObjectType[], Mesh> combines = new();
 
-        foreach (Combine combine in _combines)
+        foreach (IngredientsCombine combine in _combines)
         {
-            KeyValuePair<KitchenObjectType[], Mesh> currentCombine = combine.Get;
+            KeyValuePair<KitchenObjectType[], Mesh> currentCombine = combine.Combine;
             combines.Add(currentCombine.Key, currentCombine.Value);
         }
 
@@ -22,10 +22,10 @@ public class IngredientsCombineSO : ScriptableObject
 }
 
 [Serializable]
-public class Combine
+public class IngredientsCombine
 {
     [SerializeField] private Mesh _mesh;
     [SerializeField] private List<KitchenObjectType> _types;
 
-    public KeyValuePair<KitchenObjectType[], Mesh> Get => new KeyValuePair<KitchenObjectType[], Mesh>(_types.ToArray(), _mesh);
+    public KeyValuePair<KitchenObjectType[], Mesh> Combine => new(_types.ToArray(), _mesh);
 }
