@@ -42,7 +42,7 @@ public class CookingProcessPresenter : ITypeProvider
 
     public void Cook(float step = 0)
     {
-        _cookingProcess.CookNextStep(step);
+        _cookingProcess.Cook(step);
     }
 
     public void AddCookStage()

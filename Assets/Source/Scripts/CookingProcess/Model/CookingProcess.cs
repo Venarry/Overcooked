@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CookingProcess
 {
-    private CookableIngredientSO _stages;
+    private readonly CookableIngredientSO _stages;
 
     public CookingProcess(CookableIngredientSO stages)
     {
@@ -42,7 +42,7 @@ public class CookingProcess
         CookStageSubtracted?.Invoke();
     }
 
-    public void CookNextStep(float step = 0)
+    public void Cook(float step = 0)
     {
         if (CurrentCookedStage >= _stages.MaxCookIndexStage)
             return;

@@ -31,7 +31,7 @@ public class CounterInteractPresenter
         _counterModel.Interact(playerObjectInteract);
     }
 
-    public void TryPlaceItem(IPickable item) =>
+    public bool TryPlaceItem(IPickable item) =>
         _counterModel.TryPlaceItem(item);
 
     private void OnCookableSet(ICookable cookable)

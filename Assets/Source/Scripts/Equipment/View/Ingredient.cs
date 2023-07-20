@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
 
     private InteractedObjectView _interactive;
     private CookingProcessPresenter _cookingProcessPresenter;
+
+    public event Action CookStageAdded;
 
     public bool CanInteract => _interactive.CanInteract;
     public KitchenObjectType Type => _cookingProcessPresenter.Type;
@@ -24,11 +27,15 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
     private void OnEnable()
     {
         _cookingProcessPresenter.Enable();
+
+        _cookingProcessPresenter.CookStageAdded += OnCookStageAdded;
     }
 
     private void OnDisable()
     {
         _cookingProcessPresenter.Disable();
+
+        _cookingProcessPresenter.CookStageAdded -= OnCookStageAdded;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
@@ -64,5 +71,10 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
     public void SubtractCookStage()
     {
         _cookingProcessPresenter.SubtractCookStage();
+    }
+
+    private void OnCookStageAdded()
+    {
+        CookStageAdded?.Invoke();
     }
 }

@@ -4,7 +4,6 @@ public class Bootstrap : MonoBehaviour
 {
     [SerializeField] private OrdersSetup _orderFactory;
     [SerializeField] private PresetsInitialize _presetsInitialize;
-    [SerializeField] private DishView _testDish;
 
     [SerializeField] private CookingStoveCounterView _cookingStoveCounterView;
 
@@ -18,7 +17,7 @@ public class Bootstrap : MonoBehaviour
         CookingPotView cookingPot = cookingPotFactory.Create(15);
         cookingPot.Enable();
 
-        _cookingStoveCounterView.AddCookable(_testDish);
+        _cookingStoveCounterView.TryPlaceItem(cookingPot);
 
         // player spawn, inputs and etc
     }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractedObjectView))]
@@ -17,6 +18,8 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     public Transform HoldTransform => _holdPoint;
     public MeshFilter MeshFilter => _meshFilter;
 
+    public event Action CookStageAdded;
+
     private void Awake()
     {
         _interactive = GetComponent<InteractedObjectView>();
@@ -24,7 +27,7 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
 
     public void Enable()
     {
-        _cookingProcessPresenter.CookStageAdded += _cookableHolderInteractPresnter.AddCookStage;
+        _cookingProcessPresenter.CookStageAdded += OnCookStageAdded;
         _cookingProcessPresenter.CookStageSubtracted += _cookableHolderInteractPresnter.SubtractCookStage;
         _cookableHolderInteractPresnter.HolderCleared += _cookingProcessPresenter.ResetStages;
 
@@ -34,7 +37,7 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
 
     public void Disable()
     {
-        _cookingProcessPresenter.CookStageAdded -= _cookableHolderInteractPresnter.AddCookStage;
+        _cookingProcessPresenter.CookStageAdded -= OnCookStageAdded;
         _cookingProcessPresenter.CookStageSubtracted -= _cookableHolderInteractPresnter.SubtractCookStage;
         _cookableHolderInteractPresnter.HolderCleared -= _cookingProcessPresenter.ResetStages;
 
@@ -89,5 +92,11 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     public void SubtractCookStage()
     {
         _cookingProcessPresenter.SubtractCookStage();
+    }
+
+    private void OnCookStageAdded()
+    {
+        _cookableHolderInteractPresnter.AddCookStage();
+        CookStageAdded?.Invoke();
     }
 }

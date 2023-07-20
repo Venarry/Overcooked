@@ -14,10 +14,11 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable
     private void Awake()
     {
         CounterInteractModel counterInteractModel = new(_holdPoint, _type);
-        _counterInteractPresenter = new(counterInteractModel);
+        CounterInteractPresenter counterInteractPresenter = new(counterInteractModel);
 
         CounterCookModel counterCookModel = new();
-        _counterCookPresenter = new(counterCookModel);
+        CounterCookPresenter counterCookPresenter = new(counterCookModel);
+        Init(counterInteractPresenter, counterCookPresenter);
         Enable();
     }
 
@@ -51,10 +52,8 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable
         _counterInteractPresenter.Interact(objectInteractSystem);
     }
 
-    public void AddCookable(IPickable cookable)
-    {
+    public bool TryPlaceItem(IPickable cookable) => 
         _counterInteractPresenter.TryPlaceItem(cookable);
-    }
 
     private void SetCookable(ICookable cookable)
     {
