@@ -37,6 +37,11 @@ public class ObjectInteractView : MonoBehaviour
     
     private void SetColor(Collider collider, Color color)
     {
-        collider.GetComponentInChildren<MeshRenderer>().material.color = color;
+        MeshRenderer[] meshRenderers = collider.GetComponentsInChildren<MeshRenderer>();
+
+        foreach (MeshRenderer meshRenderer in meshRenderers)
+        {
+            meshRenderer.material.color = color;
+        }
     }
 }

@@ -12,7 +12,7 @@ public class DishBuilder
             dishView,
             dishView.HoldPoint,
             maxCookables, 
-            isVisiableCookables: true);
+            isVisiableCookables: false);
 
         HolderIngredientsIconShower holderIngredientsIconShower = new(dishView.IngredientsIconPoint, _ingredientsIcon.GetIngredientsIcon());
         CookableHolderInteractPresenter cookableHolderInteractPresenter = new(cookableHolderInteractModel, 
