@@ -1,4 +1,4 @@
-public interface ICookableHolder : IInteractable
+public interface ICookableHolder
 {
     public int CookablesCount { get; }
     public bool TryAddCookable(ICookable cookable);

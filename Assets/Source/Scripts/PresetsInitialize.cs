@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class PresetsInitialize : MonoBehaviour
 {
-    [SerializeField] private List<PresetHolderData<CookingPotView>> _cookingPots;
+    [SerializeField] private List<PresetHolderData<CookingHolderView>> _cookingPots;
+    [SerializeField] private List<PresetHolderData<CookingHolderView>> _cookingPans;
     [SerializeField] private List<PresetHolderData<DishView>> _dishes;
 
-    private CookingPotBuilder _cookingPotbuilder;
+    private CookingPotBuilder _cookingPotBuilder;
+    private CookingPanBuilder _cookingPanBuilder;
     private DishBuilder _dishBuilder;
 
     public void MakeInit()
     {
-        _cookingPotbuilder = new();
+        _cookingPotBuilder = new();
+        _cookingPanBuilder = new();
         _dishBuilder = new();
 
         InitHolders();
@@ -20,9 +23,15 @@ public class PresetsInitialize : MonoBehaviour
 
     private void InitHolders()
     {
-        foreach (PresetHolderData<CookingPotView> holderData in _cookingPots)
+        foreach (PresetHolderData<CookingHolderView> holderData in _cookingPots)
         {
-            _cookingPotbuilder.Build(holderData.Holder, holderData.MaxValue);
+            _cookingPotBuilder.Build(holderData.Holder, holderData.MaxValue);
+            holderData.Holder.Enable();
+        }
+
+        foreach (PresetHolderData<CookingHolderView> holderData in _cookingPans)
+        {
+            _cookingPanBuilder.Build(holderData.Holder, holderData.MaxValue);
             holderData.Holder.Enable();
         }
 

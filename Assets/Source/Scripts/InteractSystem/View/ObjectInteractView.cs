@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectInteractView : MonoBehaviour
@@ -19,7 +16,7 @@ public class ObjectInteractView : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_objectFinder.TryFindInteractive(out IInteractable interactable) != false || _currentObject == null) 
+        if (_objectFinder.TryFindInteractive(out _) != false || _currentObject == null) 
             return;
         
         SetColor(_currentObject, _baseColor);

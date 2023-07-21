@@ -1,27 +1,38 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CombineIngredientShower
 {
-    private MeshFilter _ingredientsModel;
-    private Dictionary<KitchenObjectType[], Mesh> _modelsTemplate;
+    private readonly CookableHolderInteractPresenter _cookingPotInteractPresenter;
+    private readonly MeshFilter _ingredientsModel;
+    private readonly Dictionary<KitchenObjectType[], Mesh> _modelsTemplate;
 
-    public CombineIngredientShower(Transform point, Dictionary<KitchenObjectType[], Mesh> modelsTemplate)
+    public CombineIngredientShower(Transform meshPoint, CookableHolderInteractPresenter cookingPanInteractPresenter, Dictionary<KitchenObjectType[], Mesh> modelsTemplate)
     {
+        _cookingPotInteractPresenter = cookingPanInteractPresenter;
         _modelsTemplate = modelsTemplate;
 
-        GameObject modelObject = new GameObject("Model");
+        GameObject modelObject = new("Model");
 
         Material material = Resources.Load<Material>(AssetsPath.PaletteMaterial);
         modelObject.AddComponent<MeshRenderer>().material = material;
 
-        modelObject.transform.position = point.position;
-        modelObject.transform.parent = point;
+        modelObject.transform.parent = meshPoint;
+        modelObject.transform.position = meshPoint.position;
 
         _ingredientsModel = modelObject.AddComponent<MeshFilter>();
+    }
+
+    public void Enable()
+    {
+        _cookingPotInteractPresenter.CookableAdded += OnCookableChanged;
+        _cookingPotInteractPresenter.CookableRemoved += OnCookableChanged;
+    }
+
+    private void OnCookableChanged()
+    {
+        RefreshModel(_cookingPotInteractPresenter.CookablesType);
     }
 
     public void RefreshModel(KitchenObjectType[] inputTypes)

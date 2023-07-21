@@ -14,7 +14,7 @@ public class Bootstrap : MonoBehaviour
         _orderFactory.Enable();
 
         CookingPotFactory cookingPotFactory = new();
-        CookingPotView cookingPot = cookingPotFactory.Create(15);
+        CookingHolderView cookingPot = cookingPotFactory.Create(15);
         cookingPot.Enable();
 
         _cookingStoveCounterView.TryPlaceItem(cookingPot);

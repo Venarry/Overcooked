@@ -7,7 +7,7 @@ public class CookingPotBuilder
     private readonly IngredientsCombineSO _ingredientsCombineSO = Resources.Load<IngredientsCombineSO>(AssetsPath.CookingPotCombinesSO);
     private readonly IngredientsIconSO _ingredientsIcon = Resources.Load<IngredientsIconSO>(AssetsPath.IngredientsIconSO);
 
-    public void Build(CookingPotView cookingPotView, int maxCookablesCount)
+    public void Build(CookingHolderView cookingPotView, int maxCookablesCount)
     {
         ProgressBar progressBar = cookingPotView.GetComponent<ProgressBar>();
 
@@ -15,15 +15,20 @@ public class CookingPotBuilder
 
         CookableHolderInteractModel cookableHolderInteractModel = new(cookingPotView, 
             cookingProcessPresenter, 
-            cookingPotView.HoldTransform, 
-            maxCookablesCount);
+            cookingPotView.HoldPoint, 
+            maxCookablesCount,
+            isVisiableCookables: false);
 
-        CombineIngredientShower combineIngredientShower = new(cookingPotView.HoldTransform, _ingredientsCombineSO.GetCombines());
         HolderIngredientsIconShower holderIngredientsIconShower = new(cookingPotView.IngredientsIconPoint, _ingredientsIcon.GetIngredientsIcon());
-        CookableHolderInteractPresenter cookableHolderInteractPresnter = new(cookableHolderInteractModel, 
-            combineIngredientShower, 
+        CookableHolderInteractPresenter cookableHolderInteractPresenter = new(cookableHolderInteractModel, 
             holderIngredientsIconShower);
 
-        cookingPotView.Init(cookingProcessPresenter, cookableHolderInteractPresnter);
+        CombineIngredientShower combineIngredientShower = new(cookingPotView.HoldPoint, 
+            cookableHolderInteractPresenter, 
+            _ingredientsCombineSO.GetCombines());
+
+        combineIngredientShower.Enable();
+
+        cookingPotView.Init(cookingProcessPresenter, cookableHolderInteractPresenter);
     }
 }

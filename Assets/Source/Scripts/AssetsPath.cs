@@ -12,6 +12,9 @@ public static class AssetsPath
     public const string CookingPotSO = "SO/CookingPot";
     public const string CookingPotCombinesSO = "SO/CookingPotCombines";
 
+    public const string CookingPan = "Prefabs/CookingPan";
+    public const string CookingPanSO = "SO/CookingPan";
+
     public const string Dish = "Prefabs/Dish";
     public const string DishCombinesSO = "SO/DishCombines";
     public const string IngredientsIconSO = "SO/IngredientsIcon";

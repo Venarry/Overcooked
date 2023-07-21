@@ -7,12 +7,22 @@ public class DishBuilder
 
     public void Build(DishView dishView, int maxCookables)
     {
-        CookableHolderInteractModel cookableHolderInteractModel = new(dishView, dishView, dishView.HoldPoint, maxCookables);
-        CombineIngredientShower combineIngredientShower = new(dishView.HoldPoint, _ingredientsCombineSO.GetCombines());
+        CookableHolderInteractModel cookableHolderInteractModel = new(
+            dishView,
+            dishView,
+            dishView.HoldPoint,
+            maxCookables, 
+            isVisiableCookables: true);
+
         HolderIngredientsIconShower holderIngredientsIconShower = new(dishView.IngredientsIconPoint, _ingredientsIcon.GetIngredientsIcon());
         CookableHolderInteractPresenter cookableHolderInteractPresenter = new(cookableHolderInteractModel, 
-            combineIngredientShower, 
             holderIngredientsIconShower);
+
+        CombineIngredientShower combineIngredientShower = new(dishView.HoldPoint,
+            cookableHolderInteractPresenter,
+            _ingredientsCombineSO.GetCombines());
+
+        combineIngredientShower.Enable();
 
         dishView.Init(cookableHolderInteractPresenter);
     }

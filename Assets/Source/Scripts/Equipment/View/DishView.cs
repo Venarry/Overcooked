@@ -13,7 +13,7 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     private CookableHolderInteractPresenter _cookableHolderInteractPresenter;
 
     public bool CanInteract => _interactive.CanInteract;
-    public int CookablesCount => _cookableHolderInteractPresenter.CookableCount;
+    public int CookablesCount => _cookableHolderInteractPresenter.CookablesCount;
     public KitchenObjectType[] IngredientsType => _cookableHolderInteractPresenter.CookablesType;
     public KitchenObjectType Type => _type;
     public KitchenObjectType[] AvailablePlaceTypes => _availablePlaceTypes.ToArray();

@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(InteractedObjectView))]
 [RequireComponent(typeof(ProgressBar))]
-public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickable
+public class CookingHolderView : MonoBehaviour, ICookableHolder, ICookable, IPickable
 {
     [SerializeField] private Transform _holdPoint;
     [SerializeField] private Transform _ingredientsIconPoint;
@@ -11,14 +11,14 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
 
     private InteractedObjectView _interactive;
     private CookingProcessPresenter _cookingProcessPresenter;
-    private CookableHolderInteractPresenter _cookableHolderInteractPresnter;
+    private CookableHolderInteractPresenter _interactPresenter;
 
     public KitchenObjectType Type => _cookingProcessPresenter.Type;
-    public int CookablesCount => _cookableHolderInteractPresnter.CookableCount;
-    public float CookablesCookedTime => _cookableHolderInteractPresnter.CookablesCookedTime;
+    public int CookablesCount => _interactPresenter.CookablesCount;
+    public float CookablesCookedTime => _interactPresenter.CookablesCookedTime;
     public float MaxCookedTime => _cookingProcessPresenter.MaxCookedTime;
     public bool CanInteract => _interactive.CanInteract;
-    public Transform HoldTransform => _holdPoint;
+    public Transform HoldPoint => _holdPoint;
     public Transform IngredientsIconPoint => _ingredientsIconPoint;
     public MeshFilter MeshFilter => _meshFilter;
 
@@ -35,11 +35,11 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
         _cookingProcessPresenter.CookStageSubtracted += OnCookStageSubtracted;
         _cookingProcessPresenter.MaxStageReached += OnMaxStageReached;
 
-        _cookableHolderInteractPresnter.HolderCleared += OnHolderCleared;
-        _cookableHolderInteractPresnter.CookableAdded += OnCookableAdded;
+        _interactPresenter.HolderCleared += OnHolderCleared;
+        _interactPresenter.CookableAdded += OnCookableAdded;
 
         _cookingProcessPresenter.Enable();
-        _cookableHolderInteractPresnter.Enable();
+        _interactPresenter.Enable();
     }
 
     public void Disable()
@@ -48,27 +48,27 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
         _cookingProcessPresenter.CookStageSubtracted -= OnCookStageSubtracted;
         _cookingProcessPresenter.MaxStageReached -= OnMaxStageReached;
 
-        _cookableHolderInteractPresnter.HolderCleared -= OnHolderCleared;
-        _cookableHolderInteractPresnter.CookableAdded -= OnCookableAdded;
+        _interactPresenter.HolderCleared -= OnHolderCleared;
+        _interactPresenter.CookableAdded -= OnCookableAdded;
 
         _cookingProcessPresenter.Disable();
-        _cookableHolderInteractPresnter.Disable();
+        _interactPresenter.Disable();
     }
 
     public void Init(CookingProcessPresenter cookingProcessPresenter,
-        CookableHolderInteractPresenter cookableHolderInteractPresenter)
+        CookableHolderInteractPresenter interactPresenter)
     {
         _cookingProcessPresenter = cookingProcessPresenter;
-        _cookableHolderInteractPresnter = cookableHolderInteractPresenter;
+        _interactPresenter = interactPresenter;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
     {
-        _cookableHolderInteractPresnter.Interact(objectInteractSystem);
+        _interactPresenter.Interact(objectInteractSystem);
     }
 
     public bool CanPlaceOn(KitchenObjectType type) =>
-        _cookableHolderInteractPresnter.CanPlaceOn(type);
+        _interactPresenter.CanPlaceOn(type);
 
     public void SetParent(Transform point, bool isVisiable)
     {
@@ -82,16 +82,16 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
 
     public void Cook(float step = 0)
     {
-        if(_cookableHolderInteractPresnter.CookableCount > 0)
+        if(_interactPresenter.CookablesCount > 0)
             _cookingProcessPresenter.Cook(step);
     }
 
     public bool TryAddCookable(ICookable cookable) =>
-        _cookableHolderInteractPresnter.TryAddCookable(cookable);
+        _interactPresenter.TryAddCookable(cookable);
 
     public void GiveCookablesInOutHolder(ICookableHolder cookableHolder)
     {
-        _cookableHolderInteractPresnter.GiveCookablesInOutHolder(cookableHolder);
+        _interactPresenter.GiveCookablesInOutHolder(cookableHolder);
     }
 
     public void AddCookStage()
@@ -111,26 +111,26 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
 
     private void OnCookStageAdded()
     {
-        _cookableHolderInteractPresnter.AddCookableCookStage();
-        _cookableHolderInteractPresnter.RefreshIngredientsIcon();
+        _interactPresenter.AddCookableCookStage();
+        _interactPresenter.RefreshIngredientsIcon();
         _cookingProcessPresenter.SetMaxCookedTime(CookablesCookedTime);
         CookStageAdded?.Invoke();
     }
 
     private void OnCookStageSubtracted()
     {
-        _cookableHolderInteractPresnter.SubtractCookableCookStage();
-        _cookableHolderInteractPresnter.RefreshIngredientsIcon();
+        _interactPresenter.SubtractCookableCookStage();
+        _interactPresenter.RefreshIngredientsIcon();
         _cookingProcessPresenter.SetMaxCookedTime(CookablesCookedTime);
     }
 
     public void OnMaxStageReached()
     {
-        _cookableHolderInteractPresnter.SetCookableOvercookedStage();
-        _cookableHolderInteractPresnter.RefreshIngredientsIcon();
+        _interactPresenter.SetCookableOvercookedStage();
+        _interactPresenter.RefreshIngredientsIcon();
     }
 
-    private void OnCookableAdded(ICookable cookable)
+    private void OnCookableAdded()
     {
         _cookingProcessPresenter.RecalculateCookedTime(CookablesCookedTime);
     }

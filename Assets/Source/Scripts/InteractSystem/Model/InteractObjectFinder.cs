@@ -17,14 +17,16 @@ public class InteractObjectFinder
 
     public bool TryFindInteractive(out IInteractable interactable)
     {
-        Physics.OverlapSphereNonAlloc(_grabTransform.position, _interactRange, _result);
+        int collidersCount = Physics.OverlapSphereNonAlloc(_grabTransform.position, _interactRange, _result);
 
         float minDistance = _interactRange;
         interactable = null;
 
-        foreach (Collider collider in _result)
+        for (int i = 0; i < collidersCount; i++)
         {
-            if(collider == null)
+            Collider collider = _result[i];
+
+            if (collider == null)
                 break;
 
             if (collider.TryGetComponent(out IInteractable interactive) == false) 

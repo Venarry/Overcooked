@@ -10,6 +10,7 @@ public class CookableHolderInteractModel
     private readonly ITypeProvider _typeProvider;
     private readonly List<ICookable> _cookables = new();
     private readonly int _maxCookables = 1;
+    private readonly bool _isVisiableCookables;
 
     public int CookableCount => _cookables.Count;
     public KitchenObjectType[] CookablesType => _cookables.Select(currentCookable => currentCookable.Type).ToArray();
@@ -19,10 +20,11 @@ public class CookableHolderInteractModel
     public event Action<ICookable> CookableAdded;
     public event Action<ICookable> CookableRemoved;
 
-    public CookableHolderInteractModel(ICookableHolder holder, ITypeProvider typeProvider, Transform holdPoint, int maxCookables)
+    public CookableHolderInteractModel(ICookableHolder holder, ITypeProvider typeProvider, Transform holdPoint, int maxCookables, bool isVisiableCookables)
     {
         _holdPoint = holdPoint;
         _maxCookables = maxCookables;
+        _isVisiableCookables = isVisiableCookables;
         _thisHolder = holder;
         _typeProvider = typeProvider;
     }
@@ -81,7 +83,7 @@ public class CookableHolderInteractModel
 
         if (cookable is IPickable pickable)
         {
-            pickable.SetParent(_holdPoint, false);
+            pickable.SetParent(_holdPoint, _isVisiableCookables);
         }
 
         _cookables.Add(cookable);
