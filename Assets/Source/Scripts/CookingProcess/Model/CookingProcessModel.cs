@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-public class CookingProcess
+public class CookingProcessModel
 {
     private readonly CookableIngredientSO _stages;
 
-    public CookingProcess(CookableIngredientSO stages)
+    public CookingProcessModel(CookableIngredientSO stages)
     {
         _stages = stages;
         CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
@@ -21,15 +21,23 @@ public class CookingProcess
     public event Action CookStepChanged;
     public event Action CookStageAdded;
     public event Action CookStageSubtracted;
+    public event Action MaxStageReached;
 
     public void AddCookStage()
     {
         if (CurrentCookedStage >= _stages.MaxCookIndexStage)
+        {
             return;
+        }
 
         CurrentCookedStage++;
         RefreshNewStageData();
         CookStageAdded?.Invoke();
+
+        if(CurrentCookedStage == _stages.MaxCookIndexStage)
+        {
+            MaxStageReached?.Invoke();
+        }
     }
 
     public void SubtractCookStage()
@@ -40,6 +48,13 @@ public class CookingProcess
         CurrentCookedStage--;
         RefreshNewStageData();
         CookStageSubtracted?.Invoke();
+    }
+
+    public void SetOvercookedStage()
+    {
+        CurrentCookedStage = _stages.MaxCookIndexStage;
+        RefreshNewStageData();
+        CookStageAdded?.Invoke();
     }
 
     public void Cook(float step = 0)

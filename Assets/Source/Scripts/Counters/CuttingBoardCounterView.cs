@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CuttingBoardCounterView : MonoBehaviour, IInteractable
+public class CuttingBoardCounterView : MonoBehaviour, IInteractable, ITypeProvider
 {
     [SerializeField] private Transform _holdPoint;
     [SerializeField] private KitchenObjectType _type;
@@ -11,12 +11,16 @@ public class CuttingBoardCounterView : MonoBehaviour, IInteractable
 
     public bool CanInteract => _counterInteractPresenter.CanInteract;
 
+    public KitchenObjectType Type => _type;
+
+    public KitchenObjectType[] AvailablePlaceTypes => new KitchenObjectType[0];
+
     private void Awake()
     {
         CounterInteractModel counterModel = new(_holdPoint, _type);
         CounterInteractPresenter counterInteractPresenter = new(counterModel);
 
-        CounterCookModel counterCookModel = new();
+        CounterCookModel counterCookModel = new(this);
         CounterCookPresenter counterCookPresenter = new(counterCookModel);
 
         Init(counterInteractPresenter, counterCookPresenter);

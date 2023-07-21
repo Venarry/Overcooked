@@ -73,6 +73,11 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
         _cookingProcessPresenter.SubtractCookStage();
     }
 
+    public void SetOvercookedStage()
+    {
+        _cookingProcessPresenter.SetOvercookedStage();
+    }
+
     private void OnCookStageAdded()
     {
         CookStageAdded?.Invoke();

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CookingStoveCounterView : MonoBehaviour, IInteractable
+public class CookingStoveCounterView : MonoBehaviour, IInteractable, ITypeProvider
 {
     [SerializeField] private KitchenObjectType _type;
     [SerializeField] private Transform _holdPoint;
@@ -11,12 +11,17 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable
     public bool CanInteract => _counterInteractPresenter.CanInteract;
     public Transform HoldTransform => _holdPoint;
 
+    public KitchenObjectType Type => _type;
+
+    public KitchenObjectType[] AvailablePlaceTypes => new KitchenObjectType[0];
+
+
     private void Awake()
     {
         CounterInteractModel counterInteractModel = new(_holdPoint, _type);
         CounterInteractPresenter counterInteractPresenter = new(counterInteractModel);
 
-        CounterCookModel counterCookModel = new();
+        CounterCookModel counterCookModel = new(this);
         CounterCookPresenter counterCookPresenter = new(counterCookModel);
         Init(counterInteractPresenter, counterCookPresenter);
         Enable();

@@ -1,6 +1,12 @@
 public class CounterCookModel
 {
     private ICookable _cookable;
+    private readonly ITypeProvider _typeProvider;
+
+    public CounterCookModel(ITypeProvider typeProvider)
+    {
+        _typeProvider = typeProvider;
+    }
 
     public void Cook(float step = 0)
     {
@@ -15,7 +21,7 @@ public class CounterCookModel
         }
 
         _cookable = cookable;
-        _cookable.CookStageAdded += RemoveCookable;
+        _cookable.CookStageAdded += OnCookStageAdded;
     }
 
     public void RemoveCookable()
@@ -26,5 +32,13 @@ public class CounterCookModel
         }
 
         _cookable = null;
+    }
+
+    private void OnCookStageAdded()
+    {
+        if (_cookable.CanPlaceOn(_typeProvider.Type))
+            return;
+
+        RemoveCookable();
     }
 }

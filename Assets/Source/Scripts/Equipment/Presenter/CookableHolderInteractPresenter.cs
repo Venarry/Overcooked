@@ -2,9 +2,9 @@ using System;
 
 public class CookableHolderInteractPresenter
 {
-    private CombineIngredientShower _combineIngredientShower;
-    private HolderIngredientsIconShower _holderIngredientsIconShower;
-    private CookableHolderInteractModel _cookableHolderInteractModel;
+    private readonly CombineIngredientShower _combineIngredientShower;
+    private readonly HolderIngredientsIconShower _holderIngredientsIconShower;
+    private readonly CookableHolderInteractModel _cookableHolderInteractModel;
 
     public int CookableCount => _cookableHolderInteractModel.CookableCount;
     public KitchenObjectType[] CookablesType => _cookableHolderInteractModel.CookablesType;
