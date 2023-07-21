@@ -812,7 +812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2771eec7bff9b9b4681cfcb38df33664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 11
+  _type: 12
   _holdPoint: {fileID: 1098242878}
 --- !u!1001 &810768104
 PrefabInstance:
