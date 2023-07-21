@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class CookableHolderInteractPresenter
 {
@@ -8,8 +10,12 @@ public class CookableHolderInteractPresenter
 
     public int CookableCount => _cookableHolderInteractModel.CookableCount;
     public KitchenObjectType[] CookablesType => _cookableHolderInteractModel.CookablesType;
+    public float CookablesCookedTime => _cookableHolderInteractModel.CookablesCookedTime;
 
     public event Action HolderCleared;
+    public event Action<ICookable[]> CookablesChanged;
+    public event Action<ICookable> CookableAdded;
+    public event Action CookableRemoved;
 
     public CookableHolderInteractPresenter(CookableHolderInteractModel cookableHolderInteractModel,
         CombineIngredientShower combineIngredientShower,
@@ -43,7 +49,7 @@ public class CookableHolderInteractPresenter
 
     public void SubtractCookableCookStage()
     {
-        _cookableHolderInteractModel.AddCookableCookStages();
+        _cookableHolderInteractModel.SubtractCookableCookStages();
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
@@ -65,19 +71,26 @@ public class CookableHolderInteractPresenter
     public void GiveCookablesInOutHolder(ICookableHolder cookableHolder) =>
         _cookableHolderInteractModel.GiveCookablesInOutHolder(cookableHolder);
 
-    public void OnCookablesChanged(KitchenObjectType[] types)
+    public void OnCookablesChanged(ICookable[] cookables)
     {
-        _combineIngredientShower.RefreshModel(types);
+        //List<KitchenObjectType> cookablesTypes = new();
+        //cookablesTypes.AddRange(cookables.Select(cookable => cookable.Type));
+
+        _combineIngredientShower.RefreshModel(_cookableHolderInteractModel.CookablesType);
+
+        CookablesChanged?.Invoke(cookables);
     }
 
     public void OnCookableAdded(ICookable cookable)
     {
         _holderIngredientsIconShower.AddIngredient(cookable);
+        CookableAdded?.Invoke(cookable);
     }
 
     public void OnCookableRemoved(ICookable cookable)
     {
         _holderIngredientsIconShower.RemoveIngredient(cookable);
+        CookableRemoved?.Invoke();
     }
 
     private void OnHolderClear()

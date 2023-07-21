@@ -13,11 +13,12 @@ public class CookableHolderInteractModel
 
     public int CookableCount => _cookables.Count;
     public KitchenObjectType[] CookablesType => _cookables.Select(currentCookable => currentCookable.Type).ToArray();
+    public float CookablesCookedTime => _cookables.Sum(currentCookable => currentCookable.MaxCookedTime);
 
     public event Action HolderCleared;
     public event Action<ICookable> CookableAdded;
     public event Action<ICookable> CookableRemoved;
-    public event Action<KitchenObjectType[]> CookablesChanged;
+    public event Action<ICookable[]> CookablesChanged;
 
     public CookableHolderInteractModel(ICookableHolder holder, ITypeProvider typeProvider, Transform holdPoint, int maxCookables)
     {
@@ -78,7 +79,7 @@ public class CookableHolderInteractModel
 
         _cookables.Add(cookable);
         CookableAdded?.Invoke(cookable);
-        CookablesChanged?.Invoke(CookablesType);
+        CookablesChanged?.Invoke(_cookables.ToArray());
 
         return true;
     }
@@ -99,7 +100,7 @@ public class CookableHolderInteractModel
         if (_cookables.Count == 0)
             HolderCleared?.Invoke();
 
-        CookablesChanged?.Invoke(CookablesType);
+        CookablesChanged?.Invoke(_cookables.ToArray());
     }
 
     private bool TryGetCookable(PlayerObjectInteract objectInteractSystem)

@@ -14,6 +14,7 @@ public class CookingProcessPresenter : ITypeProvider
 
     public KitchenObjectType Type => _cookingProcessModel.Type;
     public KitchenObjectType[] AvailablePlaceTypes => _cookingProcessModel.AvailablePlaceTypes;
+    public float MaxCookedTime => _cookingProcessModel.MaxCookedTime;
 
     public CookingProcessPresenter(CookableIngredientSO cookStages, MeshFilter meshFilter, ProgressBar progressBar)
     {
@@ -28,7 +29,6 @@ public class CookingProcessPresenter : ITypeProvider
     public void Enable()
     {
         _cookingProcessModel.CookStepChanged += OnCookStepChanged;
-
         _cookingProcessModel.CookStageAdded += OnCookStageAdded;
         _cookingProcessModel.CookStageSubtracted += OnCookStageSubtracted;
         _cookingProcessModel.MaxStageReached += OnMaxStageReached;
@@ -37,7 +37,6 @@ public class CookingProcessPresenter : ITypeProvider
     public void Disable()
     {
         _cookingProcessModel.CookStepChanged -= OnCookStepChanged;
-
         _cookingProcessModel.CookStageAdded -= OnCookStageAdded;
         _cookingProcessModel.CookStageSubtracted -= OnCookStageSubtracted;
         _cookingProcessModel.MaxStageReached -= OnMaxStageReached;
@@ -73,9 +72,19 @@ public class CookingProcessPresenter : ITypeProvider
         _cookingProcessModel.ResetStageProgress();
     }
 
+    public void SetMaxCookedTime(float time)
+    {
+        _cookingProcessModel.SetMaxCookedTime(time);
+    }
+
+    public void RecalculateCookedTime(float newTime)
+    {
+        _cookingProcessModel.RecalculateCookedTime(newTime);
+    }
+
     private void OnCookStepChanged()
     {
-        float cookedTime = _cookingProcessModel.CookedTime;
+        float cookedTime = _cookingProcessModel.MaxCookedTime;
 
         if (cookedTime != 0)
             _progressBar.SetValue(_cookingProcessModel.PastCookedTime / cookedTime);

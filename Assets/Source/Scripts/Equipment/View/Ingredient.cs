@@ -16,6 +16,7 @@ public class Ingredient : MonoBehaviour, IPickable, ICookable
 
     public bool CanInteract => _interactive.CanInteract;
     public KitchenObjectType Type => _cookingProcessPresenter.Type;
+    public float MaxCookedTime => _cookingProcessPresenter.MaxCookedTime;
 
     private void Awake()
     {

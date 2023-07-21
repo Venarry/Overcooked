@@ -5,6 +5,7 @@ public enum KitchenObjectType
 {
     Steak,
     FriedSteak,
+    OverCookedSteak,
     Cucumber,
     CuttingCucumber,
     Tomato,

@@ -8,11 +8,11 @@ public class CookingProcessModel
     public CookingProcessModel(CookableIngredientSO stages)
     {
         _stages = stages;
-        CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
+        MaxCookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
     }
 
     public int CurrentCookedStage { get; private set; }
-    public float CookedTime { get; private set; }
+    public float MaxCookedTime { get; private set; }
     public float PastCookedTime { get; private set; }
 
     public KitchenObjectType Type => _stages.GetTypeByIndex(CurrentCookedStage);
@@ -57,6 +57,37 @@ public class CookingProcessModel
         CookStageAdded?.Invoke();
     }
 
+    public void SetMaxCookedTime(float time)
+    {
+        if (time < 0)
+            time = 0;
+
+        MaxCookedTime = time;
+    }
+
+    public void RecalculateCookedTime(float newTime)
+    {
+        float deltaTime = newTime - MaxCookedTime;
+
+        if (CurrentCookedStage > 0)
+        {
+            CurrentCookedStage--;
+
+            if (PastCookedTime < deltaTime)
+            {
+                PastCookedTime = MaxCookedTime + PastCookedTime;
+            }
+            else
+            {
+                PastCookedTime = MaxCookedTime;
+            }
+
+            CookStageSubtracted?.Invoke();
+        }
+
+        SetMaxCookedTime(newTime);
+    }
+
     public void Cook(float step = 0)
     {
         if (CurrentCookedStage >= _stages.MaxCookIndexStage)
@@ -73,7 +104,7 @@ public class CookingProcessModel
 
         CookStepChanged?.Invoke();
 
-        if (PastCookedTime >= CookedTime)
+        if (PastCookedTime >= MaxCookedTime)
         {
             AddCookStage();
         }
@@ -83,7 +114,7 @@ public class CookingProcessModel
     {
         CurrentCookedStage = 0;
         PastCookedTime = 0;
-        CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
+        MaxCookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
         CookStepChanged?.Invoke();
     }
 
@@ -96,6 +127,6 @@ public class CookingProcessModel
     private void RefreshNewStageData()
     {
         PastCookedTime = 0;
-        CookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
+        MaxCookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
     }
 }
