@@ -6,7 +6,7 @@ using UnityEngine;
 public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickable
 {
     [SerializeField] private Transform _holdPoint;
-    [SerializeField] private Transform _ingredientsIconPoint; // можно поставить вторую стадию CookingPot а не Ready и тогда можно будет класть туда еду и возвращать процесс приготовления
+    [SerializeField] private Transform _ingredientsIconPoint;
     [SerializeField] private MeshFilter _meshFilter;
 
     private InteractedObjectView _interactive;
@@ -43,7 +43,7 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
         _cookingProcessPresenter.CookStageAdded -= OnCookStageAdded;
         _cookingProcessPresenter.CookStageSubtracted -= _cookableHolderInteractPresnter.SubtractCookableCookStage;
         _cookingProcessPresenter.MaxStageReached -= SetOvercookedStage;
-        _cookableHolderInteractPresnter.HolderCleared -= _cookingProcessPresenter.ResetStages;
+        _cookableHolderInteractPresnter.HolderCleared -= _cookingProcessPresenter.ResetStages; // добавить возвращение в процессе при добавлении еды на событие добавление еды и возвращение на прошлую стадию и добавление времени готовки если стадия больше начальной
 
         _cookingProcessPresenter.Disable();
         _cookableHolderInteractPresnter.Disable();
