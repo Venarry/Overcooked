@@ -1423,7 +1423,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1179811833}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -1842,8 +1842,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _holdPoint: {fileID: 1710725365}
   _ingredientsIconPoint: {fileID: 0}
-  _type: 13
-  _availablePlaceTypes: 0a000000
+  _type: 14
+  _availablePlaceTypes: 0b000000
 --- !u!54 &1410351220
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2052,8 +2052,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _holdPoint: {fileID: 1007509219}
   _ingredientsIconPoint: {fileID: 103223566}
-  _type: 13
-  _availablePlaceTypes: 0a000000
+  _type: 14
+  _availablePlaceTypes: 0b000000
 --- !u!114 &1467930214
 MonoBehaviour:
   m_ObjectHideFlags: 0

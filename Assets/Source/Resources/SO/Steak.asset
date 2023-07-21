@@ -14,14 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cookStages:
   - _mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-    _cookingTime: 2
+    _cookingTime: 3
     _type: 0
-    _availablePlaceObjects: 0a00000006000000
+    _availablePlaceObjects: 0b00000007000000
   - _mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-    _cookingTime: 0.5
+    _cookingTime: 3
     _type: 1
-    _availablePlaceObjects: 0a0000000d000000
+    _availablePlaceObjects: 0b0000000e000000
   - _mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-    _cookingTime: 0.5
+    _cookingTime: 2
     _type: 1
-    _availablePlaceObjects: 0a0000000d000000
+    _availablePlaceObjects: 0b000000
+  - _mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+    _cookingTime: 2
+    _type: 1
+    _availablePlaceObjects: 0b0000000e000000
+  - _mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+    _cookingTime: 2
+    _type: 2
+    _availablePlaceObjects: 0b000000

@@ -13,7 +13,6 @@ public class CookableHolderInteractPresenter
     public float CookablesCookedTime => _cookableHolderInteractModel.CookablesCookedTime;
 
     public event Action HolderCleared;
-    public event Action<ICookable[]> CookablesChanged;
     public event Action<ICookable> CookableAdded;
     public event Action CookableRemoved;
 
@@ -28,7 +27,6 @@ public class CookableHolderInteractPresenter
 
     public void Enable()
     {
-        _cookableHolderInteractModel.CookablesChanged += OnCookablesChanged;
         _cookableHolderInteractModel.CookableAdded += OnCookableAdded;
         _cookableHolderInteractModel.CookableRemoved += OnCookableRemoved;
         _cookableHolderInteractModel.HolderCleared += OnHolderClear;
@@ -36,7 +34,6 @@ public class CookableHolderInteractPresenter
 
     public void Disable()
     {
-        _cookableHolderInteractModel.CookablesChanged -= OnCookablesChanged;
         _cookableHolderInteractModel.CookableAdded -= OnCookableAdded;
         _cookableHolderInteractModel.CookableRemoved -= OnCookableRemoved;
         _cookableHolderInteractModel.HolderCleared -= OnHolderClear;
@@ -50,6 +47,11 @@ public class CookableHolderInteractPresenter
     public void SubtractCookableCookStage()
     {
         _cookableHolderInteractModel.SubtractCookableCookStages();
+    }
+
+    public void SetCookableOvercookedStage()
+    {
+        _cookableHolderInteractModel.SetCookableOvercookedStage();
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
@@ -71,25 +73,17 @@ public class CookableHolderInteractPresenter
     public void GiveCookablesInOutHolder(ICookableHolder cookableHolder) =>
         _cookableHolderInteractModel.GiveCookablesInOutHolder(cookableHolder);
 
-    public void OnCookablesChanged(ICookable[] cookables)
-    {
-        //List<KitchenObjectType> cookablesTypes = new();
-        //cookablesTypes.AddRange(cookables.Select(cookable => cookable.Type));
-
-        _combineIngredientShower.RefreshModel(_cookableHolderInteractModel.CookablesType);
-
-        CookablesChanged?.Invoke(cookables);
-    }
-
     public void OnCookableAdded(ICookable cookable)
     {
         _holderIngredientsIconShower.AddIngredient(cookable);
+        _combineIngredientShower.RefreshModel(_cookableHolderInteractModel.CookablesType);
         CookableAdded?.Invoke(cookable);
     }
 
     public void OnCookableRemoved(ICookable cookable)
     {
         _holderIngredientsIconShower.RemoveIngredient(cookable);
+        _combineIngredientShower.RefreshModel(_cookableHolderInteractModel.CookablesType);
         CookableRemoved?.Invoke();
     }
 

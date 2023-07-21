@@ -18,7 +18,6 @@ public class CookableHolderInteractModel
     public event Action HolderCleared;
     public event Action<ICookable> CookableAdded;
     public event Action<ICookable> CookableRemoved;
-    public event Action<ICookable[]> CookablesChanged;
 
     public CookableHolderInteractModel(ICookableHolder holder, ITypeProvider typeProvider, Transform holdPoint, int maxCookables)
     {
@@ -61,6 +60,14 @@ public class CookableHolderInteractModel
         }
     }
 
+    public void SetCookableOvercookedStage()
+    {
+        foreach (ICookable cookable in _cookables)
+        {
+            cookable.SetOverCookedStage();
+        }
+    }
+
     public bool CanPlaceOn(KitchenObjectType type) =>
         _typeProvider.AvailablePlaceTypes.Contains(type);
 
@@ -79,7 +86,6 @@ public class CookableHolderInteractModel
 
         _cookables.Add(cookable);
         CookableAdded?.Invoke(cookable);
-        CookablesChanged?.Invoke(_cookables.ToArray());
 
         return true;
     }
@@ -92,15 +98,15 @@ public class CookableHolderInteractModel
         {
             if (cookableHolder.TryAddCookable(_cookables[i]))
             {
-                CookableRemoved?.Invoke(_cookables[i]);
-                _cookables.Remove(_cookables[i]);
+                ICookable currentCookable = _cookables[i];
+                _cookables.Remove(currentCookable);
+
+                CookableRemoved?.Invoke(currentCookable);
             }
         }
 
         if (_cookables.Count == 0)
             HolderCleared?.Invoke();
-
-        CookablesChanged?.Invoke(_cookables.ToArray());
     }
 
     private bool TryGetCookable(PlayerObjectInteract objectInteractSystem)

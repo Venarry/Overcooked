@@ -32,11 +32,10 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     public void Enable()
     {
         _cookingProcessPresenter.CookStageAdded += OnCookStageAdded;
-        _cookingProcessPresenter.CookStageSubtracted += OncookStageSubtracted;
-        _cookingProcessPresenter.MaxStageReached += SetOvercookedStage;
+        _cookingProcessPresenter.CookStageSubtracted += OnCookStageSubtracted;
+        _cookingProcessPresenter.MaxStageReached += OnMaxStageReached;
 
         _cookableHolderInteractPresnter.HolderCleared += OnHolderCleared;
-        _cookableHolderInteractPresnter.CookablesChanged += OnCookablesChanged;
         _cookableHolderInteractPresnter.CookableAdded += OnCookableAdded;
 
         _cookingProcessPresenter.Enable();
@@ -46,12 +45,11 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
     public void Disable()
     {
         _cookingProcessPresenter.CookStageAdded -= OnCookStageAdded;
-        _cookingProcessPresenter.CookStageSubtracted -= OncookStageSubtracted;
-        _cookingProcessPresenter.MaxStageReached -= SetOvercookedStage;
+        _cookingProcessPresenter.CookStageSubtracted -= OnCookStageSubtracted;
+        _cookingProcessPresenter.MaxStageReached -= OnMaxStageReached;
 
         _cookableHolderInteractPresnter.HolderCleared -= OnHolderCleared;
-        _cookableHolderInteractPresnter.CookablesChanged -= OnCookablesChanged;
-        _cookableHolderInteractPresnter.CookableAdded -= OnCookableAdded; // добавить возвращение в процессе при добавлении еды на событие добавление еды и возвращение на прошлую стадию и добавление времени готовки если стадия больше начальной
+        _cookableHolderInteractPresnter.CookableAdded -= OnCookableAdded;
 
         _cookingProcessPresenter.Disable();
         _cookableHolderInteractPresnter.Disable();
@@ -106,7 +104,7 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
         _cookingProcessPresenter.SubtractCookStage();
     }
 
-    public void SetOvercookedStage()
+    public void SetOverCookedStage()
     {
         _cookingProcessPresenter.SetOvercookedStage();
     }
@@ -119,21 +117,22 @@ public class CookingPotView : MonoBehaviour, ICookableHolder, ICookable, IPickab
         CookStageAdded?.Invoke();
     }
 
-    private void OncookStageSubtracted()
+    private void OnCookStageSubtracted()
     {
         _cookableHolderInteractPresnter.SubtractCookableCookStage();
         _cookableHolderInteractPresnter.RefreshIngredientsIcon();
         _cookingProcessPresenter.SetMaxCookedTime(CookablesCookedTime);
     }
 
-    private void OnCookablesChanged(ICookable[] cookables)
+    public void OnMaxStageReached()
     {
-        _cookingProcessPresenter.RecalculateCookedTime(CookablesCookedTime);
+        _cookableHolderInteractPresnter.SetCookableOvercookedStage();
+        _cookableHolderInteractPresnter.RefreshIngredientsIcon();
     }
 
     private void OnCookableAdded(ICookable cookable)
     {
-        //_cookingProcessPresenter.RecalculateCookedTime(cookable.MaxCookedTime);
+        _cookingProcessPresenter.RecalculateCookedTime(CookablesCookedTime);
     }
 
     private void OnHolderCleared()
