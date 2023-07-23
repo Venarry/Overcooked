@@ -4,12 +4,16 @@ public class DishBuilder
 {
     private readonly IngredientsCombineSO _ingredientsCombineSO = Resources.Load<IngredientsCombineSO>(AssetsPath.DishCombinesSO);
     private readonly IngredientsIconSO _ingredientsIcon = Resources.Load<IngredientsIconSO>(AssetsPath.IngredientsIconSO);
+    private readonly CookableIngredientSO _cookableIngredientSO = Resources.Load<CookableIngredientSO>("SO/Dish");
 
     public void Build(DishView dishView, int maxCookables)
     {
+        ProgressBar progressBar = dishView.GetComponent<ProgressBar>();
+        CookingProcessPresenter cookingProcessPresenter = new(_cookableIngredientSO, dishView.MeshFilter, progressBar);
+
         CookableHolderInteractModel cookableHolderInteractModel = new(
             dishView,
-            dishView,
+            cookingProcessPresenter,
             dishView.HoldPoint,
             maxCookables, 
             isVisiableCookables: false);
@@ -23,7 +27,8 @@ public class DishBuilder
             _ingredientsCombineSO.GetCombines());
 
         combineIngredientShower.Enable();
+        cookingProcessPresenter.Enable();
 
-        dishView.Init(cookableHolderInteractPresenter);
+        dishView.Init(cookingProcessPresenter, cookableHolderInteractPresenter);
     }
 }

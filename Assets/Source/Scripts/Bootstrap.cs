@@ -24,7 +24,11 @@ public class Bootstrap : MonoBehaviour
 
         for (int i = 0; i < _dishesCounterView.MaxDishesCount; i++)
         {
-            _dishesCounterView.TryAddDish(dishFactory.Create(2));
+            DishView newDish = dishFactory.Create(2);
+            newDish.AddCookStage();
+
+            if (_dishesCounterView.TryAddDish(newDish) == false)
+                newDish.RemoveObject();
         }
     }
 }

@@ -59,10 +59,7 @@ public class DishesCounterView : MonoBehaviour, IInteractable, ITypeProvider
         _interactPresenter.Interact(objectInteractSystem);
     }
 
-    public void TryAddDish(DishView dishView)
-    {
-        _interactPresenter.TryAddDish(dishView);
-    }
+    public bool TryAddDish(DishView dishView) => _interactPresenter.TryAddDish(dishView);
 
     private void ShowDish(IPickable pickable)
     {

@@ -32,10 +32,7 @@ public class DishesCounterInteractPresenter
         _model.Interact(playerObjectInteract);
     }
 
-    public void TryAddDish(DishView dishView)
-    {
-        _model.TryAddDish(dishView);
-    }
+    public bool TryAddDish(DishView dishView) => _model.TryAddDish(dishView);
 
     private void OnDishAdded(IPickable pickable)
     {

@@ -14,6 +14,7 @@ public class CookingHolderView : MonoBehaviour, ICookableHolder, ICookable, IPic
     private CookableHolderInteractPresenter _interactPresenter;
 
     public KitchenObjectType Type => _cookingProcessPresenter.Type;
+    public KitchenObjectType[] IngredientsType => _interactPresenter.CookablesType;
     public int CookablesCount => _interactPresenter.CookablesCount;
     public float CookablesCookedTime => _interactPresenter.CookablesCookedTime;
     public float MaxCookedTime => _cookingProcessPresenter.MaxCookedTime;
@@ -108,6 +109,10 @@ public class CookingHolderView : MonoBehaviour, ICookableHolder, ICookable, IPic
     {
         _cookingProcessPresenter.SetOvercookedStage();
     }
+    private void OnHolderCleared()
+    {
+        _cookingProcessPresenter.ResetStages();
+    }
 
     private void OnCookStageAdded()
     {
@@ -124,7 +129,7 @@ public class CookingHolderView : MonoBehaviour, ICookableHolder, ICookable, IPic
         _cookingProcessPresenter.SetMaxCookedTime(CookablesCookedTime);
     }
 
-    public void OnMaxStageReached()
+    private void OnMaxStageReached()
     {
         _interactPresenter.SetCookableOvercookedStage();
         _interactPresenter.RefreshIngredientsIcon();
@@ -133,10 +138,5 @@ public class CookingHolderView : MonoBehaviour, ICookableHolder, ICookable, IPic
     private void OnCookableAdded()
     {
         _cookingProcessPresenter.RecalculateCookedTime(CookablesCookedTime);
-    }
-
-    private void OnHolderCleared()
-    {
-        _cookingProcessPresenter.ResetStages();
     }
 }

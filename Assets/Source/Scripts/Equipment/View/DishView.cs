@@ -2,21 +2,22 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractedObjectView))]
-public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder, ITypeProvider
+public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder//, ITypeProvider
 {
     [SerializeField] private Transform _holdPoint;
     [SerializeField] private Transform _ingredientsIconPoint;
-    [SerializeField] private KitchenObjectType _type;
-    [SerializeField] private KitchenObjectType[] _availablePlaceTypes;
+    //[SerializeField] private KitchenObjectType _type;
+    //[SerializeField] private KitchenObjectType[] _availablePlaceTypes;
 
     private InteractedObjectView _interactive;
     private CookableHolderInteractPresenter _cookableHolderInteractPresenter;
+    private CookingProcessPresenter _cookingProcessPresenter;
 
     public bool CanInteract => _interactive.CanInteract;
     public int CookablesCount => _cookableHolderInteractPresenter.CookablesCount;
     public KitchenObjectType[] IngredientsType => _cookableHolderInteractPresenter.CookablesType;
-    public KitchenObjectType Type => _type;
-    public KitchenObjectType[] AvailablePlaceTypes => _availablePlaceTypes.ToArray();
+    //public KitchenObjectType Type => _cookingProcessPresenter.Type;
+    //public KitchenObjectType[] AvailablePlaceTypes => _cookingProcessPresenter.AvailablePlaceTypes;
     public Transform HoldPoint => _holdPoint;
     public Transform IngredientsIconPoint => _ingredientsIconPoint;
 
@@ -36,8 +37,9 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
         _cookableHolderInteractPresenter.Disable();
     }
 
-    public void Init(CookableHolderInteractPresenter cookableHolderInteractPresenter)
+    public void Init(CookingProcessPresenter cookingProcessPresenter, CookableHolderInteractPresenter cookableHolderInteractPresenter)
     {
+        _cookingProcessPresenter = cookingProcessPresenter;
         _cookableHolderInteractPresenter = cookableHolderInteractPresenter;
     }
 
@@ -46,13 +48,18 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
         _cookableHolderInteractPresenter.Interact(objectInteractSystem);
     }
 
+    public void Wash(float step = 0)
+    {
+        _cookingProcessPresenter.Cook(step);
+    }
+
     public void RemoveObject()
     {
         Destroy(gameObject);
     }
 
     public bool CanPlaceOn(KitchenObjectType type) =>
-        _availablePlaceTypes.Contains(type);
+        _cookableHolderInteractPresenter.CanPlaceOn(type);
 
     public void GiveCookablesInOutHolder(ICookableHolder cookableHolder)
     {
