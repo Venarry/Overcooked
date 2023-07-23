@@ -7,8 +7,6 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     [SerializeField] private Transform _holdPoint;
     [SerializeField] private Transform _ingredientsIconPoint;
     [SerializeField] private MeshFilter _meshFilter;
-    //[SerializeField] private KitchenObjectType _type;
-    //[SerializeField] private KitchenObjectType[] _availablePlaceTypes;
 
     private InteractedObjectView _interactive;
     private CookableHolderInteractPresenter _cookableHolderInteractPresenter;
@@ -17,8 +15,6 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     public bool CanInteract => _interactive.CanInteract;
     public int CookablesCount => _cookableHolderInteractPresenter.CookablesCount;
     public KitchenObjectType[] IngredientsType => _cookableHolderInteractPresenter.CookablesType;
-    //public KitchenObjectType Type => _cookingProcessPresenter.Type;
-    //public KitchenObjectType[] AvailablePlaceTypes => _cookingProcessPresenter.AvailablePlaceTypes;
     public Transform HoldPoint => _holdPoint;
     public MeshFilter MeshFilter => _meshFilter;
     public Transform IngredientsIconPoint => _ingredientsIconPoint;
@@ -33,6 +29,8 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     {
         _cookableHolderInteractPresenter.Enable();
         _cookingProcessPresenter.Enable();
+
+        _cookableHolderInteractPresenter.HolderCleared += OnHolderCleared;
     }
 
     public void Disable()
@@ -52,7 +50,7 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
         _cookableHolderInteractPresenter.Interact(objectInteractSystem);
     }
 
-    public void WashDishes()
+    public void WashDish()
     {
         _cookingProcessPresenter.SetOvercookedStage();
     }
@@ -87,4 +85,9 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
 
     public bool TryAddCookable(ICookable cookable) =>
         _cookableHolderInteractPresenter.TryAddCookable(cookable);
+
+    private void OnHolderCleared()
+    {
+        _cookingProcessPresenter.ResetStages();
+    }
 }

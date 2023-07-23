@@ -112,10 +112,19 @@ public class CookingProcessModel
 
     public void ResetStages()
     {
-        CurrentCookedStage = 0;
-        PastCookedTime = 0;
+        if(CurrentCookedStage > 0)
+        {
+            CurrentCookedStage = 0;
+            CookStageSubtracted?.Invoke();
+        }
+        
+        if(PastCookedTime > 0)
+        {
+            PastCookedTime = 0;
+            CookStepChanged?.Invoke();
+        }
+
         MaxCookedTime = _stages.GetCookingTimeByIndex(CurrentCookedStage);
-        CookStepChanged?.Invoke();
     }
 
     public void ResetStageProgress()
