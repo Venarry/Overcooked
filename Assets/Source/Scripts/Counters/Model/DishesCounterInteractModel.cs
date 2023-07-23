@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class DishesCounterInteractModel
 {
-    private Stack<CookingHolderView> _dishes = new();
+    private Stack<DishView> _dishes = new();
     private readonly ITypeProvider _typeProvider;
 
 

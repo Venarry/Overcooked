@@ -39,7 +39,7 @@ public class PresetsInitialize : MonoBehaviour
         {
             _dishBuilder.Build(holderData.Holder, holderData.MaxValue);
             holderData.Holder.Enable();
-            holderData.Holder.AddCookStage();
+            //holderData.Holder.WashDishes();
         }
     }
 }

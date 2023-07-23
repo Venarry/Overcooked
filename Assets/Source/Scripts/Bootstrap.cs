@@ -25,7 +25,8 @@ public class Bootstrap : MonoBehaviour
         for (int i = 0; i < _dishesCounterView.MaxDishesCount; i++)
         {
             DishView newDish = dishFactory.Create(2);
-            newDish.AddCookStage();
+            newDish.Enable();
+            newDish.WashDishes();
 
             if (_dishesCounterView.TryAddDish(newDish) == false)
                 newDish.RemoveObject();

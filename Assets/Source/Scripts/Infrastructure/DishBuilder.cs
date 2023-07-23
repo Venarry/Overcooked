@@ -27,7 +27,6 @@ public class DishBuilder
             _ingredientsCombineSO.GetCombines());
 
         combineIngredientShower.Enable();
-        cookingProcessPresenter.Enable();
 
         dishView.Init(cookingProcessPresenter, cookableHolderInteractPresenter);
     }

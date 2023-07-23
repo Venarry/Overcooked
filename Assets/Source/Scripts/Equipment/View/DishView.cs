@@ -6,6 +6,7 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
 {
     [SerializeField] private Transform _holdPoint;
     [SerializeField] private Transform _ingredientsIconPoint;
+    [SerializeField] private MeshFilter _meshFilter;
     //[SerializeField] private KitchenObjectType _type;
     //[SerializeField] private KitchenObjectType[] _availablePlaceTypes;
 
@@ -19,6 +20,7 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     //public KitchenObjectType Type => _cookingProcessPresenter.Type;
     //public KitchenObjectType[] AvailablePlaceTypes => _cookingProcessPresenter.AvailablePlaceTypes;
     public Transform HoldPoint => _holdPoint;
+    public MeshFilter MeshFilter => _meshFilter;
     public Transform IngredientsIconPoint => _ingredientsIconPoint;
 
 
@@ -30,11 +32,13 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     public void Enable()
     {
         _cookableHolderInteractPresenter.Enable();
+        _cookingProcessPresenter.Enable();
     }
 
     public void Disable()
     {
         _cookableHolderInteractPresenter.Disable();
+        _cookingProcessPresenter.Disable();
     }
 
     public void Init(CookingProcessPresenter cookingProcessPresenter, CookableHolderInteractPresenter cookableHolderInteractPresenter)
@@ -46,6 +50,11 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     public void Interact(PlayerObjectInteract objectInteractSystem)
     {
         _cookableHolderInteractPresenter.Interact(objectInteractSystem);
+    }
+
+    public void WashDishes()
+    {
+        _cookingProcessPresenter.SetOvercookedStage();
     }
 
     public void Wash(float step = 0)

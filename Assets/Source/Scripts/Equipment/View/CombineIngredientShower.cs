@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class CombineIngredientShower
 {
-    private readonly CookableHolderInteractPresenter _cookingPotInteractPresenter;
+    private readonly CookableHolderInteractPresenter _interactPresenter;
     private readonly MeshFilter _ingredientsModel;
     private readonly Dictionary<KitchenObjectType[], Mesh> _modelsTemplate;
 
-    public CombineIngredientShower(Transform meshPoint, CookableHolderInteractPresenter cookingPanInteractPresenter, Dictionary<KitchenObjectType[], Mesh> modelsTemplate)
+    public CombineIngredientShower(Transform meshPoint, CookableHolderInteractPresenter interactPresenter, Dictionary<KitchenObjectType[], Mesh> modelsTemplate)
     {
-        _cookingPotInteractPresenter = cookingPanInteractPresenter;
+        _interactPresenter = interactPresenter;
         _modelsTemplate = modelsTemplate;
 
         GameObject modelObject = new("Model");
@@ -26,13 +26,13 @@ public class CombineIngredientShower
 
     public void Enable()
     {
-        _cookingPotInteractPresenter.CookableAdded += OnCookableChanged;
-        _cookingPotInteractPresenter.CookableRemoved += OnCookableChanged;
+        _interactPresenter.CookableAdded += OnCookableChanged;
+        _interactPresenter.CookableRemoved += OnCookableChanged;
     }
 
     private void OnCookableChanged()
     {
-        RefreshModel(_cookingPotInteractPresenter.CookablesType);
+        RefreshModel(_interactPresenter.CookablesType);
     }
 
     public void RefreshModel(KitchenObjectType[] inputTypes)
