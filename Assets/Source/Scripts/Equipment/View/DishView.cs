@@ -37,6 +37,8 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     {
         _cookableHolderInteractPresenter.Disable();
         _cookingProcessPresenter.Disable();
+
+        _cookableHolderInteractPresenter.HolderCleared -= OnHolderCleared;
     }
 
     public void Init(CookingProcessPresenter cookingProcessPresenter, CookableHolderInteractPresenter cookableHolderInteractPresenter)
