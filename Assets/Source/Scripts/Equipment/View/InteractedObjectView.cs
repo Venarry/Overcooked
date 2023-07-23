@@ -9,9 +9,6 @@ public class InteractedObjectView : MonoBehaviour
     private Collider _collider;
     private Transform _parent;
 
-    public event Action ParentSet;
-    public event Action ParentRemove;
-
     public bool CanInteract => _parent == null;
 
     private void Awake()
@@ -20,13 +17,12 @@ public class InteractedObjectView : MonoBehaviour
         _collider = GetComponent<Collider>();
     }
 
-    private void Update()
+    public void LateUpdate()
     {
         if (_parent == null)
             return;
 
-        transform.position = _parent.position;
-        transform.rotation = _parent.rotation;
+        transform.SetPositionAndRotation(_parent.position, _parent.rotation);
     }
 
     public void SetParent(Transform parent, bool isVisiable = true)
@@ -35,7 +31,8 @@ public class InteractedObjectView : MonoBehaviour
         transform.rotation = Quaternion.identity;
         SetInteractiveState(true);
         gameObject.SetActive(isVisiable);
-        ParentSet?.Invoke();
+
+        transform.SetParent(parent);
     }
 
     public void RemoveParent()
@@ -43,7 +40,8 @@ public class InteractedObjectView : MonoBehaviour
         _parent = null;
         SetInteractiveState(false);
         gameObject.SetActive(true);
-        ParentRemove?.Invoke();
+
+        transform.SetParent(null);
     }
 
     private void SetInteractiveState(bool state)

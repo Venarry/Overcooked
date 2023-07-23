@@ -22,7 +22,7 @@ public class CookableHolderInteractModel
 
     public CookableHolderInteractModel(ICookableHolder holder, ITypeProvider typeProvider, Transform holdPoint, int maxCookables, bool isVisiableCookables)
     {
-        _holdPoint = holdPoint;
+        _holdPoint = holdPoint; // трансфоорм не передавать в модель
         _maxCookables = maxCookables;
         _isVisiableCookables = isVisiableCookables;
         _thisHolder = holder;
@@ -133,7 +133,7 @@ public class CookableHolderInteractModel
         if (objectInteractSystem.TryGetPickableType(out ICookableHolder cookableHolder) == false)
             return false;
 
-        if (cookableHolder is IServiceHolder)
+        if (cookableHolder is IServiceHolder && cookableHolder.CookablesCount == 0)
         {
             GiveCookablesInOutHolder(cookableHolder);
             return true;

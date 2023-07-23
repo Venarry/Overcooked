@@ -2,7 +2,6 @@ using System;
 
 public class CookableHolderInteractPresenter
 {
-    //private readonly CombineIngredientShower _combineIngredientShower;
     private readonly HolderIngredientsIconShower _holderIngredientsIconShower;
     private readonly CookableHolderInteractModel _cookableHolderInteractModel;
 
@@ -15,10 +14,8 @@ public class CookableHolderInteractPresenter
     public event Action CookableRemoved;
 
     public CookableHolderInteractPresenter(CookableHolderInteractModel cookableHolderInteractModel,
-        //CombineIngredientShower combineIngredientShower,
         HolderIngredientsIconShower holderIngredientsIconShower)
     {
-        //_combineIngredientShower = combineIngredientShower;
         _cookableHolderInteractModel = cookableHolderInteractModel;
         _holderIngredientsIconShower = holderIngredientsIconShower;
     }

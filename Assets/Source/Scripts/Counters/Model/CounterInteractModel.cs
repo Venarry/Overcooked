@@ -1,12 +1,11 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class CounterInteractModel : IInteractable
+public class CounterInteractModel
 {
     private readonly Transform _holdPoint;
     private readonly KitchenObjectType _type;
-    private IPickable _pickedItem;
+    private IPickable _pickable;
 
     public event Action<ICookable> CookableSet;
     public event Action CookableRemoved;
@@ -27,18 +26,18 @@ public class CounterInteractModel : IInteractable
         TryInteractWithItem(objectInteractSystem);
     }
 
-    public bool TryPlaceItem(IPickable item)
+    public bool TryPlacePickable(IPickable pickable)
     {
-        if (_pickedItem != null)
+        if (_pickable != null)
             return false;
 
-        if (item.CanPlaceOn(_type) == false)
+        if (pickable.CanPlaceOn(_type) == false)
             return false;
 
-        item.SetParent(_holdPoint);
-        _pickedItem = item;
+        pickable.SetParent(_holdPoint);
+        _pickable = pickable;
 
-        if (item is ICookable cookable)
+        if (pickable is ICookable cookable)
         {
             CookableSet?.Invoke(cookable);
         }
@@ -48,7 +47,7 @@ public class CounterInteractModel : IInteractable
 
     private bool TryPlaceItem(PlayerObjectInteract objectInteractSystem)
     {
-        if (_pickedItem != null || objectInteractSystem.HasPickable == false)
+        if (_pickable != null || objectInteractSystem.HasPickable == false)
         {
             return false;
         }
@@ -63,7 +62,7 @@ public class CounterInteractModel : IInteractable
 
         objectInteractSystem.TryTakePickable(out IPickable pickable);
         
-        _pickedItem = pickable;
+        _pickable = pickable;
         pickable.SetParent(_holdPoint);
 
         return true;
@@ -71,17 +70,17 @@ public class CounterInteractModel : IInteractable
 
     private bool TryInteractWithItem(PlayerObjectInteract objectInteractSystem)
     {
-        if (_pickedItem == null)
+        if (_pickable == null)
             return false;
 
         if (objectInteractSystem.HasPickable)
         {
-            _pickedItem.Interact(objectInteractSystem);
+            _pickable.Interact(objectInteractSystem);
             return true;
         }
-        else if (objectInteractSystem.TryGivePickable(_pickedItem))
+        else if (objectInteractSystem.TryGivePickable(_pickable))
         {
-            _pickedItem = null;
+            _pickable = null;
             CookableRemoved?.Invoke();
             return true;
         }

@@ -6,6 +6,7 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private PresetsInitialize _presetsInitialize;
 
     [SerializeField] private CookingStoveCounterView _cookingStoveCounterView;
+    [SerializeField] private DishesCounterView _dishesCounterView;
 
     private void Awake()
     {
@@ -19,6 +20,11 @@ public class Bootstrap : MonoBehaviour
 
         _cookingStoveCounterView.TryPlaceItem(cookingPot);
 
-        // player spawn, inputs and etc
+        DishFactory dishFactory = new();
+
+        for (int i = 0; i < _dishesCounterView.MaxDishesCount; i++)
+        {
+            _dishesCounterView.TryAddDish(dishFactory.Create(2));
+        }
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class IngredientDistributorCounter : MonoBehaviour, IInteractable
 {
-    [SerializeField] private Ingredient _template;
+    [SerializeField] private IngredientView _template;
 
     public bool CanInteract => true;
 

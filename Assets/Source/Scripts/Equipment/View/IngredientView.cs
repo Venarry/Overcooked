@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(InteractedObjectView))]
 [RequireComponent(typeof(ProgressBar))]
-public class Ingredient : MonoBehaviour, IPickable, ICookable
+public class IngredientView : MonoBehaviour, IPickable, ICookable
 {
     [SerializeField] private CookableIngredientSO _cookStagesSO;
     [SerializeField] private MeshFilter _meshFilter;

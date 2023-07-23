@@ -17,5 +17,6 @@ public enum KitchenObjectType
     ClearKitchenCounter,
     CookingStove,
     CuttingBoard,
+    DishesCounter,
     Dish,
 }

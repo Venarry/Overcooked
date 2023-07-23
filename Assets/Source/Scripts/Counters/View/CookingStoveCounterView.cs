@@ -15,7 +15,6 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable, ITypeProvid
 
     public KitchenObjectType[] AvailablePlaceTypes => new KitchenObjectType[0];
 
-
     private void Awake()
     {
         CounterInteractModel counterInteractModel = new(_holdPoint, _type);

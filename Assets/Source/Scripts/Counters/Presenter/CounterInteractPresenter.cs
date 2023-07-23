@@ -32,7 +32,7 @@ public class CounterInteractPresenter
     }
 
     public bool TryPlaceItem(IPickable item) =>
-        _counterModel.TryPlaceItem(item);
+        _counterModel.TryPlacePickable(item);
 
     private void OnCookableSet(ICookable cookable)
     {
