@@ -7,10 +7,11 @@ public class DishesCounterInteractModel
     private readonly ITypeProvider _typeProvider;
 
     public int MaxDishes { get; private set; }
+    public bool HavePlace => _dishes.Count < MaxDishes;
     public bool CanInteract => true;
 
-    public event Action<IPickable> DishAdded;
-    public event Action<IPickable> DishRemoved;
+    public event Action<DishView> DishAdded;
+    public event Action<DishView> DishRemoved;
     public event Action<DishView> DishWashed;
 
     public DishesCounterInteractModel(int maxDishes, ITypeProvider typeProvider)
@@ -62,8 +63,7 @@ public class DishesCounterInteractModel
         if(_dishes.Count == 0)
             return false;
 
-        dish = _dishes.Peek();
-        _dishes.Pop();
+        dish = _dishes.Pop();
         DishRemoved?.Invoke(dish);
         dish.ResetCookingStageProcess();
 
@@ -72,12 +72,18 @@ public class DishesCounterInteractModel
 
     public void Wash(float step = 0)
     {
+        if (_dishes.Count == 0)
+            return;
+
         DishView currentDish = _dishes.Peek();
         currentDish.Wash(step);
     }
 
     private void OnDishWashed()
     {
+        if (_dishes.Count == 0)
+            return;
+
         DishWashed?.Invoke(_dishes.Peek());
     }
 }

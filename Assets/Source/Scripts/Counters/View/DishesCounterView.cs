@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DishesCounterView : MonoBehaviour, IInteractable, ITypeProvider
@@ -8,6 +9,9 @@ public class DishesCounterView : MonoBehaviour, IInteractable, ITypeProvider
     private int _currentDishPoint;
 
     private DishesCounterInteractPresenter _interactPresenter;
+
+    public event Action DishAdded;
+    public event Action<DishView> DishRemoved;
 
     public int MaxDishesCount => _interactPresenter.MaxDishesCount;
     public bool CanInteract => _interactPresenter.CanInteract;
@@ -45,8 +49,8 @@ public class DishesCounterView : MonoBehaviour, IInteractable, ITypeProvider
     public void Enable()
     {
         _interactPresenter.Enable();
-        _interactPresenter.DishAdded += ShowDish;
-        _interactPresenter.DishRemoved += RemoveDish;
+        _interactPresenter.DishAdded += OnDishAdded;
+        _interactPresenter.DishRemoved += OnDishRemoved;
     }
 
     public void Disable()
@@ -59,16 +63,22 @@ public class DishesCounterView : MonoBehaviour, IInteractable, ITypeProvider
         _interactPresenter.Interact(objectInteractSystem);
     }
 
-    public bool TryAddDish(DishView dishView) => _interactPresenter.TryAddDish(dishView);
+    public bool TryAddDish(DishView dish) => _interactPresenter.TryAddDish(dish);
 
-    private void ShowDish(IPickable pickable)
+    public bool TryTakeDish(out DishView dish) => _interactPresenter.TryTakeDish(out dish);
+
+    private void OnDishAdded(DishView dish)
     {
-        pickable.SetParent(_dishPoints[_currentDishPoint]);
+        dish.SetParent(_dishPoints[_currentDishPoint]);
         _currentDishPoint++;
+
+        DishAdded?.Invoke();
     }
 
-    private void RemoveDish(IPickable pickable)
+    private void OnDishRemoved(DishView dish)
     {
         _currentDishPoint--;
+
+        DishRemoved?.Invoke(dish);
     }
 }

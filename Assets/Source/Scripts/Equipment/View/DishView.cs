@@ -88,7 +88,7 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
         _interactive.RemoveParent();
     }
 
-    public void SetParent(Transform point, bool isVisiable)
+    public void SetParent(Transform point, bool isVisiable = true)
     {
         _interactive.SetParent(point, isVisiable);
     }

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInteractable, ITypeProvider
 {
-    [SerializeField] private DishesCounterView _cleanDishCounter; // в конструктор
     [SerializeField] private DishesCounterView _dirtyDishCounter;
+    [SerializeField] private DishesCounterView _cleanDishCounter; // в конструктор
     [SerializeField] private KitchenObjectType _type;
     [SerializeField] private Transform _holdPoint;
 
@@ -16,7 +16,7 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
 
     private void Awake()
     {
-        DishesCounterInteractModel dishesCounterInteractModel = new(1, this);
+        DishesCounterInteractModel dishesCounterInteractModel = new(maxDishes: 1, this);
         DishesCounterInteractPresenter dishesCounterInteractPresenter = new(dishesCounterInteractModel);
 
         Init(dishesCounterInteractPresenter);
@@ -40,12 +40,18 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
     {
         _dishesCounterInteractPresenter.Enable();
         _dishesCounterInteractPresenter.DishAdded += OnDishAdded;
+        _dishesCounterInteractPresenter.DishWashed += OnDishWashed;
+
+        _dirtyDishCounter.DishAdded += OnCleanCounterDishAdded;
     }
 
     public void Disable()
     {
         _dishesCounterInteractPresenter.Disable();
         _dishesCounterInteractPresenter.DishAdded -= OnDishAdded;
+        _dishesCounterInteractPresenter.DishWashed -= OnDishWashed;
+
+        _dirtyDishCounter.DishAdded -= OnCleanCounterDishAdded;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
@@ -57,8 +63,34 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
     {
         _dishesCounterInteractPresenter.Wash(1);
     }
-    private void OnDishAdded(IPickable pickable)
+
+    private void OnDishAdded(DishView dish)
     {
-        pickable.SetParent(_holdPoint);
+        dish.SetParent(_holdPoint);
+    }
+
+    private void OnDishWashed(DishView _)
+    {
+        if (_dishesCounterInteractPresenter.TryTakeDish(out DishView dishView) == false)
+            return;
+
+        if (_cleanDishCounter.TryAddDish(dishView) == false)
+            return;
+
+        if (_dirtyDishCounter.TryTakeDish(out DishView dish) == false)
+            return;
+
+        _dishesCounterInteractPresenter.TryAddDish(dish);
+    }
+
+    private void OnCleanCounterDishAdded()
+    {
+        if (_dishesCounterInteractPresenter.HavePlace == false)
+            return;
+
+        if(_dirtyDishCounter.TryTakeDish(out DishView dish))
+        {
+            _dishesCounterInteractPresenter.TryAddDish(dish);
+        }
     }
 }
