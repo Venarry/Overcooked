@@ -16,7 +16,7 @@ MonoBehaviour:
   - _mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     _cookingTime: 2
     _type: 17
-    _availablePlaceObjects: 0b0000000f000000
+    _availablePlaceObjects: 0b0000000f00000012000000
   - _mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
     _cookingTime: 0.5
     _type: 16

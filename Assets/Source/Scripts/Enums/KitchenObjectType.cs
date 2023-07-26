@@ -21,4 +21,5 @@ public enum KitchenObjectType
     DirtyDishesCounter,
     CleanDish,
     DirtyDish,
+    SinkCounter,
 }

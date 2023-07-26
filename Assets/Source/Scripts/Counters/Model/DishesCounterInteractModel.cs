@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 public class DishesCounterInteractModel
 {
-    private Stack<DishView> _dishes = new();
+    private readonly Stack<DishView> _dishes = new();
     private readonly ITypeProvider _typeProvider;
-
 
     public int MaxDishes { get; private set; }
     public bool CanInteract => true;
 
     public event Action<IPickable> DishAdded;
     public event Action<IPickable> DishRemoved;
+    public event Action<DishView> DishWashed;
 
     public DishesCounterInteractModel(int maxDishes, ITypeProvider typeProvider)
     {
@@ -33,10 +33,10 @@ public class DishesCounterInteractModel
         }
         else
         {
-            if(TryTakeDish(out IPickable pickable) == false)
+            if(TryTakeDish(out DishView dish) == false)
                 return;
 
-            playerObjectInteract.TryGivePickable(pickable);
+            playerObjectInteract.TryGivePickable(dish);
         }
     }
 
@@ -50,21 +50,34 @@ public class DishesCounterInteractModel
 
         _dishes.Push(dish);
         DishAdded?.Invoke(dish);
+        dish.DishWashed += OnDishWashed;
 
         return true;
     }
 
-    public bool TryTakeDish(out IPickable pickable)
+    public bool TryTakeDish(out DishView dish)
     {
-        pickable = null;
+        dish = null;
 
         if(_dishes.Count == 0)
             return false;
 
-        pickable = _dishes.Peek();
+        dish = _dishes.Peek();
         _dishes.Pop();
-        DishRemoved?.Invoke(pickable);
+        DishRemoved?.Invoke(dish);
+        dish.ResetCookingStageProcess();
 
         return true;
+    }
+
+    public void Wash(float step = 0)
+    {
+        DishView currentDish = _dishes.Peek();
+        currentDish.Wash(step);
+    }
+
+    private void OnDishWashed()
+    {
+        DishWashed?.Invoke(_dishes.Peek());
     }
 }

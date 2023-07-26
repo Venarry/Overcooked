@@ -1,8 +1,9 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractedObjectView))]
-public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder//, ITypeProvider
+public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder
 {
     [SerializeField] private Transform _holdPoint;
     [SerializeField] private Transform _ingredientsIconPoint;
@@ -12,13 +13,14 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     private CookableHolderInteractPresenter _cookableHolderInteractPresenter;
     private CookingProcessPresenter _cookingProcessPresenter;
 
+    public event Action DishWashed;
+
     public bool CanInteract => _interactive.CanInteract;
     public int CookablesCount => _cookableHolderInteractPresenter.CookablesCount;
     public KitchenObjectType[] IngredientsType => _cookableHolderInteractPresenter.CookablesType;
     public Transform HoldPoint => _holdPoint;
     public MeshFilter MeshFilter => _meshFilter;
     public Transform IngredientsIconPoint => _ingredientsIconPoint;
-
 
     private void Awake()
     {
@@ -31,6 +33,7 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
         _cookingProcessPresenter.Enable();
 
         _cookableHolderInteractPresenter.HolderCleared += OnHolderCleared;
+        _cookingProcessPresenter.MaxStageReached += OnDishWashed;
     }
 
     public void Disable()
@@ -62,6 +65,11 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
         _cookingProcessPresenter.Cook(step);
     }
 
+    public void ResetCookingStageProcess()
+    {
+        _cookingProcessPresenter.ResetStageProgress();
+    }
+
     public void RemoveObject()
     {
         Destroy(gameObject);
@@ -91,5 +99,10 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     private void OnHolderCleared()
     {
         _cookingProcessPresenter.ResetStages();
+    }
+
+    private void OnDishWashed()
+    {
+        DishWashed?.Invoke();
     }
 }

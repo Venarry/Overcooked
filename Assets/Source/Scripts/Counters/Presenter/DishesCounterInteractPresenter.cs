@@ -34,6 +34,11 @@ public class DishesCounterInteractPresenter
 
     public bool TryAddDish(DishView dishView) => _model.TryAddDish(dishView);
 
+    public void Wash(float step = 0)
+    {
+        _model.Wash(step);
+    }
+
     private void OnDishAdded(IPickable pickable)
     {
         DishAdded?.Invoke(pickable);
