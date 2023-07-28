@@ -26,20 +26,17 @@ public class PresetsInitialize : MonoBehaviour
         foreach (PresetHolderData<CookingHolderView> holderData in _cookingPots)
         {
             _cookingPotBuilder.Build(holderData.Holder, holderData.MaxValue);
-            holderData.Holder.Enable();
         }
 
         foreach (PresetHolderData<CookingHolderView> holderData in _cookingPans)
         {
             _cookingPanBuilder.Build(holderData.Holder, holderData.MaxValue);
-            holderData.Holder.Enable();
         }
 
         foreach (PresetHolderData<DishView> holderData in _dishes)
         {
             _dishBuilder.Build(holderData.Holder, holderData.MaxValue);
-            holderData.Holder.Enable();
-            //holderData.Holder.WashDishes();
+            //holderData.Holder.WashDish();
         }
     }
 }

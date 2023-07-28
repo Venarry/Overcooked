@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CombineIngredientShower
+public class CombineIngredientMeshView
 {
     private readonly CookableHolderInteractPresenter _interactPresenter;
     private readonly MeshFilter _ingredientsModel;
     private readonly Dictionary<KitchenObjectType[], Mesh> _modelsTemplate;
 
-    public CombineIngredientShower(Transform meshPoint, CookableHolderInteractPresenter interactPresenter, Dictionary<KitchenObjectType[], Mesh> modelsTemplate)
+    public CombineIngredientMeshView(Transform meshPoint, CookableHolderInteractPresenter interactPresenter, Dictionary<KitchenObjectType[], Mesh> modelsTemplate)
     {
         _interactPresenter = interactPresenter;
         _modelsTemplate = modelsTemplate;

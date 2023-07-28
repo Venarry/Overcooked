@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class KitchenOrderCounter : MonoBehaviour, IInteractable
 {
-    private OrdersHolder _ordersHolder;
+    private OrdersHandler _ordersHolder;
 
     public bool CanInteract => true;
 
-    public void Init(OrdersHolder ordersHolder)
+    public void Init(OrdersHandler ordersHolder)
     {
         _ordersHolder = ordersHolder;
     }

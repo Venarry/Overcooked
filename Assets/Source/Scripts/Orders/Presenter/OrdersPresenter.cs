@@ -1,27 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class OrdersPresenter
 {
-    private OrdersView _ordersView;
-    private OrdersHolder _ordersHolder;
+    private readonly OrdersView _ordersView;
+    private readonly OrdersHandler _ordersHolder;
+    private readonly LevelMoneyView _levelMoneyView;
 
-    public OrdersPresenter(OrdersView ordersView, OrdersHolder ordersHolder)
+    public OrdersPresenter(OrdersView ordersView, OrdersHandler ordersHolder, LevelMoneyView levelMoneyView)
     {
         _ordersView = ordersView;
         _ordersHolder = ordersHolder;
+        _levelMoneyView = levelMoneyView;
     }
 
     public void Enable()
     {
-        _ordersHolder.OrderAdded += _ordersView.Show;
-        _ordersHolder.OrderRemoved += _ordersView.Remove;
+        _ordersHolder.OrderAdded += _ordersView.ShowOrder;
+        _ordersHolder.OrderApplied += OnOrderApplied;
     }
+
 
     public void Disable()
     {
-        _ordersHolder.OrderAdded -= _ordersView.Show;
-        _ordersHolder.OrderRemoved -= _ordersView.Remove;
+        _ordersHolder.OrderAdded -= _ordersView.ShowOrder;
+        _ordersHolder.OrderApplied -= OnOrderApplied;
+    }
+
+    private void OnOrderApplied(int orderKey)
+    {
+        _ordersView.RemoveOrder(orderKey);
     }
 }

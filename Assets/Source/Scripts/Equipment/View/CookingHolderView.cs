@@ -12,6 +12,7 @@ public class CookingHolderView : MonoBehaviour, ICookableHolder, ICookable, IPic
     private InteractedObjectView _interactive;
     private CookingProcessPresenter _cookingProcessPresenter;
     private CookableHolderInteractPresenter _interactPresenter;
+    private bool _isInitialized;
 
     public KitchenObjectType Type => _cookingProcessPresenter.Type;
     public KitchenObjectType[] IngredientsType => _interactPresenter.CookablesType;
@@ -30,8 +31,23 @@ public class CookingHolderView : MonoBehaviour, ICookableHolder, ICookable, IPic
         _interactive = GetComponent<InteractedObjectView>();
     }
 
-    public void Enable()
+    public void Init(CookingProcessPresenter cookingProcessPresenter,
+        CookableHolderInteractPresenter interactPresenter)
     {
+        gameObject.SetActive(false);
+
+        _cookingProcessPresenter = cookingProcessPresenter;
+        _interactPresenter = interactPresenter;
+        _isInitialized = true;
+
+        gameObject.SetActive(true);
+    }
+
+    private void OnEnable()
+    {
+        if (_isInitialized == false)
+            return;
+
         _cookingProcessPresenter.CookStageAdded += OnCookStageAdded;
         _cookingProcessPresenter.CookStageSubtracted += OnCookStageSubtracted;
         _cookingProcessPresenter.MaxStageReached += OnMaxStageReached;
@@ -43,8 +59,11 @@ public class CookingHolderView : MonoBehaviour, ICookableHolder, ICookable, IPic
         _interactPresenter.Enable();
     }
 
-    public void Disable()
+    private void OnDisable()
     {
+        if (_isInitialized == false)
+            return;
+
         _cookingProcessPresenter.CookStageAdded -= OnCookStageAdded;
         _cookingProcessPresenter.CookStageSubtracted -= OnCookStageSubtracted;
         _cookingProcessPresenter.MaxStageReached -= OnMaxStageReached;
@@ -54,13 +73,6 @@ public class CookingHolderView : MonoBehaviour, ICookableHolder, ICookable, IPic
 
         _cookingProcessPresenter.Disable();
         _interactPresenter.Disable();
-    }
-
-    public void Init(CookingProcessPresenter cookingProcessPresenter,
-        CookableHolderInteractPresenter interactPresenter)
-    {
-        _cookingProcessPresenter = cookingProcessPresenter;
-        _interactPresenter = interactPresenter;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)

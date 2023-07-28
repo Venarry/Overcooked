@@ -3,41 +3,28 @@ using UnityEngine;
 
 public class OrdersView
 {
-    private readonly OrderPanel _orderPanel;
+    private readonly OrderPanelFactory _orderPanelFactory;
     private readonly Transform _spawnPoint;
-    private readonly Dictionary<int, OrderPanel> _activePanels = new();
+    private readonly Dictionary<int, OrderPanelView> _activePanels = new();
 
     public OrdersView(Transform spawnPoint)
     {
-        _orderPanel = Resources.Load<OrderPanel>(AssetsPath.OrderPanel);
+        _orderPanelFactory = new();
         _spawnPoint = spawnPoint;
     }
 
-    public void Show(KeyValuePair<int, OrderSO> order)
+    public void ShowOrder(int id, OrderSO order)
     {
-        OrderPanel newOrderPanel = CreateNewOrderPanel(order.Key.ToString());
-        _activePanels.Add(order.Key, newOrderPanel);
-
-        newOrderPanel.SetOrderImage(order.Value.OrderImage);
-        newOrderPanel.SetIngredientsImages(order.Value.IngredientTextures);
+        OrderPanelView orderPanel = _orderPanelFactory.Create(id, order, _spawnPoint);
+        _activePanels.Add(id, orderPanel);
     }
 
-    public void Remove(int orderNumber)
+    public void RemoveOrder(int id)
     {
-        if (_activePanels.ContainsKey(orderNumber) == false)
+        if (_activePanels.ContainsKey(id) == false)
             return;
 
-        Object.Destroy(_activePanels[orderNumber].gameObject);
-        _activePanels.Remove(orderNumber);
-    }
-
-    private OrderPanel CreateNewOrderPanel(string objectName)
-    {
-        OrderPanel orderPanel = Object.Instantiate(_orderPanel);
-        orderPanel.gameObject.name = $"Order {objectName}";
-        orderPanel.transform.SetParent(_spawnPoint.transform);
-        orderPanel.transform.localScale = new(1, 1, 1);
-
-        return orderPanel;
+        Object.Destroy(_activePanels[id].gameObject);
+        _activePanels.Remove(id);
     }
 }

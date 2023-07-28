@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
 {
-    [SerializeField] private OrdersSetup _orderFactory;
+    [SerializeField] private OrdersSetup _ordersSetup;
     [SerializeField] private PresetsInitialize _presetsInitialize;
 
     [SerializeField] private CookingStoveCounterView _cookingStoveCounterView;
@@ -11,12 +11,11 @@ public class Bootstrap : MonoBehaviour
     private void Awake()
     {
         _presetsInitialize.MakeInit();
-        _orderFactory.Create();
-        _orderFactory.Enable();
+        _ordersSetup.Setup();
 
         CookingPotFactory cookingPotFactory = new();
         CookingHolderView cookingPot = cookingPotFactory.Create(15);
-        cookingPot.Enable();
+        //cookingPot.Enable();
 
         _cookingStoveCounterView.TryPlaceItem(cookingPot);
 
@@ -25,7 +24,6 @@ public class Bootstrap : MonoBehaviour
         for (int i = 0; i < _dishesCounterView.MaxDishesCount; i++)
         {
             DishView newDish = dishFactory.Create(2);
-            newDish.Enable();
             newDish.WashDish();
 
             if (_dishesCounterView.TryAddDish(newDish) == false)

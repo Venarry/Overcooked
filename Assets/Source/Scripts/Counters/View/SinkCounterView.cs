@@ -9,6 +9,7 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
     [SerializeField] private Transform _holdPoint;
 
     private DishesCounterInteractPresenter _dishesCounterInteractPresenter;
+    private bool _isInitialized;
 
     public bool CanInteract => _dishesCounterInteractPresenter.CanInteract;
     public KitchenObjectType Type => _type;
@@ -20,7 +21,6 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
         DishesCounterInteractPresenter dishesCounterInteractPresenter = new(dishesCounterInteractModel);
 
         Init(dishesCounterInteractPresenter);
-        Enable();
     }
 
     private void Update()
@@ -33,11 +33,19 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
 
     public void Init(DishesCounterInteractPresenter dishesCounterInteractPresenter)
     {
+        gameObject.SetActive(false);
+
         _dishesCounterInteractPresenter = dishesCounterInteractPresenter;
+        _isInitialized = true;
+
+        gameObject.SetActive(true);
     }
 
-    public void Enable()
+    private void OnEnable()
     {
+        if (_isInitialized == false)
+            return;
+
         _dishesCounterInteractPresenter.Enable();
         _dishesCounterInteractPresenter.DishAdded += OnDishAdded;
         _dishesCounterInteractPresenter.DishWashed += OnDishWashed;
@@ -45,8 +53,11 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
         _dirtyDishCounter.DishAdded += OnCleanCounterDishAdded;
     }
 
-    public void Disable()
+    private void OnDisable()
     {
+        if (_isInitialized == false)
+            return;
+
         _dishesCounterInteractPresenter.Disable();
         _dishesCounterInteractPresenter.DishAdded -= OnDishAdded;
         _dishesCounterInteractPresenter.DishWashed -= OnDishWashed;

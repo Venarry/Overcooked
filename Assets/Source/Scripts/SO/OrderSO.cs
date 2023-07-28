@@ -8,9 +8,11 @@ public class OrderSO : ScriptableObject
     [SerializeField] private KitchenObjectType[] _orderTypes;
     [SerializeField] private Sprite[] _ingredientIcons;
     [SerializeField] private Sprite _orderImage;
+    [SerializeField] private int _reward;
 
     public Sprite[] IngredientTextures => _ingredientIcons.ToArray();
     public Sprite OrderImage => _orderImage;
+    public int Reward => _reward;
 
     public bool CorrectOrder(KitchenObjectType[] inputIngredients)
     {

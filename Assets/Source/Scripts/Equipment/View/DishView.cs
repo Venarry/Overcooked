@@ -12,6 +12,7 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     private InteractedObjectView _interactive;
     private CookableHolderInteractPresenter _cookableHolderInteractPresenter;
     private CookingProcessPresenter _cookingProcessPresenter;
+    private bool _isInitialized;
 
     public event Action DishWashed;
 
@@ -27,8 +28,22 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
         _interactive = GetComponent<InteractedObjectView>();
     }
 
-    public void Enable()
+    public void Init(CookingProcessPresenter cookingProcessPresenter, CookableHolderInteractPresenter cookableHolderInteractPresenter)
     {
+        gameObject.SetActive(false);
+
+        _cookingProcessPresenter = cookingProcessPresenter;
+        _cookableHolderInteractPresenter = cookableHolderInteractPresenter;
+        _isInitialized = true;
+
+        gameObject.SetActive(true);
+    }
+
+    private void OnEnable()
+    {
+        if (_isInitialized == false)
+            return;
+
         _cookableHolderInteractPresenter.Enable();
         _cookingProcessPresenter.Enable();
 
@@ -36,18 +51,15 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
         _cookingProcessPresenter.MaxStageReached += OnDishWashed;
     }
 
-    public void Disable()
+    private void OnDisable()
     {
+        if (_isInitialized == false)
+            return;
+
         _cookableHolderInteractPresenter.Disable();
         _cookingProcessPresenter.Disable();
 
         _cookableHolderInteractPresenter.HolderCleared -= OnHolderCleared;
-    }
-
-    public void Init(CookingProcessPresenter cookingProcessPresenter, CookableHolderInteractPresenter cookableHolderInteractPresenter)
-    {
-        _cookingProcessPresenter = cookingProcessPresenter;
-        _cookableHolderInteractPresenter = cookableHolderInteractPresenter;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)

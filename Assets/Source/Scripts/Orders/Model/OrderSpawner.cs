@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class OrderSpawner : MonoBehaviour
 {
-    private OrdersHolder _ordersHolder;
-    private WaitForSeconds _waitForSeconds;
+    private OrdersHandler _ordersHolder;
     private Queue<OrderSO> _ordersInLevel;
+    private WaitForSeconds _waitForSeconds;
 
-    public void Init(OrdersHolder ordersHolder, List<OrderSO> ordersInLevel, float spawnInterval)
+    public void Init(OrdersHandler ordersHolder, List<OrderSO> ordersInLevel, float spawnInterval)
     {
         if (spawnInterval < 1)
             spawnInterval = 1;

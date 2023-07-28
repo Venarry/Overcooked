@@ -4,6 +4,7 @@ using UnityEngine;
 public class HolderIngredientsIconShower
 {
     private const int Spacing = 1;
+
     private readonly Transform _spawnPoint;
     private readonly IngredientIcon _prefab;
     private readonly List<KeyValuePair<KitchenObjectType, Sprite>> _ingredientsIcon;
@@ -22,7 +23,7 @@ public class HolderIngredientsIconShower
         if (TryGetIngredientIcon(cookable.Type, out KeyValuePair<KitchenObjectType, Sprite> ingredient) == false)
             return;
 
-        IngredientIcon spawnedIngredient = Object.Instantiate(_prefab); // отдельная фабрика
+        IngredientIcon spawnedIngredient = Object.Instantiate(_prefab); // нужна отдельная фабрика
         spawnedIngredient.transform.SetParent(_spawnPoint);
         spawnedIngredient.transform.localRotation = Quaternion.identity;
         spawnedIngredient.transform.localScale = new(1, 1, 1);
@@ -57,12 +58,10 @@ public class HolderIngredientsIconShower
 
     private void RecalculateIconsPosistion()
     {
-        float iconsCountNormalized = _activeIcons.Count - 1;
-
-        if (iconsCountNormalized < 0)
+        if (_activeIcons.Count == 0)
             return;
 
-        float targetPosition = iconsCountNormalized / 2 * -1;
+        float targetPosition = Calculator.GetCenterdStartPoint(_activeIcons.Count, Spacing);
 
         foreach (KeyValuePair<ICookable, IngredientIcon> icon in _activeIcons)
         {

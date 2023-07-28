@@ -7,6 +7,7 @@ public static class AssetsPath
     public const string PaletteMaterial = "Materials/Palette";
     public const string OrderPanel = "Prefabs/OrderPanel";
     public const string IngredientIcon = "Prefabs/IngredientIcon";
+    public const string LevelMoneyView = "Prefabs/LevelMoneyView";
 
     public const string CookingPot = "Prefabs/CookingPot";
     public const string CookingPotSO = "SO/CookingPot";

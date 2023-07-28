@@ -22,7 +22,7 @@ public class DishBuilder
         CookableHolderInteractPresenter cookableHolderInteractPresenter = new(cookableHolderInteractModel, 
             holderIngredientsIconShower);
 
-        CombineIngredientShower combineIngredientShower = new(dishView.HoldPoint,
+        CombineIngredientMeshView combineIngredientShower = new(dishView.HoldPoint,
             cookableHolderInteractPresenter,
             _ingredientsCombineSO.GetCombines());
 

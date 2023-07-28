@@ -16,3 +16,4 @@ MonoBehaviour:
   _ingredientIcons:
   - {fileID: 21300000, guid: d24e7e0b75e1a244bb9687d6fd4315ef, type: 3}
   _orderImage: {fileID: 21300000, guid: f09eae8c0ea04254b90c5386a034a225, type: 3}
+  _reward: 50

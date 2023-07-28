@@ -1,18 +1,25 @@
 using System;
 using System.Collections.Generic;
 
-public class OrdersHolder
+public class OrdersHandler
 {
     private readonly Dictionary<int, OrderSO> _orders = new();
+    private readonly LevelMoneyModel _levelMoneyModel;
+
     private int _ordersCounter;
 
-    public event Action<KeyValuePair<int, OrderSO>> OrderAdded;
-    public event Action<int> OrderRemoved;
+    public event Action<int, OrderSO> OrderAdded;
+    public event Action<int> OrderApplied;
+
+    public OrdersHandler(LevelMoneyModel levelMoneyModel)
+    {
+        _levelMoneyModel = levelMoneyModel;
+    }
 
     public void AddOrder(OrderSO order)
     {
         _orders.Add(_ordersCounter, order);
-        OrderAdded?.Invoke(new KeyValuePair<int, OrderSO>(_ordersCounter, order));
+        OrderAdded?.Invoke(_ordersCounter, order);
         _ordersCounter++;
     }
 
@@ -23,7 +30,8 @@ public class OrdersHolder
             if(order.Value.CorrectOrder(inputIngredients))
             {
                 _orders.Remove(order.Key);
-                OrderRemoved?.Invoke(order.Key);
+                OrderApplied?.Invoke(order.Key);
+                _levelMoneyModel.AddMoney(order.Value.Reward);
 
                 return true;
             }
