@@ -5,7 +5,7 @@ using UnityEngine;
 public class CombineIngredientMeshView
 {
     private readonly CookableHolderInteractPresenter _interactPresenter;
-    private readonly MeshFilter _ingredientsModel;
+    private readonly MeshFilter _ingredientMeshFilter;
     private readonly Dictionary<KitchenObjectType[], Mesh> _modelsTemplate;
 
     public CombineIngredientMeshView(Transform meshPoint, CookableHolderInteractPresenter interactPresenter, Dictionary<KitchenObjectType[], Mesh> modelsTemplate)
@@ -15,19 +15,28 @@ public class CombineIngredientMeshView
 
         GameObject modelObject = new("Model");
 
-        Material material = Resources.Load<Material>(AssetsPath.PaletteMaterial);
+        Material material = new PaletteFactory().Create();
         modelObject.AddComponent<MeshRenderer>().material = material;
 
         modelObject.transform.parent = meshPoint;
         modelObject.transform.position = meshPoint.position;
 
-        _ingredientsModel = modelObject.AddComponent<MeshFilter>();
+        _ingredientMeshFilter = modelObject.AddComponent<MeshFilter>();
+
+        _interactPresenter.Enabled += Enable;
+        _interactPresenter.Disabled += Disable;
     }
 
-    public void Enable()
+    private void Enable()
     {
         _interactPresenter.CookableAdded += OnCookableChanged;
         _interactPresenter.CookableRemoved += OnCookableChanged;
+    }
+
+    private void Disable()
+    {
+        _interactPresenter.CookableAdded -= OnCookableChanged;
+        _interactPresenter.CookableRemoved -= OnCookableChanged;
     }
 
     private void OnCookableChanged()
@@ -39,13 +48,13 @@ public class CombineIngredientMeshView
     {
         if (inputTypes.Length == 0)
         {
-            _ingredientsModel.sharedMesh = null;
+            _ingredientMeshFilter.sharedMesh = null;
             return;
         }
 
         if (_modelsTemplate.Count == 1)
         {
-            _ingredientsModel.sharedMesh = _modelsTemplate.ElementAt(0).Value;
+            _ingredientMeshFilter.sharedMesh = _modelsTemplate.ElementAt(0).Value;
             return;
         }
 
@@ -61,7 +70,7 @@ public class CombineIngredientMeshView
                     break;
                 }
 
-                _ingredientsModel.sharedMesh = modelTemplate.Value;
+                _ingredientMeshFilter.sharedMesh = modelTemplate.Value;
             }
         }
     }

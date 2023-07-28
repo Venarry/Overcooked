@@ -27,8 +27,6 @@ public class CookingPotBuilder
             cookableHolderInteractPresenter, 
             _ingredientsCombineSO.GetCombines());
 
-        combineIngredientShower.Enable();
-
         cookingPotView.Init(cookingProcessPresenter, cookableHolderInteractPresenter);
     }
 }

@@ -1,20 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrdersSetup : MonoBehaviour
+public class OrdersBuilder : MonoBehaviour
 {
     [SerializeField] private List<OrderSO> _orders;
     [SerializeField] private KitchenOrderCounter[] _kitchenOrderCounters;
     [SerializeField] private Transform _orderPanelSpawnPoint;
     [SerializeField] private float _orderSpawninterval;
 
-    public void Setup()
+    public void Build()
     {
         LevelMoneyFactory levelMoneyFactory = new();
         LevelMoneyModel levelMoneyModel = new();
         LevelMoneyView levelMoneyView = levelMoneyFactory.Create(levelMoneyModel);
         levelMoneyView.Enable();
-        levelMoneyView.gameObject.transform.SetParent(transform, false);
+        levelMoneyView.gameObject.transform.SetParent(transform);
 
         OrdersHandler ordersHandler = new(levelMoneyModel);
         OrdersView ordersView = new(_orderPanelSpawnPoint);

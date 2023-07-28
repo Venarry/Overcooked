@@ -13,6 +13,9 @@ public class CookableHolderInteractPresenter
     public event Action CookableAdded;
     public event Action CookableRemoved;
 
+    public event Action Enabled;
+    public event Action Disabled;
+
     public CookableHolderInteractPresenter(CookableHolderInteractModel cookableHolderInteractModel,
         HolderIngredientsIconShower holderIngredientsIconShower)
     {
@@ -25,6 +28,8 @@ public class CookableHolderInteractPresenter
         _cookableHolderInteractModel.CookableAdded += OnCookableAdded;
         _cookableHolderInteractModel.CookableRemoved += OnCookableRemoved;
         _cookableHolderInteractModel.HolderCleared += OnHolderClear;
+
+        Enabled?.Invoke();
     }
 
     public void Disable()
@@ -32,6 +37,8 @@ public class CookableHolderInteractPresenter
         _cookableHolderInteractModel.CookableAdded -= OnCookableAdded;
         _cookableHolderInteractModel.CookableRemoved -= OnCookableRemoved;
         _cookableHolderInteractModel.HolderCleared -= OnHolderClear;
+
+        Disabled?.Invoke();
     }
 
     public void AddCookableCookStage()
