@@ -16,6 +16,11 @@ public class LevelMoneyPresenter
         _moneyModel.MoneyAdded += OnMoneyAdded;
     }
 
+    public void Disable()
+    {
+        _moneyModel.MoneyAdded -= OnMoneyAdded;
+    }
+
     public void AddMoney(int value)
     {
         _moneyModel.AddMoney(value);

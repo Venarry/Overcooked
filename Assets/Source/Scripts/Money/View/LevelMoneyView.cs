@@ -12,6 +12,7 @@ public class LevelMoneyView : MonoBehaviour
     private LevelMoneyPresenter _presenter;
     private int _currentMoneyMultiplier = 1;
     private float _timer;
+    private bool _isInitialized;
 
     private void Start()
     {
@@ -35,12 +36,29 @@ public class LevelMoneyView : MonoBehaviour
 
     public void Init(LevelMoneyPresenter levelMoneyPresenter)
     {
+        gameObject.SetActive(false);
+
         _presenter = levelMoneyPresenter;
+        _isInitialized = true;
+
+        gameObject.SetActive(true);
     }
 
-    public void Enable()
+    private void OnEnable()
     {
+        if (_isInitialized == false)
+            return;
+
         _presenter.Enable();
+        _presenter.MoneyAdded += OnMoneyAdded;
+    }
+
+    private void OnDisable()
+    {
+        if (_isInitialized == false)
+            return;
+
+        _presenter.Disable();
         _presenter.MoneyAdded += OnMoneyAdded;
     }
 

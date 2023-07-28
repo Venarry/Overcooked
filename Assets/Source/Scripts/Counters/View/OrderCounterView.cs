@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KitchenOrderCounter : MonoBehaviour, IInteractable
+public class OrderCounterView : MonoBehaviour, IInteractable
 {
     private OrdersHandler _ordersHolder;
 
