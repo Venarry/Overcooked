@@ -133,7 +133,7 @@ public class CookableHolderInteractModel
         if (objectInteractSystem.TryGetPickableType(out ICookableHolder cookableHolder) == false)
             return false;
 
-        if (cookableHolder is IServiceHolder && cookableHolder.CookablesCount == 0)
+        if (cookableHolder is DishView && cookableHolder.CookablesCount == 0)
         {
             GiveCookablesInOutHolder(cookableHolder);
             return true;

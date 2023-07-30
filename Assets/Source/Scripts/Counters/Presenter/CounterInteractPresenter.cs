@@ -5,6 +5,7 @@ public class CounterInteractPresenter
     private readonly CounterInteractModel _counterModel;
 
     public event Action<ICookable> CookableSet;
+    public event Action<IPickable> PickableSet;
     public event Action CookableRemoved;
 
     public bool CanInteract => _counterModel.CanInteract;
@@ -17,12 +18,14 @@ public class CounterInteractPresenter
     public void Enable()
     {
         _counterModel.CookableSet += OnCookableSet;
+        _counterModel.PickableSet += OnPickableSet;
         _counterModel.CookableRemoved += OnCookableRemoved;
     }
 
     public void Disable()
     {
         _counterModel.CookableSet -= OnCookableSet;
+        _counterModel.PickableSet -= OnPickableSet;
         _counterModel.CookableRemoved -= OnCookableRemoved;
     }
 
@@ -37,6 +40,11 @@ public class CounterInteractPresenter
     private void OnCookableSet(ICookable cookable)
     {
         CookableSet?.Invoke(cookable);
+    }
+
+    private void OnPickableSet(IPickable pickable)
+    {
+        PickableSet?.Invoke(pickable);
     }
 
     private void OnCookableRemoved()

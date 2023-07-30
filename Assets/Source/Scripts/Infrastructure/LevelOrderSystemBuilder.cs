@@ -8,21 +8,17 @@ public class LevelOrderSystemBuilder : MonoBehaviour
     [SerializeField] private Transform _orderPanelSpawnPoint;
     [SerializeField] private float _orderSpawninterval;
 
-    public void Build(LevelMoneyFactory levelMoneyFactory, OrdersFactory ordersFactory, OrdersSpawnerFactory ordersSpawnerFactory)
+    public void Build(LevelMoneyModel levelMoneyModel, OrdersHandler ordersHandler, LevelMoneyFactory levelMoneyFactory, OrdersFactory ordersFactory, OrdersSpawnerFactory ordersSpawnerFactory, OrderCounterBuilder orderCounterBuilder)
     {
-        LevelMoneyModel levelMoneyModel = new();
-
         LevelMoneyView levelMoneyView = levelMoneyFactory.Create(levelMoneyModel);
         levelMoneyView.gameObject.transform.SetParent(transform, false);
-
-        OrdersHandler ordersHandler = new(levelMoneyModel);
 
         ordersFactory.Create(ordersHandler, levelMoneyView, _orderPanelSpawnPoint);
         ordersSpawnerFactory.Create(ordersHandler, _orders, _orderSpawninterval);
 
         foreach (OrderCounterView counter in _kitchenOrderCounters)
         {
-            counter.Init(ordersHandler);
+            orderCounterBuilder.Build(counter, ordersHandler);
         }
     }
 }

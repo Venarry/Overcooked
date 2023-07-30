@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class DishesCounterInteractModel
 {
@@ -64,6 +65,7 @@ public class DishesCounterInteractModel
             return false;
 
         dish = _dishes.Pop();
+        dish.DishWashed -= OnDishWashed;
         DishRemoved?.Invoke(dish);
         dish.ResetCookingStageProcess();
 

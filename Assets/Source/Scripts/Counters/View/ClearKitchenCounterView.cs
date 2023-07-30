@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class ClearKitchenCounterView : MonoBehaviour, IInteractable
+public class ClearKitchenCounterView : MonoBehaviour, IInteractable, ITypeProvider
 {
     [SerializeField] private KitchenObjectType _type;
     [SerializeField] private Transform _holdPoint;
@@ -8,14 +9,15 @@ public class ClearKitchenCounterView : MonoBehaviour, IInteractable
     private CounterInteractPresenter _counterInteractPresenter;
 
     public bool CanInteract => _counterInteractPresenter.CanInteract;
+    public KitchenObjectType Type => _type;
+    public KitchenObjectType[] AvailablePlaceTypes => new KitchenObjectType[0];
 
     private void Awake()
     {
-        CounterInteractModel counterInteractModel = new(_holdPoint, _type);
+        CounterInteractModel counterInteractModel = new(this);
         CounterInteractPresenter counterInteractPresenter = new(counterInteractModel);
 
         Init(counterInteractPresenter);
-        Enable();
     }
 
     public void Init(CounterInteractPresenter counterInteractPresenter)
@@ -23,18 +25,24 @@ public class ClearKitchenCounterView : MonoBehaviour, IInteractable
         _counterInteractPresenter = counterInteractPresenter;
     }
 
-    public void Enable()
+    private void OnEnable()
     {
         _counterInteractPresenter.Enable();
+        _counterInteractPresenter.PickableSet += OnPickableSet;
     }
 
-    public void Disable()
+    private void OnDisable()
     {
         _counterInteractPresenter.Disable();
+        _counterInteractPresenter.PickableSet -= OnPickableSet;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
     {
         _counterInteractPresenter.Interact(objectInteractSystem);
+    }
+    private void OnPickableSet(IPickable pickable)
+    {
+        pickable.SetParent(_holdPoint);
     }
 }

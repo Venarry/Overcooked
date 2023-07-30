@@ -3,17 +3,16 @@ using UnityEngine;
 
 public class CounterInteractModel
 {
-    private readonly Transform _holdPoint;
-    private readonly KitchenObjectType _type;
+    private readonly ITypeProvider _typeProvider;
     private IPickable _pickable;
 
     public event Action<ICookable> CookableSet;
+    public event Action<IPickable> PickableSet;
     public event Action CookableRemoved;
 
-    public CounterInteractModel(Transform holdPoint, KitchenObjectType type)
+    public CounterInteractModel(ITypeProvider typeProvider)
     {
-        _holdPoint = holdPoint;
-        _type = type;
+        _typeProvider = typeProvider;
     }
 
     public bool CanInteract => true;
@@ -31,16 +30,18 @@ public class CounterInteractModel
         if (_pickable != null)
             return false;
 
-        if (pickable.CanPlaceOn(_type) == false)
+        if (pickable.CanPlaceOn(_typeProvider.Type) == false)
             return false;
 
-        pickable.SetParent(_holdPoint);
+        //pickable.SetParent(_holdPoint);
         _pickable = pickable;
 
         if (pickable is ICookable cookable)
         {
             CookableSet?.Invoke(cookable);
         }
+
+        PickableSet?.Invoke(_pickable);
 
         return true;
     }
@@ -52,7 +53,7 @@ public class CounterInteractModel
             return false;
         }
 
-        if (objectInteractSystem.CanPlacePickable(_type) == false)
+        if (objectInteractSystem.CanPlacePickable(_typeProvider.Type) == false)
             return false;
 
         if (objectInteractSystem.TryGetPickableType(out ICookable cookable))
@@ -63,7 +64,8 @@ public class CounterInteractModel
         objectInteractSystem.TryTakePickable(out IPickable pickable);
         
         _pickable = pickable;
-        pickable.SetParent(_holdPoint);
+        PickableSet?.Invoke(_pickable);
+        //pickable.SetParent(_holdPoint);
 
         return true;
     }

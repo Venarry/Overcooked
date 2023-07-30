@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CuttingBoardCounterView : MonoBehaviour, IInteractable, ITypeProvider
@@ -10,21 +11,18 @@ public class CuttingBoardCounterView : MonoBehaviour, IInteractable, ITypeProvid
     private CounterCookPresenter _counterCookPresenter;
 
     public bool CanInteract => _counterInteractPresenter.CanInteract;
-
     public KitchenObjectType Type => _type;
-
     public KitchenObjectType[] AvailablePlaceTypes => new KitchenObjectType[0];
 
     private void Awake()
     {
-        CounterInteractModel counterModel = new(_holdPoint, _type);
+        CounterInteractModel counterModel = new(this);
         CounterInteractPresenter counterInteractPresenter = new(counterModel);
 
         CounterCookModel counterCookModel = new(this);
         CounterCookPresenter counterCookPresenter = new(counterCookModel);
 
         Init(counterInteractPresenter, counterCookPresenter);
-        Enable();
     }
 
     private void Update()
@@ -41,19 +39,21 @@ public class CuttingBoardCounterView : MonoBehaviour, IInteractable, ITypeProvid
         _counterInteractPresenter = counterInteractPresenter;
     }
 
-    public void Enable()
+    private void OnEnable()
     {
         _counterInteractPresenter.Enable();
 
         _counterInteractPresenter.CookableSet += OnCookableSet;
+        _counterInteractPresenter.PickableSet += OnPickableSet;
         _counterInteractPresenter.CookableRemoved += OnCookableRemoved;
     }
 
-    public void Disable()
+    private void OnDisable()
     {
         _counterInteractPresenter.Disable();
 
         _counterInteractPresenter.CookableSet -= OnCookableSet;
+        _counterInteractPresenter.PickableSet -= OnPickableSet;
         _counterInteractPresenter.CookableRemoved -= OnCookableRemoved;
     }
 
@@ -65,6 +65,11 @@ public class CuttingBoardCounterView : MonoBehaviour, IInteractable, ITypeProvid
     public void OnCookableSet(ICookable cookable)
     {
         _counterCookPresenter.SetCookable(cookable);
+    }
+
+    private void OnPickableSet(IPickable pickable)
+    {
+        pickable.SetParent(_holdPoint);
     }
 
     public void OnCookableRemoved()

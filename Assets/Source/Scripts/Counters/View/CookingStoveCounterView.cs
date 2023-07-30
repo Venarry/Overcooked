@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CookingStoveCounterView : MonoBehaviour, IInteractable, ITypeProvider
@@ -8,23 +9,12 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable, ITypeProvid
     private CounterInteractPresenter _counterInteractPresenter;
     private CounterCookPresenter _counterCookPresenter;
 
+    private bool _isInitialized;
+
     public bool CanInteract => _counterInteractPresenter.CanInteract;
     public Transform HoldTransform => _holdPoint;
-
     public KitchenObjectType Type => _type;
-
     public KitchenObjectType[] AvailablePlaceTypes => new KitchenObjectType[0];
-
-    private void Awake()
-    {
-        CounterInteractModel counterInteractModel = new(_holdPoint, _type);
-        CounterInteractPresenter counterInteractPresenter = new(counterInteractModel);
-
-        CounterCookModel counterCookModel = new(this);
-        CounterCookPresenter counterCookPresenter = new(counterCookModel);
-        Init(counterInteractPresenter, counterCookPresenter);
-        Enable();
-    }
 
     private void FixedUpdate()
     {
@@ -33,21 +23,34 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable, ITypeProvid
 
     public void Init(CounterInteractPresenter counterInteractPresenter, CounterCookPresenter counterCookPresenter)
     {
+        gameObject.SetActive(false);
+
         _counterInteractPresenter = counterInteractPresenter;
         _counterCookPresenter = counterCookPresenter;
+        _isInitialized = true;
+
+        gameObject.SetActive(true);
     }
 
-    public void Enable()
+    private void OnEnable()
     {
+        if (_isInitialized == false)
+            return;
+
         _counterInteractPresenter.Enable();
         _counterInteractPresenter.CookableSet += SetCookable;
+        _counterInteractPresenter.PickableSet += OnPickableSet;
         _counterInteractPresenter.CookableRemoved += RemoveCookable;
     }
 
-    public void Disable()
+    private void OnDisable()
     {
+        if (_isInitialized == false)
+            return;
+        Debug.Log("Disabgle");
         _counterInteractPresenter.Disable();
         _counterInteractPresenter.CookableSet -= SetCookable;
+        _counterInteractPresenter.PickableSet -= OnPickableSet;
         _counterInteractPresenter.CookableRemoved -= RemoveCookable;
     }
 
@@ -62,6 +65,11 @@ public class CookingStoveCounterView : MonoBehaviour, IInteractable, ITypeProvid
     private void SetCookable(ICookable cookable)
     {
         _counterCookPresenter.SetCookable(cookable);
+    }
+
+    private void OnPickableSet(IPickable pickable)
+    {
+        pickable.SetParent(_holdPoint);
     }
 
     private void RemoveCookable()

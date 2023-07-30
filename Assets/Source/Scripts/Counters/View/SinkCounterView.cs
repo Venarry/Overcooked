@@ -33,12 +33,12 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
 
     public void Init(DishesCounterInteractPresenter dishesCounterInteractPresenter)
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
 
         _dishesCounterInteractPresenter = dishesCounterInteractPresenter;
         _isInitialized = true;
 
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
     }
 
     private void OnEnable()
@@ -50,7 +50,7 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
         _dishesCounterInteractPresenter.DishAdded += OnDishAdded;
         _dishesCounterInteractPresenter.DishWashed += OnDishWashed;
 
-        _dirtyDishCounter.DishAdded += OnCleanCounterDishAdded;
+        _dirtyDishCounter.DishAdded += OnDirtyCounterDishAdded;
     }
 
     private void OnDisable()
@@ -62,7 +62,7 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
         _dishesCounterInteractPresenter.DishAdded -= OnDishAdded;
         _dishesCounterInteractPresenter.DishWashed -= OnDishWashed;
 
-        _dirtyDishCounter.DishAdded -= OnCleanCounterDishAdded;
+        _dirtyDishCounter.DishAdded -= OnDirtyCounterDishAdded;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)
@@ -82,10 +82,10 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
 
     private void OnDishWashed(DishView _)
     {
-        if (_dishesCounterInteractPresenter.TryTakeDish(out DishView dishView) == false)
+        if (_dishesCounterInteractPresenter.TryTakeDish(out DishView washedDish) == false)
             return;
 
-        if (_cleanDishCounter.TryAddDish(dishView) == false)
+        if (_cleanDishCounter.TryAddDish(washedDish) == false)
             return;
 
         if (_dirtyDishCounter.TryTakeDish(out DishView dish) == false)
@@ -94,7 +94,7 @@ public class SinkCounterView : MonoBehaviour, IInteractable, IAlternativelyInter
         _dishesCounterInteractPresenter.TryAddDish(dish);
     }
 
-    private void OnCleanCounterDishAdded()
+    private void OnDirtyCounterDishAdded()
     {
         if (_dishesCounterInteractPresenter.HavePlace == false)
             return;

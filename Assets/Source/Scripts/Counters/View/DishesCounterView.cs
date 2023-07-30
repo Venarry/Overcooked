@@ -56,6 +56,8 @@ public class DishesCounterView : MonoBehaviour, IInteractable, ITypeProvider
     public void Disable()
     {
         _interactPresenter.Disable();
+        _interactPresenter.DishAdded -= OnDishAdded;
+        _interactPresenter.DishRemoved -= OnDishRemoved;
     }
 
     public void Interact(PlayerObjectInteract objectInteractSystem)

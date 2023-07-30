@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(InteractedObjectView))]
-public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolder
+public class DishView : MonoBehaviour, ICookableHolder, IPickable
 {
     [SerializeField] private Transform _holdPoint;
     [SerializeField] private Transform _ingredientsIconPoint;
@@ -81,10 +81,14 @@ public class DishView : MonoBehaviour, ICookableHolder, IPickable, IServiceHolde
     {
         _cookingProcessPresenter.ResetStageProgress();
     }
-
-    public void RemoveObject()
+    public void Show()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 
     public bool CanPlaceOn(KitchenObjectType type) =>

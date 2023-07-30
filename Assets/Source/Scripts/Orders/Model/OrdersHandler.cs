@@ -16,6 +16,18 @@ public class OrdersHandler
         _levelMoneyModel = levelMoneyModel;
     }
 
+    public void Interact(PlayerObjectInteract objectInteractSystem)
+    {
+        if (objectInteractSystem.TryGetPickableType(out IServiceHolder serviceHolder) == false)
+            return;
+
+        if (TryApplyOrder(serviceHolder.IngredientsType) == false)
+            return;
+
+        serviceHolder.Hilde();
+        objectInteractSystem.RemovePickableRoot();
+    }
+
     public void AddOrder(OrderSO order)
     {
         _orders.Add(_ordersCounter, order);
